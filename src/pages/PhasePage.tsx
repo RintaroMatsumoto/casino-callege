@@ -1,8 +1,19 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { ArrowLeft, ArrowRight, BookOpen, Clock, CheckCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
+import { ChipColors, BJTable, BJFlow, CrapsTable, RouletteWheel, HouseEdgeChart, BaccaratTableau, CardValues, DiceProbabilities, PokerHandRanking, CasinoOrgChart } from '../components/illustrations/Illustrations'
+
+const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; emoji: string }> = {
+  '0': { title: 'Phase 0: 基礎 (Fundamentals)', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', emoji: '🏠' },
+  '1': { title: 'Phase 1: Blackjack', file: 'phase-1-blackjack.md', lessons: 24, time: '11h', emoji: '🃏' },
+  '2': { title: 'Phase 2: Roulette', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h', emoji: '🎡' },
+  '3': { title: 'Phase 3: Craps', file: 'phase-3-craps.md', lessons: 21, time: '9.5h', emoji: '🎲' },
+  '4': { title: 'Phase 4: Poker', file: 'phase-4-poker.md', lessons: 12, time: '5h', emoji: '♠️' },
+  '5': { title: 'Phase 5: Baccarat', file: 'phase-5-baccarat.md', lessons: 15, time: '6h', emoji: '💎' },
+  '6': { title: 'Phase 6: 実践', file: 'phase-6-other-career.md', lessons: 12, time: '5h', emoji: '🎯' },
+}
 
 const contentModules: Record<string, () => Promise<{ default: string }>> = {
   'phase-0-fundamentals.md': () => import('../content/phase-0-fundamentals.md?raw'),
@@ -14,14 +25,36 @@ const contentModules: Record<string, () => Promise<{ default: string }>> = {
   'phase-6-other-career.md': () => import('../content/phase-6-other-career.md?raw'),
 }
 
-const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; emoji: string }> = {
-  '0': { title: 'Phase 0: 基礎 (Fundamentals)', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', emoji: '🏠' },
-  '1': { title: 'Phase 1: Blackjack', file: 'phase-1-blackjack.md', lessons: 24, time: '11h', emoji: '🃏' },
-  '2': { title: 'Phase 2: Roulette', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h', emoji: '🎡' },
-  '3': { title: 'Phase 3: Craps', file: 'phase-3-craps.md', lessons: 21, time: '9.5h', emoji: '🎲' },
-  '4': { title: 'Phase 4: Poker', file: 'phase-4-poker.md', lessons: 12, time: '5h', emoji: '♠️' },
-  '5': { title: 'Phase 5: Baccarat（バカラ）⭐ 世界最大のカジノゲーム', file: 'phase-5-baccarat.md', lessons: 15, time: '6h', emoji: '💎' },
-  '6': { title: 'Phase 6: その他ゲーム + 実践・キャリア', file: 'phase-6-other-career.md', lessons: 12, time: '5h', emoji: '🎯' },
+type TocItem = { id: string; text: string; level: number }
+
+function parseTOC(markdown: string): TocItem[] {
+  const lines = markdown.split('\n')
+  const items: TocItem[] = []
+  for (const line of lines) {
+    const match = line.match(/^(#{1,3})\s+(.+)/)
+    if (match) {
+      const level = match[1].length
+      const text = match[2].replace(/[*`~]/g, '').trim()
+      const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
+      items.push({ id, text, level })
+    }
+  }
+  return items
+}
+
+// Custom component map for illustrations in markdown
+const illustrationMap: Record<string, React.FC> = {
+  'chip-colors': ChipColors,
+  'bj-table': BJTable,
+  'bj-flow': BJFlow,
+  'craps-table': CrapsTable,
+  'roulette-wheel': RouletteWheel,
+  'house-edge': HouseEdgeChart,
+  'baccarat-tableau': BaccaratTableau,
+  'card-values': CardValues,
+  'dice-probs': DiceProbabilities,
+  'poker-hands': PokerHandRanking,
+  'casino-org': CasinoOrgChart,
 }
 
 export default function PhasePage() {
@@ -29,31 +62,74 @@ export default function PhasePage() {
   const navigate = useNavigate()
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
+  const [tocOpen, setTocOpen] = useState(false)
+  const [activeId, setActiveId] = useState('')
 
   const meta = id ? phaseMeta[id] : null
   const currentIndex = id ? parseInt(id) : 0
+  const toc = useMemo(() => parseTOC(content), [content])
 
   useEffect(() => {
     if (!meta) return
     setLoading(true)
     const loader = contentModules[meta.file]
     if (loader) {
-      loader().then(m => setContent(m.default)).catch(() => setContent('# Not found')).finally(() => setLoading(false))
+      loader().then(m => { setContent(m.default); setLoading(false) }).catch(() => setLoading(false))
     } else {
-      setContent('# Not found')
       setLoading(false)
     }
   }, [meta])
 
   useEffect(() => {
-    if (meta) {
-      const key = `cc-progress-${id}`
-      const current = JSON.parse(localStorage.getItem(key) || '{}')
-      if (!current.visited) {
-        localStorage.setItem(key, JSON.stringify({ ...current, visited: true, lastVisit: Date.now() }))
-      }
-    }
+    if (!meta) return
+    const key = `cc-progress-${id}`
+    const current = JSON.parse(localStorage.getItem(key) || '{}')
+    if (!current.visited) localStorage.setItem(key, JSON.stringify({ ...current, visited: true, lastVisit: Date.now() }))
   }, [id, meta])
+
+  // Scroll spy
+  useEffect(() => {
+    const handleScroll = () => {
+      const article = document.getElementById('phase-content')
+      if (!article) return
+      const headings = article.querySelectorAll('h1, h2, h3')
+      let current = ''
+      headings.forEach(h => {
+        const rect = h.getBoundingClientRect()
+        if (rect.top <= 100) current = h.id
+      })
+      setActiveId(current)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [content])
+
+  // Markdown component overrides
+  const markdownComponents = useMemo(() => ({
+    h1: ({ children }: { children?: React.ReactNode }) => {
+      const text = String(children).replace(/[*`~]/g, '').trim()
+      const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
+      return <h1 id={id}>{children as React.ReactNode}</h1>
+    },
+    h2: ({ children }: { children?: React.ReactNode }) => {
+      const text = String(children).replace(/[*`~]/g, '').trim()
+      const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
+      return <h2 id={id}>{children as React.ReactNode}</h2>
+    },
+    h3: ({ children }: { children?: React.ReactNode }) => {
+      const text = String(children).replace(/[*`~]/g, '').trim()
+      const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
+      return <h3 id={id}>{children as React.ReactNode}</h3>
+    },
+    code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+      const text = String(children || '').trim()
+      if (illustrationMap[text]) {
+        const Illo = illustrationMap[text]
+        return <Illo />
+      }
+      return <code className={className}>{children as React.ReactNode}</code>
+    },
+  }), [])
 
   if (!meta) {
     return (
@@ -65,57 +141,89 @@ export default function PhasePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <button onClick={() => navigate('/')} className="p-2 rounded-lg hover:bg-casino-card/50 text-casino-muted hover:text-white transition-colors">
-          <ArrowLeft size={20} />
-        </button>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl">{meta.emoji}</span>
-            <h1 className="text-2xl font-bold text-white">{meta.title}</h1>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-casino-muted">
-            <span className="flex items-center gap-1"><BookOpen size={12} /> {meta.lessons} lessons</span>
-            <span className="flex items-center gap-1"><Clock size={12} /> {meta.time}</span>
-          </div>
+    <div className="flex gap-0 h-[calc(100vh-56px)] overflow-hidden">
+      {/* Left: TOC (desktop: always visible, mobile: overlay) */}
+      <aside className={`
+        shrink-0 w-56 border-r border-casino-border bg-casino-royal/50 overflow-y-auto sidebar-scroll
+        ${tocOpen ? 'fixed inset-y-14 left-0 z-30' : 'hidden'}
+        lg:block lg:static
+      `}>
+        <div className="sticky top-0 bg-casino-royal/90 backdrop-blur p-3 border-b border-casino-border flex items-center justify-between">
+          <span className="text-xs font-bold text-white">目次</span>
+          <button onClick={() => setTocOpen(false)} className="lg:hidden text-casino-muted hover:text-white">
+            <X size={14} />
+          </button>
         </div>
-      </div>
+        <nav className="p-2 pb-8">
+          {toc.map(item => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={() => setTocOpen(false)}
+              className={`block text-xs py-1.5 transition-colors truncate
+                ${item.level === 1 ? 'font-semibold mt-1 text-white' : ''}
+                ${item.level === 2 ? 'pl-3 text-casino-muted hover:text-white' : ''}
+                ${item.level === 3 ? 'pl-6 text-casino-muted/70 hover:text-casino-muted' : ''}
+                ${activeId === item.id ? 'text-casino-gold! border-r-2 border-casino-gold' : ''}
+              `}
+            >
+              {item.text}
+            </a>
+          ))}
+        </nav>
+      </aside>
 
-      {/* Content */}
-      {loading ? (
-        <div className="text-center py-20">
-          <div className="w-8 h-8 border-2 border-casino-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-casino-muted text-sm">Loading content...</p>
-        </div>
-      ) : (
-        <div className="prose max-w-none animate-fadeIn">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {content}
-          </ReactMarkdown>
-        </div>
-      )}
+      {/* Mobile TOC overlay */}
+      {tocOpen && <div className="fixed inset-0 bg-black/50 z-20 lg:hidden" onClick={() => setTocOpen(false)} />}
 
-      {/* Navigation */}
-      <div className="mt-12 pt-6 border-t border-casino-border flex justify-between">
-        {currentIndex > 0 ? (
-          <button onClick={() => navigate(`/phase/${currentIndex - 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-card hover:bg-casino-card/70 border border-casino-border text-white text-sm transition-colors">
-            <ArrowLeft size={16} />
-            ← Phase {currentIndex - 1}
-          </button>
-        ) : <div />}
-        {currentIndex < 6 ? (
-          <button onClick={() => navigate(`/phase/${currentIndex + 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-gold/10 hover:bg-casino-gold/20 border border-casino-gold/30 text-casino-gold text-sm font-semibold transition-colors">
-            Phase {currentIndex + 1} →
-            <ArrowRight size={16} />
-          </button>
-        ) : (
-          <button onClick={() => navigate('/quiz/6')} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-casino-gold to-yellow-600 text-white text-sm font-bold transition-colors">
-            <CheckCircle size={16} />
-            最終試験に挑戦
-          </button>
-        )}
+      {/* Right: Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header bar */}
+        <div className="h-10 border-b border-casino-border flex items-center justify-between px-3 shrink-0 bg-casino-dark/80 backdrop-blur">
+          <div className="flex items-center gap-2">
+            <button onClick={() => navigate('/')} className="p-1 hover:bg-casino-card/50 rounded text-casino-muted hover:text-white">
+              <ArrowLeft size={16} />
+            </button>
+            <span className="text-xl mr-1">{meta.emoji}</span>
+            <span className="text-sm font-bold text-white truncate">{meta.title}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] text-casino-muted flex items-center gap-1"><BookOpen size="10"/>{meta.lessons}</span>
+            <span className="text-[10px] text-casino-muted flex items-center gap-1"><Clock size="10"/>{meta.time}</span>
+            <button onClick={() => setTocOpen(true)} className="lg:hidden p-1 text-casino-muted hover:text-white">
+              <List size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="w-6 h-6 border-2 border-casino-gold border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div id="phase-content" className="prose max-w-none p-4 md:p-6 lg:px-10 lg:py-8 animate-fadeIn">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                {content}
+              </ReactMarkdown>
+            </div>
+          )}
+
+          {/* Bottom nav */}
+          <div className="px-6 py-4 border-t border-casino-border flex justify-between bg-casino-dark/50">
+            {currentIndex > 0 ? (
+              <button onClick={() => navigate(`/phase/${currentIndex - 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-card hover:bg-casino-card/70 border border-casino-border text-white text-sm">
+                <ArrowLeft size={14} />← Phase {currentIndex - 1}
+              </button>
+            ) : <div />}
+            {currentIndex < 6 ? (
+              <button onClick={() => navigate(`/phase/${currentIndex + 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-gold/10 hover:bg-casino-gold/20 border border-casino-gold/30 text-casino-gold text-sm font-semibold">
+                Phase {currentIndex + 1} →<ArrowRight size={14} />
+              </button>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   )

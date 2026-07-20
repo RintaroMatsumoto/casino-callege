@@ -22,8 +22,8 @@ export default function Dashboard() {
           Casino<span className="text-casino-gold">Callege</span>
         </h1>
         <p className="text-casino-muted text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-          日本初のカジノディーラー養成プラットフォーム。
-          <br />プロのディーラーを目指すすべての人へ。
+          カジノゲームの教科書。
+          <br />遊ぶ人も、働く人も、知りたい人も。
         </p>
       </div>
 
