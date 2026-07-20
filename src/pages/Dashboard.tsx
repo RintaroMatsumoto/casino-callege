@@ -30,9 +30,9 @@ export default function Dashboard() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         {[
-          { icon: BarChart3, label: '総レッスン数', value: '111' },
-          { icon: Target, label: '総学習時間', value: '48.5h' },
-          { icon: Library, label: '用語集', value: '100語+' },
+          { icon: BarChart3, label: '総レッスン数', value: '150+' },
+          { icon: Target, label: '総学習時間', value: '60h+' },
+          { icon: Library, label: '用語集', value: '100語' },
         ].map(s => (
           <div key={s.label} className="bg-casino-card rounded-xl p-4 border border-casino-border text-center">
             <s.icon size={20} className="text-casino-gold mx-auto mb-1.5" />
