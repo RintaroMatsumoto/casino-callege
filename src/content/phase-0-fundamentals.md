@@ -75,6 +75,8 @@
 
 <img src="https://via.placeholder.com/400x100?text=Chips+White+Red+Green+Black" alt="チップの色と価値" />
 
+`chip-colors`
+
 ### チップの色と価値（アメリカの標準）
 
 | 色 | 価値 | 通称 | 生活費に換算すると… |

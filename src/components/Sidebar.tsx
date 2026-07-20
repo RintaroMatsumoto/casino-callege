@@ -7,7 +7,7 @@ const phases = [
   { id: '2', label: 'Phase 2: Roulette', icon: Gem },
   { id: '3', label: 'Phase 3: Craps', icon: TrendingUp },
   { id: '4', label: 'Phase 4: Poker', icon: HelpCircle },
-  { id: '5', label: 'Phase 5: Baccarat ⭐', icon: DollarSign },
+  { id: '5', label: 'Phase 5: Baccarat', icon: DollarSign },
   { id: '6', label: 'Phase 6: その他+実践', icon: Layout },
 ]
 

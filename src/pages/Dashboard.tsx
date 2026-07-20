@@ -7,7 +7,7 @@ const phases = [
   { id: '2', icon: Gem, title: 'Phase 2', subtitle: 'Roulette', desc: 'チップ管理と配当計算の基礎', color: 'from-green-500 to-emerald-600', lessons: 15, time: '6.5h' },
   { id: '3', icon: TrendingUp, title: 'Phase 3', subtitle: 'Craps', desc: '花形ゲームのすべて', color: 'from-red-500 to-rose-600', lessons: 21, time: '9.5h' },
   { id: '4', icon: HelpCircle, title: 'Phase 4', subtitle: 'Poker', desc: 'ディーラー数学と実務', color: 'from-purple-500 to-violet-600', lessons: 12, time: '5h' },
-  { id: '5', icon: DollarSign, title: 'Phase 5 ⭐', subtitle: 'Baccarat', desc: '世界最大のカジノゲーム。アジアVIPの中心', color: 'from-yellow-400 to-amber-600', lessons: 15, time: '6h' },
+  { id: '5', icon: DollarSign, title: 'Phase 5', subtitle: 'Baccarat', desc: '世界最大のカジノゲーム。アジアVIPの中心', color: 'from-yellow-400 to-amber-600', lessons: 15, time: '6h' },
   { id: '6', icon: Layout, title: 'Phase 6', subtitle: 'その他+実践', desc: 'カーニバルゲーム+キャリア+面接対策', color: 'from-indigo-500 to-purple-600', lessons: 12, time: '5h' },
 ]
 

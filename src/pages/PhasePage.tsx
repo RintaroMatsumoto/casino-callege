@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useMemo } from 'react'
+import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
-import { ChipColors, BJTable, BJFlow, CrapsTable, RouletteWheel, HouseEdgeChart, BaccaratTableau, CardValues, DiceProbabilities, PokerHandRanking, CasinoOrgChart } from '../components/illustrations/Illustrations'
+import { illustrationMap } from '../components/illustrations'
 
 const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; emoji: string }> = {
   '0': { title: 'Phase 0: 基礎 (Fundamentals)', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', emoji: '🏠' },
@@ -40,21 +41,6 @@ function parseTOC(markdown: string): TocItem[] {
     }
   }
   return items
-}
-
-// Custom component map for illustrations in markdown
-const illustrationMap: Record<string, React.FC> = {
-  'chip-colors': ChipColors,
-  'bj-table': BJTable,
-  'bj-flow': BJFlow,
-  'craps-table': CrapsTable,
-  'roulette-wheel': RouletteWheel,
-  'house-edge': HouseEdgeChart,
-  'baccarat-tableau': BaccaratTableau,
-  'card-values': CardValues,
-  'dice-probs': DiceProbabilities,
-  'poker-hands': PokerHandRanking,
-  'casino-org': CasinoOrgChart,
 }
 
 export default function PhasePage() {
