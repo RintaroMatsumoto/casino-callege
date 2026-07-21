@@ -20,10 +20,10 @@ export default function Dashboard() {
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
           Casino<span className="text-casino-gold">Callege</span>
         </h1>
-        <p className="text-casino-muted text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-          The casino game textbook.
-          <br />For players, dealers, and the curious.
-        </p>
+          <p className="text-casino-muted text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            カジノゲームの教科書。
+            <br />プレイヤー、ディーラー、そして好奇心を持つすべての人へ。
+          </p>
       </div>
 
       <h2 className="text-lg font-bold text-white mb-4">カリキュラム</h2>
