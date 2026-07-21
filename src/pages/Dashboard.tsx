@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom'
 import { Zap, Gem, TrendingUp, HelpCircle, Home, DollarSign, Layout } from 'lucide-react'
 
 const phases = [
-  { id: '0', icon: Home, title: 'Phase 0', subtitle: 'Fundamentals', desc: 'Casino basics, terms, math', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
-  { id: '1', icon: Zap, title: 'Phase 1', subtitle: 'Blackjack', desc: 'The world\'s most popular table game', color: 'from-amber-500 to-orange-600', lessons: 24, time: '11h' },
-  { id: '2', icon: Gem, title: 'Phase 2', subtitle: 'Roulette', desc: 'Chip management and payout math', color: 'from-green-500 to-emerald-600', lessons: 15, time: '6.5h' },
-  { id: '3', icon: TrendingUp, title: 'Phase 3', subtitle: 'Craps', desc: 'The most complex table game', color: 'from-red-500 to-rose-600', lessons: 21, time: '9.5h' },
-  { id: '4', icon: HelpCircle, title: 'Phase 4', subtitle: 'Poker', desc: 'Dealer math and procedures', color: 'from-purple-500 to-violet-600', lessons: 12, time: '5h' },
-  { id: '5', icon: DollarSign, title: 'Phase 5', subtitle: 'Baccarat', desc: 'The biggest game in Macau (91% revenue)', color: 'from-yellow-400 to-amber-600', lessons: 15, time: '6h' },
-  { id: '6', icon: Layout, title: 'Phase 6', subtitle: 'Career', desc: 'Interview prep, casino operations, Japan IR', color: 'from-indigo-500 to-purple-600', lessons: 12, time: '5h' },
+  { id: '0', icon: Home, title: 'Phase 0', subtitle: '基礎', desc: 'カジノの基礎、用語、数学', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
+  { id: '1', icon: Zap, title: 'Phase 1', subtitle: 'ブラックジャック', desc: '世界で最も人気のあるテーブルゲーム', color: 'from-amber-500 to-orange-600', lessons: 24, time: '11h' },
+  { id: '2', icon: Gem, title: 'Phase 2', subtitle: 'ルーレット', desc: 'チップ管理とペイアウト計算', color: 'from-green-500 to-emerald-600', lessons: 15, time: '6.5h' },
+  { id: '3', icon: TrendingUp, title: 'Phase 3', subtitle: 'クラップス', desc: '最も複雑なテーブルゲーム', color: 'from-red-500 to-rose-600', lessons: 21, time: '9.5h' },
+  { id: '4', icon: HelpCircle, title: 'Phase 4', subtitle: 'ポーカー', desc: 'ディーラーの数学と手順', color: 'from-purple-500 to-violet-600', lessons: 12, time: '5h' },
+  { id: '5', icon: DollarSign, title: 'Phase 5', subtitle: 'バカラ', desc: 'マカオ最大のゲーム（売上の91%）', color: 'from-yellow-400 to-amber-600', lessons: 15, time: '6h' },
+  { id: '6', icon: Layout, title: 'Phase 6', subtitle: 'キャリア', desc: '面接対策、カジノ運営、日本IR', color: 'from-indigo-500 to-purple-600', lessons: 12, time: '5h' },
 ]
 
 export default function Dashboard() {
@@ -26,7 +26,7 @@ export default function Dashboard() {
         </p>
       </div>
 
-      <h2 className="text-lg font-bold text-white mb-4">Curriculum</h2>
+      <h2 className="text-lg font-bold text-white mb-4">カリキュラム</h2>
       <div className="grid md:grid-cols-2 gap-3">
         {phases.map(p => (
           <button
@@ -41,7 +41,7 @@ export default function Dashboard() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold text-white">{p.title}</span>
-                  <span className="text-[10px] text-casino-muted bg-casino-royal px-1.5 py-0.5 rounded">{p.lessons} lessons</span>
+                  <span className="text-[10px] text-casino-muted bg-casino-royal px-1.5 py-0.5 rounded">{p.lessons} レッスン</span>
                 </div>
                 <p className="text-sm text-casino-gold font-semibold">{p.subtitle}</p>
                 <p className="text-xs text-casino-muted mt-0.5 line-clamp-1">{p.desc}</p>

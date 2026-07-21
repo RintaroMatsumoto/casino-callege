@@ -90,8 +90,8 @@ export default function QuizPage() {
   if (phaseQuestions.length === 0) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <h2 className="text-2xl font-bold text-white mb-4">No questions for this phase</h2>
-        <button onClick={() => navigate('/')} className="text-casino-gold hover:underline">Dashboardに戻る</button>
+        <h2 className="text-2xl font-bold text-white mb-4">このPhaseに問題はありません</h2>
+        <button onClick={() => navigate('/')} className="text-casino-gold hover:underline">ダッシュボードに戻る</button>
       </div>
     )
   }
@@ -100,15 +100,15 @@ export default function QuizPage() {
     return (
       <div className="max-w-2xl mx-auto text-center py-10 animate-fadeIn">
         <Trophy size={48} className="mx-auto mb-4 text-casino-gold" />
-        <h2 className="text-2xl font-bold text-white mb-2">Quiz Complete!</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">クイズ完了！</h2>
         <p className="text-4xl font-bold text-casino-gold mb-2">{score}/{total}</p>
         <p className="text-casino-muted text-sm mb-6">{score/total*100 >= 80 ? 'Excellent! 認定証の要件を満たしています。' : 'もう少し頑張りましょう。80%以上を目指してください。'}</p>
         <div className="flex justify-center gap-3">
           <button onClick={restart} className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-casino-card border border-casino-border text-white hover:bg-casino-card/70 transition-colors">
             <RotateCcw size={16} /> もう一度
           </button>
-          <button onClick={() => navigate('/')} className="px-5 py-2.5 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold font-semibold hover:bg-casino-gold/20 transition-colors">
-            Dashboard
+            <button onClick={() => navigate('/')} className="px-5 py-2.5 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold font-semibold hover:bg-casino-gold/20 transition-colors">
+            ダッシュボード
           </button>
         </div>
       </div>
@@ -120,8 +120,8 @@ export default function QuizPage() {
       {/* Progress */}
       <div className="mb-6">
         <div className="flex justify-between text-xs text-casino-muted mb-2">
-          <span>Question {current + 1} / {total}</span>
-          <span>Score: {Object.values(answers).filter((a, i) => a === phaseQuestions[i].answer).length}/{current}</span>
+          <span>問題 {current + 1} / {total}</span>
+          <span>スコア: {Object.values(answers).filter((a, i) => a === phaseQuestions[i].answer).length}/{current}</span>
         </div>
         <div className="h-1.5 bg-casino-card rounded-full overflow-hidden">
           <div className="h-full bg-casino-gold rounded-full transition-all duration-300" style={{ width: `${((current + 1) / total) * 100}%` }} />
@@ -130,7 +130,7 @@ export default function QuizPage() {
 
       {/* Question */}
       <div className="bg-casino-card rounded-xl p-6 border border-casino-border animate-fadeIn">
-        <p className="text-xs text-casino-gold font-semibold mb-2">Phase {q.phase} Question</p>
+        <p className="text-xs text-casino-gold font-semibold mb-2">Phase {q.phase} の問題</p>
         <h3 className="text-lg font-bold text-white mb-6 leading-relaxed">{q.q}</h3>
 
         <div className="space-y-2.5">

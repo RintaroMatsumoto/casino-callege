@@ -9,10 +9,10 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
 
-  const pageTitle = location.pathname === '/' ? 'Dashboard'
+  const pageTitle = location.pathname === '/' ? 'ダッシュボード'
     : location.pathname.startsWith('/phase/') ? `Phase ${location.pathname.split('/')[2]}`
-    : location.pathname === '/glossary' ? '用語集 (Glossary)'
-    : location.pathname.startsWith('/quiz/') ? `Quiz - Phase ${location.pathname.split('/')[2]}`
+    : location.pathname === '/glossary' ? '用語集'
+    : location.pathname.startsWith('/quiz/') ? `クイズ - Phase ${location.pathname.split('/')[2]}`
     : 'CasinoCallege'
 
   return (

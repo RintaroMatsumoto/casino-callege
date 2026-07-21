@@ -116,14 +116,14 @@ const GLOSSARY_DATA: { term: string; category: string; definition: string }[] = 
 ]
 
 const CATEGORIES = [
-  { key: 'all', label: 'All' },
-  { key: 'general', label: 'General' },
-  { key: 'blackjack', label: 'Blackjack' },
-  { key: 'roulette', label: 'Roulette' },
-  { key: 'craps', label: 'Craps' },
-  { key: 'poker', label: 'Poker' },
-  { key: 'baccarat', label: 'Baccarat' },
-  { key: 'slots', label: 'Slots & Tech' },
+  { key: 'all', label: 'すべて' },
+  { key: 'general', label: '一般' },
+  { key: 'blackjack', label: 'ブラックジャック' },
+  { key: 'roulette', label: 'ルーレット' },
+  { key: 'craps', label: 'クラップス' },
+  { key: 'poker', label: 'ポーカー' },
+  { key: 'baccarat', label: 'バカラ' },
+  { key: 'slots', label: 'スロット＆技術' },
 ]
 
 export default function GlossaryPage() {
@@ -143,8 +143,8 @@ export default function GlossaryPage() {
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <BookOpen size={24} className="text-casino-gold" />
-        <h1 className="text-2xl font-bold text-white">用語集 (Glossary)</h1>
-        <span className="text-xs text-casino-muted bg-casino-card px-2 py-1 rounded">{GLOSSARY_DATA.length} terms</span>
+        <h1 className="text-2xl font-bold text-white">用語集</h1>
+        <span className="text-xs text-casino-muted bg-casino-card px-2 py-1 rounded">{GLOSSARY_DATA.length} 用語</span>
       </div>
 
       {/* Search & Filter */}
@@ -154,7 +154,7 @@ export default function GlossaryPage() {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search terms..."
+            placeholder="用語を検索..."
             className="w-full pl-9 pr-8 py-2.5 bg-casino-card border border-casino-border rounded-lg text-white text-sm placeholder:text-casino-muted/50 focus:outline-none focus:border-casino-gold/50"
           />
           {search && (
@@ -189,7 +189,7 @@ export default function GlossaryPage() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <p className="text-center text-casino-muted py-12">No terms found for your search.</p>
+        <p className="text-center text-casino-muted py-12">該当する用語が見つかりません。</p>
       )}
     </div>
   )

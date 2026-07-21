@@ -3,11 +3,11 @@ import { X, Home, Library, HelpCircle, TrendingUp, Zap, Gem, DollarSign, Layout 
 
 const phases = [
   { id: '0', label: 'Phase 0: 基礎', icon: Home },
-  { id: '1', label: 'Phase 1: Blackjack', icon: Zap },
-  { id: '2', label: 'Phase 2: Roulette', icon: Gem },
-  { id: '3', label: 'Phase 3: Craps', icon: TrendingUp },
-  { id: '4', label: 'Phase 4: Poker', icon: HelpCircle },
-  { id: '5', label: 'Phase 5: Baccarat', icon: DollarSign },
+  { id: '1', label: 'Phase 1: ブラックジャック', icon: Zap },
+  { id: '2', label: 'Phase 2: ルーレット', icon: Gem },
+  { id: '3', label: 'Phase 3: クラップス', icon: TrendingUp },
+  { id: '4', label: 'Phase 4: ポーカー', icon: HelpCircle },
+  { id: '5', label: 'Phase 5: バカラ', icon: DollarSign },
   { id: '6', label: 'Phase 6: その他+実践', icon: Layout },
 ]
 
@@ -53,12 +53,12 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${location.pathname === '/' ? 'bg-casino-gold/10 text-casino-gold' : 'text-casino-muted hover:text-white hover:bg-casino-card/50'}`}
         >
           <Home size={16} />
-          Dashboard
+          ダッシュボード
         </button>
 
         {/* Phases */}
         <div className="pt-3 pb-1 px-3">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-casino-muted/60">Curriculum</p>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-casino-muted/60">カリキュラム</p>
         </div>
         {phases.map(p => (
           <button
@@ -73,14 +73,14 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
 
         {/* Tools */}
         <div className="pt-3 pb-1 px-3">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-casino-muted/60">Tools</p>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-casino-muted/60">ツール</p>
         </div>
         <button
           onClick={() => navigateTo('/glossary')}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${location.pathname === '/glossary' ? 'bg-casino-gold/10 text-casino-gold' : 'text-casino-muted hover:text-white hover:bg-casino-card/50'}`}
         >
           <Library size={16} />
-          用語集 (Glossary)
+          用語集
         </button>
 
         {/* Footer */}

@@ -7,13 +7,13 @@ import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
 import { illustrationMap } from '../components/illustrations'
 
 const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string }> = {
-  '0': { title: 'Phase 0: Fundamentals', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h' },
-  '1': { title: 'Phase 1: Blackjack', file: 'phase-1-blackjack.md', lessons: 24, time: '11h' },
-  '2': { title: 'Phase 2: Roulette', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h' },
-  '3': { title: 'Phase 3: Craps', file: 'phase-3-craps.md', lessons: 21, time: '9.5h' },
-  '4': { title: 'Phase 4: Poker', file: 'phase-4-poker.md', lessons: 12, time: '5h' },
-  '5': { title: 'Phase 5: Baccarat', file: 'phase-5-baccarat.md', lessons: 15, time: '6h' },
-  '6': { title: 'Phase 6: Career', file: 'phase-6-other-career.md', lessons: 12, time: '5h' },
+  '0': { title: 'Phase 0: 基礎', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h' },
+  '1': { title: 'Phase 1: ブラックジャック', file: 'phase-1-blackjack.md', lessons: 24, time: '11h' },
+  '2': { title: 'Phase 2: ルーレット', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h' },
+  '3': { title: 'Phase 3: クラップス', file: 'phase-3-craps.md', lessons: 21, time: '9.5h' },
+  '4': { title: 'Phase 4: ポーカー', file: 'phase-4-poker.md', lessons: 12, time: '5h' },
+  '5': { title: 'Phase 5: バカラ', file: 'phase-5-baccarat.md', lessons: 15, time: '6h' },
+  '6': { title: 'Phase 6: キャリア', file: 'phase-6-other-career.md', lessons: 12, time: '5h' },
 }
 
 const contentModules: Record<string, () => Promise<{ default: string }>> = {
@@ -105,8 +105,8 @@ export default function PhasePage() {
   if (!meta) {
     return (
       <div className="max-w-4xl mx-auto text-center py-20">
-        <h2 className="text-2xl font-bold text-white mb-4">Phase not found</h2>
-        <button onClick={() => navigate('/')} className="text-casino-gold hover:underline">Dashboard</button>
+        <h2 className="text-2xl font-bold text-white mb-4">Phase が見つかりません</h2>
+        <button onClick={() => navigate('/')} className="text-casino-gold hover:underline">ダッシュボード</button>
       </div>
     )
   }
@@ -116,7 +116,7 @@ export default function PhasePage() {
       {/* TOC sidebar */}
       <aside className={`shrink-0 w-56 border-r border-casino-border bg-casino-royal/50 overflow-y-auto sidebar-scroll ${tocOpen ? 'fixed inset-y-14 left-0 z-30' : 'hidden'} lg:block lg:static`}>
         <div className="sticky top-0 bg-casino-royal/90 backdrop-blur p-3 border-b border-casino-border flex items-center justify-between">
-          <span className="text-xs font-bold text-white">TOC</span>
+          <span className="text-xs font-bold text-white">目次</span>
           <button onClick={() => setTocOpen(false)} className="lg:hidden text-casino-muted hover:text-white"><X size={14} /></button>
         </div>
         <nav className="p-2 pb-8">
@@ -161,12 +161,12 @@ export default function PhasePage() {
           <div className="px-6 py-4 border-t border-casino-border flex justify-between bg-casino-dark/50">
             {currentIndex > 0 ? (
               <button onClick={() => navigate(`/phase/${currentIndex - 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-card hover:bg-casino-card/70 border border-casino-border text-white text-sm">
-                <ArrowLeft size={14} /> Prev
+                <ArrowLeft size={14} /> 前へ
               </button>
             ) : <div />}
             {currentIndex < 6 ? (
               <button onClick={() => navigate(`/phase/${currentIndex + 1}`)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-casino-gold/10 hover:bg-casino-gold/20 border border-casino-gold/30 text-casino-gold text-sm font-semibold">
-                Next <ArrowRight size={14} />
+                次へ <ArrowRight size={14} />
               </button>
             ) : null}
           </div>

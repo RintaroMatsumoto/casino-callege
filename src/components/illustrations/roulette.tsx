@@ -578,7 +578,7 @@ export function EnPrisonFlowSvg() {
       <text x="210" y="101" textAnchor="middle" fontSize="8" fill="#f4a81d">In Prison</text>
       <line x1="250" y1="96" x2="290" y2="96" stroke="#e2e8f0" strokeWidth="1.5" />
       <rect x="290" y="82" width="80" height="28" fill="#334155" rx="4" />
-      <text x="330" y="101" textAnchor="middle" fontSize="8" fill="#e2e8f0">Next Spin</text>
+      <text x="330" y="101" textAnchor="middle" fontSize="8" fill="#e2e8f0">次のスピン</text>
       <line x1="330" y1="110" x2="290" y2="140" stroke="#22c55e" strokeWidth="1.5" />
       <rect x="245" y="140" width="90" height="22" fill="#22c55e" opacity="0.3" rx="4" />
       <text x="290" y="155" textAnchor="middle" fontSize="8" fill="#22c55e">Win: bet returned</text>

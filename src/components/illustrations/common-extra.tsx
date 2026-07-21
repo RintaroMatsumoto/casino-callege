@@ -3,7 +3,7 @@ export function AllGameHECompareSvg() {
     <svg viewBox="0 0 400 240" className="w-full max-w-lg mx-auto my-4">
       <rect width="400" height="240" fill="#1a1a2e"/>
       <text x="200" y="18" fill="#f4a81d" fontSize="11" fontWeight="bold" textAnchor="middle">House Edge Comparison</text>
-      {[{g:"Craps Odds",h:0,c:"#22c55e"},{g:"BJ Basic",h:0.5,c:"#4ade80"},{g:"Bac Banker",h:1.06,c:"#a3e635"},{g:"Craps Pass",h:1.41,c:"#facc15"},{g:"Roulette EU",h:2.7,c:"#f97316"},{g:"Roulette US",h:5.26,c:"#ef4444"},{g:"Any 7",h:16.67,c:"#dc2626"}].map((d,i)=>{
+      {[{g:"クラップスオッズ",h:0,c:"#22c55e"},{g:"BJ基本戦略",h:0.5,c:"#4ade80"},{g:"バカラBanker",h:1.06,c:"#a3e635"},{g:"クラップスPass",h:1.41,c:"#facc15"},{g:"ルーレットEU",h:2.7,c:"#f97316"},{g:"ルーレットUS",h:5.26,c:"#ef4444"},{g:"Any 7",h:16.67,c:"#dc2626"}].map((d,i)=>{
         const y=30+i*28
         return (
           <g key={d.g}>
@@ -36,7 +36,7 @@ export function LearningPathSvg() {
   return (
     <svg viewBox="0 0 700 60" className="w-full max-w-2xl mx-auto my-4">
       <rect width="700" height="60" fill="#1a1a2e"/>
-      {[{n:"Phase 0",s:"Basics"},{n:"Phase 1",s:"BJ"},{n:"Phase 2",s:"Roulette"},{n:"Phase 3",s:"Craps"},{n:"Phase 4",s:"Poker"},{n:"Phase 5",s:"Baccarat"},{n:"Phase 6",s:"Career"}].map((p,i)=>(
+      {[{n:"Phase 0",s:"基礎"},{n:"Phase 1",s:"BJ"},{n:"Phase 2",s:"ルーレット"},{n:"Phase 3",s:"クラップス"},{n:"Phase 4",s:"ポーカー"},{n:"Phase 5",s:"バカラ"},{n:"Phase 6",s:"キャリア"}].map((p,i)=>(
         <g key={p.n}>
           <rect x={5+i*98} y="10" width="80" height="25" rx="4" fill={i===0?"#0d9488":"#1e293b"} stroke={i===0?"#0d9488":"#334155"}/>
           <text x={45+i*98} y="27" fill={i===0?"#fff":"#e2e8f0"} fontSize="9" fontWeight="bold" textAnchor="middle">{p.n}</text>
@@ -58,14 +58,14 @@ export function SkillTreeSvg() {
       <line x1="250" y1="35" x2="90" y2="35" stroke="#f4a81d"/><line x1="90" y1="35" x2="90" y2="45" stroke="#f4a81d"/>
       <line x1="250" y1="35" x2="250" y2="45" stroke="#f4a81d"/>
       <line x1="250" y1="35" x2="410" y2="35" stroke="#f4a81d"/><line x1="410" y1="35" x2="410" y2="45" stroke="#f4a81d"/>
-      {[{x:20,l:"Fundamentals",c:"#0d9488"},{x:200,l:"Table Games",c:"#f4a81d"},{x:375,l:"Career",c:"#3b82f6"}].map(b=>(
+      {[{x:20,l:"基礎",c:"#0d9488"},{x:200,l:"テーブルゲーム",c:"#f4a81d"},{x:375,l:"キャリア",c:"#3b82f6"}].map(b=>(
         <g key={b.l}>
           <rect x={b.x} y="48" width="150" height="20" rx="3" fill={b.c+"22"} stroke={b.c}/>
           <text x={b.x+75} y="62" fill={b.c} fontSize="9" fontWeight="bold" textAnchor="middle">{b.l}</text>
         </g>
       ))}
       <text x="15" y="88" fill="#94a3b8" fontSize="7">Probability, Terms, Chips, Shuffle</text>
-      <text x="185" y="88" fill="#94a3b8" fontSize="7">BJ, Roulette, Craps, Poker, Baccarat</text>
+      <text x="185" y="88" fill="#94a3b8" fontSize="7">BJ, ルーレット, クラップス, ポーカー, バカラ</text>
       <text x="375" y="88" fill="#94a3b8" fontSize="7">Interview, Security, Health, Salary</text>
     </svg>
   )
