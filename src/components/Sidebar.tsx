@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { X, Home, Library, HelpCircle, TrendingUp, Zap, Gem, DollarSign, Layout } from 'lucide-react'
+import CasinoAffiliate from './CasinoAffiliate'
 
 const phases = [
   { id: '0', label: 'Phase 0: 基礎', icon: Home },
@@ -83,8 +84,9 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           用語集
         </button>
 
-        {/* Footer */}
-        <div className="absolute bottom-3 left-3 right-3">
+        {/* Affiliate */}
+        <div className="px-3 pt-4">
+          <CasinoAffiliate />
         </div>
       </nav>
     </aside>
