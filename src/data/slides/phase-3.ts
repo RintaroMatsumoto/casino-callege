@@ -1,0 +1,41 @@
+import type { PhaseSlides } from './types'
+
+const slides: PhaseSlides = {
+  title: 'Craps',
+  emoji: '\u{1F3B2}',
+  slides: [
+    { id: '3-0', section: 'S1', title: 'Craps Basics', svg: 'craps-table-top', bullets: ['Bet on outcome of 2 dice', 'Shooter throws the dice', 'Loudest and most social table game'], note: 'Best odds in the casino' },
+    { id: '3-1', section: 'S1', title: '4 Staff Members', svg: 'staff-all', bullets: ['Boxman: seated supervisor', 'Base Dealers: 2 at ends', 'Stickman: center, controls dice'], note: '4 staff per table. Most labor-intensive.' },
+    { id: '3-2', section: 'S1', title: 'Dice Probability', svg: 'dice-grid36', bullets: ['2 dice = 36 combinations', '7 is most common (6 ways)', '2 and 12 are rarest (1 way each)'], note: 'Foundation of all craps bets' },
+    { id: '3-3', section: 'S1', title: 'Sum Distribution', svg: 'dice-sum-prob', bullets: ['7: 16.67% (most likely)', '6 and 8: 13.89%', '2 and 12: 2.78% (least likely)'], note: 'Distribution determines all bet probabilities' },
+    { id: '3-4', section: 'S2', title: 'Pass Line', svg: 'pass-line-tree', bullets: ['Come-out: 7 or 11 = win / 2,3,12 = lose', 'Any other = point is established', 'Hit point = win / 7 = lose'], note: 'Win rate 49.29%, HE 1.41%' },
+    { id: '3-5', section: 'S2', title: 'Don\'t Pass', svg: 'dont-pass-tree', bullets: ['Opposite of Pass Line', '2 or 3 = win / 12 = push', 'Point loses = win / 7 = lose'], note: '12 pushes, making HE 1.36%' },
+    { id: '3-6', section: 'S3', title: 'Come / Don\'t Come', bullets: ['Bet after point is established', 'Next roll acts as mini come-out', 'Odds bet available behind'], note: 'Same rules as Pass/Don\'t Pass' },
+    { id: '3-7', section: 'S3', title: 'Odds Bet', svg: 'odds-bet-layout', bullets: ['Extra behind Pass Line', 'House edge = 0%', 'Most important concept in craps'], note: '3-4-5X odds: 4/10=3x, 5/9=4x, 6/8=5x maximum' },
+    { id: '3-8', section: 'S3', title: '3-4-5X Odds', svg: 'odds3x4x5x', bullets: ['Point 4/10: 3x pays 2:1', 'Point 5/9: 4x pays 3:2', 'Point 6/8: 5x pays 6:5', 'Any point pays 6x pass line bet'], note: 'Standard odds structure' },
+    { id: '3-9', section: 'S4', title: 'Place Bet 6/8', svg: 'place-bet6', bullets: ['Bet on 6 or 8', '7:6 payout HE 0.46%', 'Best non-odds bet in craps'], note: 'Always bet in multiples of $6' },
+    { id: '3-10', section: 'S4', title: 'Place Bet 5/9', svg: 'place-bet5', bullets: ['Bet on 5 or 9', '7:5 payout HE 1.11%', 'Worse than 6/8 but still OK'], note: 'Prefer Buy bet if commission only on win' },
+    { id: '3-11', section: 'S4', title: 'Place Bet 4/10', svg: 'place-bet4', bullets: ['Bet on 4 or 10', '9:5 payout HE 1.67%', 'Buy bet is better here'], note: 'Buy with 5% commission is superior' },
+    { id: '3-12', section: 'S4', title: 'Buy Bet', bullets: ['Similar to Place bet', '5% commission for true odds', 'Better than Place for 4/10'], note: 'Pay commission only on win if possible' },
+    { id: '3-13', section: 'S4', title: 'Lay Bet', bullets: ['Bet on 7 appearing before the number', 'True odds minus 5% commission', 'For Don\'t Pass players'], note: 'Opposite of Buy bet' },
+    { id: '3-14', section: 'S5', title: 'Hardway 4/10', svg: 'craps-hard4', bullets: ['Hard 4: 2-2 (both same)', 'Easy 4: 1-3 or 3-1', '7:1 payout HE 11.11%'], note: 'High house edge, avoid for serious play' },
+    { id: '3-15', section: 'S5', title: 'Hardway 6/8', svg: 'craps-hard6', bullets: ['Hard 6: 3-3 / Hard 8: 4-4', 'Easy 6: 4 ways / Easy 8: 4 ways', '9:1 payout HE 9.09%'], note: 'Australia pays 9.5:1 making HE 4.55%' },
+    { id: '3-16', section: 'S6', title: 'Any 7', svg: 'any7-bet', bullets: ['Next roll is a 7', 'Pays 4:1', 'HE 16.67% - avoid at all costs'], note: 'One of the worst bets in the casino' },
+    { id: '3-17', section: 'S6', title: 'Any Craps', svg: 'any-craps-bet', bullets: ['Next roll is 2, 3, or 12', 'Pays 7:1', 'HE 11.11%'], note: 'High house edge, recreational only' },
+    { id: '3-18', section: 'S6', title: 'Horn Bet', svg: 'horn-bet', bullets: ['Split on 2, 3, 11, 12', '4-way split', 'Horn High favors one number'], note: 'High volatility bet' },
+    { id: '3-19', section: 'S6', title: 'World Bet', svg: 'world-bet', bullets: ['Horn + Any 7 = 5-way bet', 'Push if 7 hits', 'Complex but popular'], note: 'Covers all craps numbers plus 7' },
+    { id: '3-20', section: 'S6', title: 'Field Bet', svg: 'field-bet', bullets: ['Covers 2,3,4,9,10,11,12', '2 and 12 pay bonus', 'HE: 2.78% or 5.56%'], note: 'If 2 and 12 both pay 3:1, HE = 0% rare' },
+    { id: '3-21', section: 'S7', title: 'Boxman Role', svg: 'staff-boxman', bullets: ['Chip management and supervision', 'Color changes (low to high chips)', 'Only seated position at table'], note: 'Most senior dealer at the table' },
+    { id: '3-22', section: 'S7', title: 'Base Dealer', svg: 'staff-base-dealer', bullets: ['One at each end for players', 'Manage line bets', 'Calculate and pay out'], note: 'Fast math skills essential' },
+    { id: '3-23', section: 'S7', title: 'Stickman', svg: 'staff-stickman', bullets: ['Controls dice and calls results', 'Manages center bets (prop bets)', 'Most talkative position'], note: 'Keeps game pace and energy' },
+    { id: '3-24', section: 'S8', title: 'Stickman Calls', svg: 'stickman-calls', bullets: ['2: Snake Eyes / 11: Yo-leven', '3: Ace Deuce / 12: Boxcars', 'All numbers have unique calls'], note: 'Never say "Seven" - use superstition names' },
+    { id: '3-25', section: 'S8', title: 'Seven Out Moment', svg: 'seven-out-moment', bullets: ['Stickman yells "Seven out!"', 'Base dealers collect all Pass Line bets', 'Boxman supervises everything'], note: 'Most dramatic moment in craps' },
+    { id: '3-26', section: 'S9', title: 'Dice Throw Rules', svg: 'dice-pass', bullets: ['Use one hand only', 'Both dice must travel together', 'Must hit the back wall'], note: 'Valid throw required, else re-throw' },
+    { id: '3-27', section: 'S9', title: 'Puck ON/OFF', svg: 'puck-on-off', bullets: ['OFF (black): come-out roll', 'ON (white): point is established', 'Placed on the point number'], note: 'Visual indicator for game state' },
+    { id: '3-28', section: 'S10', title: 'Dice Setting', bullets: ['3V: 3s in V formation', '2V: 2s in V formation', 'Hardway: all faces same axis'], note: 'Dice control effectiveness is debated' },
+    { id: '3-29', section: 'S11', title: 'Place 6 Payout', svg: 'place6-payout', bullets: ['$6 bet pays $7', '$12 bet pays $14', '$30 bet pays $35'], note: 'Always bet in $6 increments' },
+    { id: '3-30', section: 'S11', title: 'Past Posting', svg: 'past-posting-detect', bullets: ['Adding bet after result known', 'Dealer visual monitoring', 'No more bets must be enforced'], note: 'Common cheating method' },
+    { id: '3-31', section: 'S12', title: 'Craps Etiquette', bullets: ['Never say "Seven"', 'Use one hand for dice', 'Keep drinks off the table'], note: 'Superstitions are part of the culture' },
+  ]
+}
+export default slides

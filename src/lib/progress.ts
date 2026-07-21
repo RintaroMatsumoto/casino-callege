@@ -41,15 +41,25 @@ export function getAllPhasesProgress(): { visited: number; total: number; phaseP
   let total = 0
   const phasePcts: number[] = []
   for (let i = 0; i < 7; i++) {
-    const p = getPhaseProgress(String(i))
-    const done = p.sections.filter(s => s.done).length
-    const tot = p.sections.length
-    if (tot > 0) {
+    const slides: Record<string, boolean> = JSON.parse(localStorage.getItem(`cc-slide-${i}`) || '{}')
+    const slideCount = Object.keys(slides).length
+    const done = Object.values(slides).filter(v => v).length
+    if (slideCount > 0) {
       visited += done
-      total += tot
-      phasePcts.push(Math.round((done / tot) * 100))
+      total += slideCount
+      phasePcts.push(Math.round((done / slideCount) * 100))
     } else {
-      phasePcts.push(0)
+      // Fallback to old section progress
+      const p = getPhaseProgress(String(i))
+      const doneOld = p.sections.filter(s => s.done).length
+      const totOld = p.sections.length
+      if (totOld > 0) {
+        visited += doneOld
+        total += totOld
+        phasePcts.push(Math.round((doneOld / totOld) * 100))
+      } else {
+        phasePcts.push(0)
+      }
     }
   }
   return { visited, total, phasePcts }
