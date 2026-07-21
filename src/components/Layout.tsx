@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
+import DrumCounter from './DrumCounter'
 import { BookOpen, Menu } from 'lucide-react'
 
 export default function Layout() {
@@ -35,6 +36,7 @@ export default function Layout() {
             <span className="font-bold text-white text-sm tracking-wide">{pageTitle}</span>
           </div>
           <div className="flex items-center gap-3">
+            <DrumCounter />
           </div>
         </header>
 

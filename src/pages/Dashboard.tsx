@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { Zap, Gem, TrendingUp, HelpCircle, Home, DollarSign, Layout } from 'lucide-react'
-import DrumCounter from '../components/DrumCounter'
 
 const phases = [
   { id: '0', icon: Home, title: 'Phase 0', subtitle: 'Fundamentals', desc: 'Casino basics, terms, math', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
@@ -25,9 +24,6 @@ export default function Dashboard() {
           The casino game textbook.
           <br />For players, dealers, and the curious.
         </p>
-        <div className="mt-6">
-          <DrumCounter />
-        </div>
       </div>
 
       <h2 className="text-lg font-bold text-white mb-4">Curriculum</h2>
