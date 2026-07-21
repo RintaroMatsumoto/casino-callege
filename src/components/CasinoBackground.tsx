@@ -72,7 +72,7 @@ export default function CasinoBackground() {
           width: 6, height: 6, top: 0, left: '50%', marginLeft: -3,
           borderRadius: '50%', background: '#f8fafc', boxShadow: '0 0 6px rgba(248,250,252,0.8)',
           animation: 'orbitBall 3s linear infinite',
-          transformOrigin: '3px 79px',
+          transformOrigin: '3px calc(clamp(30px,5vw,70px))',
         }} />
       </div>
 
