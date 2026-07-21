@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
 import { illustrationMap } from '../components/illustrations'
+import { useAuth } from '../lib/AuthContext'
+import { saveProgress, getProgress } from '../lib/api'
 
 const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; emoji: string }> = {
   '0': { title: 'Phase 0: 基礎 (Fundamentals)', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', emoji: '🏠' },
@@ -54,6 +56,7 @@ export default function PhasePage() {
   const meta = id ? phaseMeta[id] : null
   const currentIndex = id ? parseInt(id) : 0
   const toc = useMemo(() => parseTOC(content), [content])
+  const { user } = useAuth()
 
   useEffect(() => {
     if (!meta) return
@@ -67,11 +70,22 @@ export default function PhasePage() {
   }, [meta])
 
   useEffect(() => {
-    if (!meta) return
+    if (!meta || !id) return
     const key = `cc-progress-${id}`
     const current = JSON.parse(localStorage.getItem(key) || '{}')
-    if (!current.visited) localStorage.setItem(key, JSON.stringify({ ...current, visited: true, lastVisit: Date.now() }))
-  }, [id, meta])
+    if (!current.visited) {
+      const s = { ...current, visited: true, lastVisit: Date.now() }
+      localStorage.setItem(key, JSON.stringify(s))
+    }
+    // Save to API if logged in
+    if (user?.uid && !current.visited) {
+      getProgress(user.uid).then(p => {
+        const data = JSON.parse(p.data || '{}')
+        if (!data[id]) data[id] = Date.now()
+        saveProgress(user.uid, { data: JSON.stringify(data), lastVisit: new Date().toISOString(), streak: p.streak + 1 })
+      })
+    }
+  }, [id, meta, user])
 
   // Scroll spy
   useEffect(() => {

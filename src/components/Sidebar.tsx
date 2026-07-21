@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { X, Home, Library, HelpCircle, TrendingUp, Zap, Gem, DollarSign, Layout } from 'lucide-react'
+import ProgressBar from './ProgressBar'
 
 const phases = [
   { id: '0', label: 'Phase 0: 基礎', icon: Home },
@@ -83,8 +84,9 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           用語集 (Glossary)
         </button>
 
-        {/* Footer */}
-        <div className="absolute bottom-3 left-3 right-3">
+        {/* Progress + Footer */}
+        <div className="absolute bottom-3 left-3 right-3 space-y-2">
+          <ProgressBar />
           <div className="p-3 rounded-lg bg-casino-card/50 border border-casino-border">
             <p className="text-xs text-casino-muted leading-relaxed">
               本格的なカジノ教育を、誰でも学べるように。

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Zap, Gem, TrendingUp, HelpCircle, Home, Library, BarChart3, Target, DollarSign, Layout } from 'lucide-react'
+import DrumCounter from '../components/DrumCounter'
 
 const phases = [
   { id: '0', icon: Home, title: 'Phase 0', subtitle: '基礎 Fundamentals', desc: 'カジノのしくみ・用語・数学の基本', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
@@ -25,6 +26,9 @@ export default function Dashboard() {
           カジノゲームの教科書。
           <br />遊ぶ人も、働く人も、知りたい人も。
         </p>
+        <div className="mt-6">
+          <DrumCounter />
+        </div>
       </div>
 
       {/* Stats */}

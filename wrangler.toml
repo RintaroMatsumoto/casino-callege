@@ -1,0 +1,8 @@
+name = "casino-callege"
+compatibility_date = "2026-07-21"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "CASINO_CALLEGE_DB"
+database_name = "casino-callege-db"
+database_id = "e9a0de77-72f7-4964-a15b-6b0c597c4969"
