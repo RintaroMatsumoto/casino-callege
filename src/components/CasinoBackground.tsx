@@ -17,9 +17,9 @@ export default function CasinoBackground() {
       }} />
 
       <div className="absolute roulette" style={{
-        top: 'clamp(10px,3vh,45px)',
-        width: 'clamp(80px,14vw,180px)', height: 'clamp(80px,14vw,180px)',
-        opacity: 0.85,
+        top: 'clamp(70px,10vh,100px)',
+        width: 'clamp(60px,10vw,140px)', height: 'clamp(60px,10vw,140px)',
+        opacity: 0.7,
       }}>
         <svg viewBox="0 0 320 320" className="w-full h-full">
           <circle cx="160" cy="160" r="158" fill="#4a3020" stroke="#3d2b1f" strokeWidth="2" />
@@ -52,16 +52,16 @@ export default function CasinoBackground() {
           <circle cx="160" cy="160" r="4" fill="#cbd5e1" />
         </svg>
         <div className="absolute" style={{
-          width: 8, height: 8, top: 0, left: '50%', marginLeft: -4,
-          borderRadius: '50%', background: '#f8fafc', boxShadow: '0 0 6px rgba(248,250,252,0.8), 0 0 12px rgba(248,250,252,0.4)',
+          width: 6, height: 6, top: 0, left: '50%', marginLeft: -3,
+          borderRadius: '50%', background: '#f8fafc', boxShadow: '0 0 6px rgba(248,250,252,0.8)',
           animation: 'orbitBall 3s linear infinite',
-          transformOrigin: '4px 79px',
+          transformOrigin: '3px 79px',
         }} />
       </div>
 
       <div className="absolute cd-box" style={{
-        top: 'clamp(10px,3vh,50px)', right: 'clamp(10px,2vw,25px)',
-        opacity: 0.9,
+        top: 'clamp(74px,12vh,110px)', right: 'clamp(10px,2vw,25px)',
+        opacity: 0.75,
       }}>
         <div className="cd-deck" />
         {['A','K','Q','J','10'].map((r, i) => (
@@ -90,16 +90,16 @@ export default function CasinoBackground() {
           }
         }
 
-        .cd-box { width: 300px; height: 84px; }
+        .cd-box { width: 260px; height: 70px; }
         .cd-deck {
-          position: absolute; left: 239px; top: 2px;
-          width: 48px; height: 64px; border-radius: 3px;
+          position: absolute; left: 199px; top: 2px;
+          width: 40px; height: 54px; border-radius: 3px;
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569; box-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 0;
         }
         .cd {
           position: absolute; top: 1px;
-          width: 46px; height: 62px; border-radius: 3px;
+          width: 38px; height: 52px; border-radius: 3px;
           background: #f8fafc; border: 1px solid #94a3b8;
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           box-shadow: 0 2px 6px rgba(0,0,0,0.25);
@@ -110,18 +110,18 @@ export default function CasinoBackground() {
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569;
         }
-        .cd-0 { left: 244px; z-index: 5; top: -3px; }
-        .cd-1 { left: 243px; z-index: 4; top: -2px; }
-        .cd-2 { left: 242px; z-index: 3; top: -1px; }
-        .cd-3 { left: 241px; z-index: 2; top: 0px; }
-        .cd-4 { left: 240px; z-index: 1; top: 1px; }
-        .cd-r { font-size: 12px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
-        .cd-s { font-size: 20px; line-height: 1; color: #1e293b; }
+        .cd-0 { left: 204px; z-index: 5; top: -3px; }
+        .cd-1 { left: 203px; z-index: 4; top: -2px; }
+        .cd-2 { left: 202px; z-index: 3; top: -1px; }
+        .cd-3 { left: 201px; z-index: 2; top: 0px; }
+        .cd-4 { left: 200px; z-index: 1; top: 1px; }
+        .cd-r { font-size: 10px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
+        .cd-s { font-size: 16px; line-height: 1; color: #1e293b; }
 
         @keyframes m0 {
           0%, 2%  { transform: translateX(0); }
-          3%, 9%  { transform: translateX(-244px); }
-          10%, 68% { transform: translateX(-244px); }
+          3%, 9%  { transform: translateX(-204px); }
+          10%, 68% { transform: translateX(-204px); }
           69%, 75% { transform: translateX(0); }
           76%, 100% { transform: translateX(0); }
         }
@@ -134,8 +134,8 @@ export default function CasinoBackground() {
         }
         @keyframes m1 {
           0%, 6%  { transform: translateX(0); }
-          7%, 13% { transform: translateX(-195px); }
-          14%, 65% { transform: translateX(-195px); }
+          7%, 13% { transform: translateX(-159px); }
+          14%, 65% { transform: translateX(-159px); }
           66%, 72% { transform: translateX(0); }
           73%, 100% { transform: translateX(0); }
         }
@@ -148,8 +148,8 @@ export default function CasinoBackground() {
         }
         @keyframes m2 {
           0%, 10% { transform: translateX(0); }
-          11%, 17% { transform: translateX(-146px); }
-          18%, 62% { transform: translateX(-146px); }
+          11%, 17% { transform: translateX(-114px); }
+          18%, 62% { transform: translateX(-114px); }
           63%, 69% { transform: translateX(0); }
           70%, 100% { transform: translateX(0); }
         }
@@ -162,8 +162,8 @@ export default function CasinoBackground() {
         }
         @keyframes m3 {
           0%, 14% { transform: translateX(0); }
-          15%, 21% { transform: translateX(-97px); }
-          22%, 59% { transform: translateX(-97px); }
+          15%, 21% { transform: translateX(-69px); }
+          22%, 59% { transform: translateX(-69px); }
           60%, 66% { transform: translateX(0); }
           67%, 100% { transform: translateX(0); }
         }
@@ -176,8 +176,8 @@ export default function CasinoBackground() {
         }
         @keyframes m4 {
           0%, 18% { transform: translateX(0); }
-          19%, 25% { transform: translateX(-48px); }
-          26%, 56% { transform: translateX(-48px); }
+          19%, 25% { transform: translateX(-24px); }
+          26%, 56% { transform: translateX(-24px); }
           57%, 63% { transform: translateX(0); }
           64%, 100% { transform: translateX(0); }
         }
