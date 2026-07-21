@@ -30,6 +30,7 @@ export default function DrumCounter() {
 
   return (
     <div className="flex items-center gap-1">
+      <span className="text-[10px] text-casino-muted tracking-wider font-semibold leading-none">{'\u30A2\u30AF\u30BB\u30B9\u30AB\u30A6\u30F3\u30BF\u30FC'}</span>
       {digits.map((d, i) => <Digit key={i} value={d} />)}
     </div>
   )

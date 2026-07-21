@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Zap, Gem, TrendingUp, HelpCircle, Home, DollarSign, Layout } from 'lucide-react'
+import CasinoBackground from '../components/CasinoBackground'
 
 const phases = [
   { id: '0', icon: Home, title: 'Phase 0', subtitle: 'Fundamentals', desc: 'Casino basics, terms, math', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
@@ -15,7 +16,9 @@ export default function Dashboard() {
   const navigate = useNavigate()
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <>
+      <CasinoBackground />
+      <div className="max-w-5xl mx-auto relative z-10">
       <div className="mb-10 text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
           Casino<span className="text-casino-gold">Callege</span>
@@ -50,6 +53,7 @@ export default function Dashboard() {
           </button>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   )
 }
