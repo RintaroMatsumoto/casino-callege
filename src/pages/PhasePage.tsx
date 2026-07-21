@@ -145,13 +145,13 @@ export default function PhasePage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto bg-casino-dark/80">
           {loading ? (
             <div className="flex items-center justify-center h-full">
               <div className="w-6 h-6 border-2 border-casino-gold border-t-transparent rounded-full animate-spin" />
             </div>
           ) : (
-            <div id="phase-content" className="prose max-w-none p-4 md:p-6 lg:px-10 lg:py-8 animate-fadeIn">
+            <div id="phase-content" className="prose max-w-none px-4 md:px-6 lg:px-10 py-8 animate-fadeIn">
               <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                 {content}
               </ReactMarkdown>

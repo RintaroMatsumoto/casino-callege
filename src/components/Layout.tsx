@@ -27,7 +27,7 @@ export default function Layout() {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main */}
-      <div className="flex-1 flex flex-col overflow-hidden relative z-10 bg-casino-dark/90">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top bar */}
         <header className="h-14 border-b border-casino-border flex items-center justify-between px-4 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 rounded-lg hover:bg-casino-card/50 text-zinc-400">
