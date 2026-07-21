@@ -16,8 +16,8 @@ export default function CasinoBackground() {
         left: '-30%', top: '-40%',
       }} />
 
-      <div className="absolute" style={{
-        top: 'clamp(10px,3vh,45px)', left: 'clamp(10px,2vw,25px)',
+      <div className="absolute roulette" style={{
+        top: 'clamp(10px,3vh,45px)',
         width: 'clamp(80px,14vw,180px)', height: 'clamp(80px,14vw,180px)',
         opacity: 0.85,
       }}>
@@ -80,6 +80,15 @@ export default function CasinoBackground() {
           100% { transform: translateX(130%) skewX(-30deg); opacity: 0; }
         }
         @keyframes orbitBall { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .roulette {
+          left: clamp(10px, 2vw, 25px);
+        }
+        @media (width >= 64rem) {
+          .roulette {
+            left: calc(256px + clamp(10px, 2vw, 30px));
+          }
+        }
 
         .cd-box { width: 300px; height: 84px; }
         .cd-deck {
