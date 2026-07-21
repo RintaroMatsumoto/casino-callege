@@ -1,4 +1,16 @@
+import { useMemo } from 'react'
+
 export default function CasinoBackground() {
+  const cards = useMemo(() => {
+    const suits = ['♠','♥','♦','♣']
+    const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
+    const deck = suits.flatMap(s => ranks.map(r => ({ rank: r, suit: s, color: s === '♥' || s === '♦' ? '#dc2626' : '#1e293b' })))
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[deck[i], deck[j]] = [deck[j], deck[i]]
+    }
+    return deck.slice(0, 5)
+  }, [])
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       <div className="absolute inset-0" style={{
@@ -64,10 +76,10 @@ export default function CasinoBackground() {
         opacity: 0.75,
       }}>
         <div className="cd-deck" />
-        {['A','K','Q','J','10'].map((r, i) => (
-          <div key={r} className={`cd cd-${i}`}>
-            <span className="cd-r">{r}</span>
-            <span className="cd-s">{'\u2660'}</span>
+        {cards.map((card, i) => (
+          <div key={`${card.rank}${card.suit}`} className={`cd cd-${i}`}>
+            <span className="cd-r" style={{ color: card.color }}>{card.rank}</span>
+            <span className="cd-s" style={{ color: card.color }}>{card.suit}</span>
           </div>
         ))}
       </div>
@@ -115,8 +127,8 @@ export default function CasinoBackground() {
         .cd-2 { left: 96px; top: 6px; z-index: 3; }
         .cd-3 { left: 95px; top: 7px; z-index: 2; }
         .cd-4 { left: 94px; top: 8px; z-index: 1; }
-        .cd-r { font-size: 10px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
-        .cd-s { font-size: 16px; line-height: 1; color: #1e293b; }
+        .cd-r { font-size: 10px; font-weight: bold; font-family: serif; line-height: 1; }
+        .cd-s { font-size: 16px; line-height: 1; }
 
         @keyframes m0 {
           0%, 2%   { transform: translate(0, 0); }
