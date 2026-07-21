@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
 import { illustrationMap } from '../components/illustrations'
+import { parseSections, savePhaseProgress, getPhaseProgress } from '../lib/progress'
 
 const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; emoji: string }> = {
   '0': { title: 'Phase 0: 基礎 (Fundamentals)', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', emoji: '🏠' },
@@ -54,27 +55,66 @@ export default function PhasePage() {
   const meta = id ? phaseMeta[id] : null
   const currentIndex = id ? parseInt(id) : 0
   const toc = useMemo(() => parseTOC(content), [content])
+  const [sectionCount, setSectionCount] = useState({ done: 0, total: 0 })
 
   useEffect(() => {
     if (!meta) return
     setLoading(true)
     const loader = contentModules[meta.file]
     if (loader) {
-      loader().then(m => { setContent(m.default); setLoading(false) }).catch(() => setLoading(false))
+      loader().then(m => {
+        setContent(m.default)
+        setLoading(false)
+        // Parse sections from content
+        if (id) {
+          const sections = parseSections(id, m.default)
+          if (sections.length > 0) {
+            const progress = getPhaseProgress(id)
+            progress.sections = sections
+            savePhaseProgress(id, progress)
+            setSectionCount({ done: 0, total: sections.length })
+          }
+        }
+      }).catch(() => setLoading(false))
     } else {
       setLoading(false)
     }
   }, [meta])
 
+  // IntersectionObserver: mark sections as done when scrolled into view
   useEffect(() => {
-    if (!meta) return
-    const key = `cc-progress-${id}`
-    const current = JSON.parse(localStorage.getItem(key) || '{}')
-    if (!current.visited) {
-      const s = { ...current, visited: true, lastVisit: Date.now() }
-      localStorage.setItem(key, JSON.stringify(s))
+    if (loading || !content) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement
+          const si = el.dataset.si
+          if (si !== undefined && id) {
+            const idx = parseInt(si)
+            const progress = getPhaseProgress(id)
+            if (idx >= 0 && idx < progress.sections.length && !progress.sections[idx].done) {
+              progress.sections[idx].done = true
+              savePhaseProgress(id, progress)
+              setSectionCount({ done: progress.sections.filter(s => s.done).length, total: progress.sections.length })
+            }
+          }
+        }
+      })
+    }, { threshold: 0.3 })
+    // Observe all h2/h3 elements
+    const article = document.getElementById('phase-content')
+    if (article) {
+      const headings = article.querySelectorAll('h2, h3')
+      headings.forEach(h => {
+        const id = h.id
+        if (id) {
+          (h as HTMLElement).dataset.sectionId = `${meta?.title ? id : ''}`
+          observer.observe(h)
+        }
+      })
     }
-  }, [id, meta])
+    return () => observer.disconnect()
+  }, [loading, content])
 
   // Scroll spy
   useEffect(() => {
@@ -94,7 +134,9 @@ export default function PhasePage() {
   }, [content])
 
   // Markdown component overrides
-  const markdownComponents = useMemo(() => ({
+  const markdownComponents = useMemo(() => {
+    let sectionIndex = 0
+    return {
     h1: ({ children }: { children?: React.ReactNode }) => {
       const text = String(children).replace(/[*`~]/g, '').trim()
       const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
@@ -103,12 +145,14 @@ export default function PhasePage() {
     h2: ({ children }: { children?: React.ReactNode }) => {
       const text = String(children).replace(/[*`~]/g, '').trim()
       const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
-      return <h2 id={id}>{children as React.ReactNode}</h2>
+      const idx = sectionIndex++
+      return <h2 id={id} data-si={idx}>{children as React.ReactNode}</h2>
     },
     h3: ({ children }: { children?: React.ReactNode }) => {
       const text = String(children).replace(/[*`~]/g, '').trim()
       const id = text.toLowerCase().replace(/[^a-z0-9\u3040-\u309f\u30a0-\u30ff\u4e00-\u9fff]+/g, '-').replace(/(^-|-$)/g, '')
-      return <h3 id={id}>{children as React.ReactNode}</h3>
+      const idx = sectionIndex++
+      return <h3 id={id} data-si={idx}>{children as React.ReactNode}</h3>
     },
     code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
       const text = String(children || '').trim()
@@ -118,7 +162,7 @@ export default function PhasePage() {
       }
       return <code className={className}>{children as React.ReactNode}</code>
     },
-  }), [])
+  }}, [])
 
   if (!meta) {
     return (
@@ -179,6 +223,11 @@ export default function PhasePage() {
           <div className="flex items-center gap-3">
             <span className="text-[10px] text-casino-muted flex items-center gap-1"><BookOpen size="10"/>{meta.lessons}</span>
             <span className="text-[10px] text-casino-muted flex items-center gap-1"><Clock size="10"/>{meta.time}</span>
+            {sectionCount.total > 0 && (
+              <span className="text-[10px] text-casino-gold flex items-center gap-1">
+                {sectionCount.done}/{sectionCount.total}
+              </span>
+            )}
             <button onClick={() => setTocOpen(true)} className="lg:hidden p-1 text-casino-muted hover:text-white">
               <List size={16} />
             </button>

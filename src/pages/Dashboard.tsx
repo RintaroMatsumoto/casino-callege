@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { Zap, Gem, TrendingUp, HelpCircle, Home, Library, BarChart3, Target, DollarSign, Layout } from 'lucide-react'
-import DrumCounter from '../components/DrumCounter'
+import { Zap, Gem, TrendingUp, HelpCircle, Home, DollarSign, Layout, BarChart3, Target, Library } from 'lucide-react'
+import { getAllPhasesProgress } from '../lib/progress'
 
 const phases = [
   { id: '0', icon: Home, title: 'Phase 0', subtitle: '基礎 Fundamentals', desc: 'カジノのしくみ・用語・数学の基本', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
@@ -14,6 +14,7 @@ const phases = [
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const prog = getAllPhasesProgress()
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -26,17 +27,19 @@ export default function Dashboard() {
           カジノゲームの教科書。
           <br />遊ぶ人も、働く人も、知りたい人も。
         </p>
-        <div className="mt-6">
-          <DrumCounter />
+        <div className="mt-4 text-center text-xs text-casino-muted">
+          {prog.total > 0
+            ? `${prog.visited}/${prog.total} sections completed`
+            : 'Start learning to track progress'}
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         {[
-          { icon: BarChart3, label: '総レッスン数', value: '150+' },
-          { icon: Target, label: '総学習時間', value: '60h+' },
-          { icon: Library, label: '用語集', value: '100語' },
+          { icon: BarChart3, label: 'Total Sections', value: prog.total || '—' },
+          { icon: Target, label: 'Completed', value: prog.visited || '0' },
+          { icon: Library, label: 'Completion', value: prog.total > 0 ? Math.round((prog.visited / prog.total) * 100) + '%' : '0%' },
         ].map(s => (
           <div key={s.label} className="bg-casino-card rounded-xl p-4 border border-casino-border text-center">
             <s.icon size={20} className="text-casino-gold mx-auto mb-1.5" />
@@ -66,12 +69,17 @@ export default function Dashboard() {
                 </div>
                 <p className="text-sm text-casino-gold font-semibold">{p.subtitle}</p>
                 <p className="text-xs text-casino-muted mt-0.5 line-clamp-1">{p.desc}</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="flex-1 h-1 bg-casino-royal rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-casino-gold to-yellow-500 rounded-full transition-all" style={{ width: `${prog.phasePcts[parseInt(p.id)] ?? 0}%` }} />
+                  </div>
+                  <span className="text-[9px] text-casino-muted font-mono">{prog.phasePcts[parseInt(p.id)] ?? 0}%</span>
+                </div>
               </div>
             </div>
           </button>
         ))}
       </div>
-
 
     </div>
   )
