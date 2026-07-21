@@ -1,19 +1,11 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import LoginButton from './LoginButton'
-import { BookOpen, Menu, Sun, Moon } from 'lucide-react'
+import { BookOpen, Menu } from 'lucide-react'
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [dark, setDark] = useState(true)
   const location = useLocation()
-
-  const toggleDark = useCallback(() => setDark(d => !d), [])
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark)
-  }, [dark])
 
   const pageTitle = location.pathname === '/' ? 'Dashboard'
     : location.pathname.startsWith('/phase/') ? `Phase ${location.pathname.split('/')[2]}`
@@ -43,10 +35,6 @@ export default function Layout() {
             <span className="font-bold text-white text-sm tracking-wide">{pageTitle}</span>
           </div>
           <div className="flex items-center gap-3">
-            <LoginButton />
-            <button onClick={toggleDark} className="p-1.5 rounded-lg hover:bg-casino-card/50 text-zinc-400">
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
           </div>
         </header>
 
