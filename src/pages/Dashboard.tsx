@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Zap, Gem, TrendingUp, HelpCircle, Home, DollarSign, Layout } from 'lucide-react'
+import CasinoAffiliate from '../components/CasinoAffiliate'
 
 const phases = [
   { id: '0', icon: Home, title: 'Phase 0', subtitle: '基礎', desc: 'カジノの基礎、用語、数学', color: 'from-blue-500 to-cyan-500', lessons: 12, time: '5.5h' },
@@ -49,6 +50,10 @@ export default function Dashboard() {
             </div>
           </button>
         ))}
+      </div>
+
+      <div className="mt-8 max-w-xl mx-auto">
+        <CasinoAffiliate />
       </div>
     </div>
   )
