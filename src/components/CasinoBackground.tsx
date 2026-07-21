@@ -90,15 +90,15 @@ export default function CasinoBackground() {
           }
         }
 
-        .cd-box { width: 260px; height: 70px; }
+        .cd-box { width: 300px; height: 150px; }
         .cd-deck {
-          position: absolute; left: 199px; top: 2px;
+          position: absolute; left: 93px; top: 9px;
           width: 40px; height: 54px; border-radius: 3px;
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569; box-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 0;
         }
         .cd {
-          position: absolute; top: 1px;
+          position: absolute;
           width: 38px; height: 52px; border-radius: 3px;
           background: #f8fafc; border: 1px solid #94a3b8;
           display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -110,20 +110,20 @@ export default function CasinoBackground() {
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569;
         }
-        .cd-0 { left: 204px; z-index: 5; top: -3px; }
-        .cd-1 { left: 203px; z-index: 4; top: -2px; }
-        .cd-2 { left: 202px; z-index: 3; top: -1px; }
-        .cd-3 { left: 201px; z-index: 2; top: 0px; }
-        .cd-4 { left: 200px; z-index: 1; top: 1px; }
+        .cd-0 { left: 98px; top: 4px; z-index: 5; }
+        .cd-1 { left: 97px; top: 5px; z-index: 4; }
+        .cd-2 { left: 96px; top: 6px; z-index: 3; }
+        .cd-3 { left: 95px; top: 7px; z-index: 2; }
+        .cd-4 { left: 94px; top: 8px; z-index: 1; }
         .cd-r { font-size: 10px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
         .cd-s { font-size: 16px; line-height: 1; color: #1e293b; }
 
         @keyframes m0 {
-          0%, 2%  { transform: translateX(0); }
-          3%, 9%  { transform: translateX(-204px); }
-          10%, 68% { transform: translateX(-204px); }
-          69%, 75% { transform: translateX(0); }
-          76%, 100% { transform: translateX(0); }
+          0%, 2%   { transform: translate(0, 0); }
+          3%, 9%   { transform: translate(-98px, 74px); }
+          10%, 68% { transform: translate(-98px, 74px); }
+          69%, 75% { transform: translate(0, 0); }
+          76%, 100%{ transform: translate(0, 0); }
         }
         @keyframes b0 {
           0%, 8%  { opacity: 1; }
@@ -133,11 +133,11 @@ export default function CasinoBackground() {
           69%, 100% { opacity: 1; }
         }
         @keyframes m1 {
-          0%, 6%  { transform: translateX(0); }
-          7%, 13% { transform: translateX(-159px); }
-          14%, 65% { transform: translateX(-159px); }
-          66%, 72% { transform: translateX(0); }
-          73%, 100% { transform: translateX(0); }
+          0%, 6%   { transform: translate(0, 0); }
+          7%, 13%  { transform: translate(-49px, 73px); }
+          14%, 65% { transform: translate(-49px, 73px); }
+          66%, 72% { transform: translate(0, 0); }
+          73%, 100%{ transform: translate(0, 0); }
         }
         @keyframes b1 {
           0%, 12% { opacity: 1; }
@@ -147,11 +147,11 @@ export default function CasinoBackground() {
           66%, 100% { opacity: 1; }
         }
         @keyframes m2 {
-          0%, 10% { transform: translateX(0); }
-          11%, 17% { transform: translateX(-114px); }
-          18%, 62% { transform: translateX(-114px); }
-          63%, 69% { transform: translateX(0); }
-          70%, 100% { transform: translateX(0); }
+          0%, 10%  { transform: translate(0, 0); }
+          11%, 17% { transform: translate(0, 72px); }
+          18%, 62% { transform: translate(0, 72px); }
+          63%, 69% { transform: translate(0, 0); }
+          70%, 100%{ transform: translate(0, 0); }
         }
         @keyframes b2 {
           0%, 16% { opacity: 1; }
@@ -161,11 +161,11 @@ export default function CasinoBackground() {
           63%, 100% { opacity: 1; }
         }
         @keyframes m3 {
-          0%, 14% { transform: translateX(0); }
-          15%, 21% { transform: translateX(-69px); }
-          22%, 59% { transform: translateX(-69px); }
-          60%, 66% { transform: translateX(0); }
-          67%, 100% { transform: translateX(0); }
+          0%, 14%  { transform: translate(0, 0); }
+          15%, 21% { transform: translate(49px, 71px); }
+          22%, 59% { transform: translate(49px, 71px); }
+          60%, 66% { transform: translate(0, 0); }
+          67%, 100%{ transform: translate(0, 0); }
         }
         @keyframes b3 {
           0%, 20% { opacity: 1; }
@@ -175,11 +175,11 @@ export default function CasinoBackground() {
           60%, 100% { opacity: 1; }
         }
         @keyframes m4 {
-          0%, 18% { transform: translateX(0); }
-          19%, 25% { transform: translateX(-24px); }
-          26%, 56% { transform: translateX(-24px); }
-          57%, 63% { transform: translateX(0); }
-          64%, 100% { transform: translateX(0); }
+          0%, 18%  { transform: translate(0, 0); }
+          19%, 25% { transform: translate(98px, 70px); }
+          26%, 56% { transform: translate(98px, 70px); }
+          57%, 63% { transform: translate(0, 0); }
+          64%, 100%{ transform: translate(0, 0); }
         }
         @keyframes b4 {
           0%, 24% { opacity: 1; }
