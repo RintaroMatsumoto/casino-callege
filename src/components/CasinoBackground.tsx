@@ -1,27 +1,26 @@
 export default function CasinoBackground() {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Green felt */}
       <div className="absolute inset-0" style={{
         background: 'radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(0,0,0,0.12) 100%), linear-gradient(180deg, #1a8a3a 0%, #147a30 40%, #0f6a28 70%, #1a8a3a 100%)',
       }} />
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }} />
-      {/* Wood frame */}
       <div className="absolute top-0 left-0 right-0 h-2.5" style={{ background: 'linear-gradient(180deg, #5a3a20 0%, #3d2b1f 50%, #2a1a0f 100%)' }} />
       <div className="absolute bottom-0 left-0 right-0 h-2.5" style={{ background: 'linear-gradient(0deg, #5a3a20 0%, #3d2b1f 50%, #2a1a0f 100%)' }} />
       <div className="absolute left-0 top-0 bottom-0 w-2.5" style={{ background: 'linear-gradient(90deg, #5a3a20 0%, #3d2b1f 50%, #2a1a0f 100%)' }} />
       <div className="absolute right-0 top-0 bottom-0 w-2.5" style={{ background: 'linear-gradient(270deg, #5a3a20 0%, #3d2b1f 50%, #2a1a0f 100%)' }} />
 
-      {/* Spotlight */}
       <div className="absolute w-[clamp(200px,40vw,500px)] h-[clamp(300px,50vw,700px)] -skew-x-[30deg]" style={{
         background: 'linear-gradient(180deg, transparent, rgba(255,255,255,0.06), rgba(255,255,255,0.1), transparent)',
         animation: 'spotlight 10s ease-in-out infinite',
         left: '-30%', top: '-40%',
       }} />
 
-      {/* Roulette wheel — top-left, visible on lg+ only */}
-      <div className="hidden lg:block absolute" style={{
-        top: 45, left: 25, width: 180, height: 180, opacity: 0.85,
+      {/* Roulette */}
+      <div className="absolute" style={{
+        top: 'clamp(10px,3vh,45px)', left: 'clamp(10px,2vw,25px)',
+        width: 'clamp(80px,14vw,180px)', height: 'clamp(80px,14vw,180px)',
+        opacity: 0.85,
       }}>
         <svg viewBox="0 0 320 320" className="w-full h-full">
           <circle cx="160" cy="160" r="158" fill="#4a3020" stroke="#3d2b1f" strokeWidth="2" />
@@ -54,32 +53,25 @@ export default function CasinoBackground() {
           <circle cx="160" cy="160" r="4" fill="#cbd5e1" />
         </svg>
         <div className="absolute" style={{
-          width: 10, height: 10, top: 0, left: '50%', marginLeft: -5,
+          width: 8, height: 8, top: 0, left: '50%', marginLeft: -4,
           borderRadius: '50%', background: '#f8fafc', boxShadow: '0 0 6px rgba(248,250,252,0.8), 0 0 12px rgba(248,250,252,0.4)',
           animation: 'orbitBall 3s linear infinite',
-          transformOrigin: '5px 79px',
+          transformOrigin: '4px 79px',
         }} />
       </div>
 
-      {/* Poker cards — face-down deck dealing one by one */}
-      <div className="hidden lg:block absolute" style={{
-        top: 50, right: 25, width: 280, height: 80, opacity: 0.9,
+      {/* Poker cards */}
+      <div className="absolute cd-box" style={{
+        top: 'clamp(10px,3vh,50px)', right: 'clamp(10px,2vw,25px)',
+        opacity: 0.9,
       }}>
-        {/* Static deck — always visible */}
         <div className="cd-deck" />
-
-        {[
-          { rank: 'A', suit: '♠', color: '#1e293b' },
-          { rank: 'K', suit: '♠', color: '#1e293b' },
-          { rank: 'Q', suit: '♠', color: '#1e293b' },
-          { rank: 'J', suit: '♠', color: '#1e293b' },
-          { rank: '10', suit: '♠', color: '#1e293b' },
-        ].map((card, i) => (
-          <div key={card.rank} className={`cd-w cd-w-${i}`}>
+        {['A','K','Q','J','10'].map((r, i) => (
+          <div key={r} className={`cd-w cd-w-${i}`}>
             <div className={`cd-i cd-i-${i}`}>
-              <div className="cd-f" style={{ color: card.color }}>
-                <span>{card.rank}</span>
-                <span style={{ fontSize: 18 }}>{card.suit}</span>
+              <div className="cd-f">
+                <span className="cd-r">{r}</span>
+                <span className="cd-s">{'\u2660'}</span>
               </div>
               <div className="cd-b" />
             </div>
@@ -96,32 +88,34 @@ export default function CasinoBackground() {
         }
         @keyframes orbitBall { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        .cd-box {
+          width: 300px;
+          height: 84px;
+        }
         .cd-w {
           position: absolute; top: 2px;
-          width: 38px; height: 54px;
+          width: 46px; height: 62px;
           perspective: 600px;
         }
-        .cd-w-0 { left: 234px; z-index: 1; }
-        .cd-w-1 { left: 233px; z-index: 2; }
-        .cd-w-2 { left: 232px; z-index: 3; }
-        .cd-w-3 { left: 231px; z-index: 4; }
-        .cd-w-4 { left: 230px; z-index: 5; }
-        .cd-w-0 { top: -3px; } .cd-w-1 { top: -2px; } .cd-w-2 { top: -1px; }
-        .cd-w-3 { top: 0px; } .cd-w-4 { top: 1px; }
-
+        .cd-w-0 { left: 244px; z-index: 5; top: -3px; }
+        .cd-w-1 { left: 243px; z-index: 4; top: -2px; }
+        .cd-w-2 { left: 242px; z-index: 3; top: -1px; }
+        .cd-w-3 { left: 241px; z-index: 2; top: 0px; }
+        .cd-w-4 { left: 240px; z-index: 1; top: 1px; }
         .cd-deck {
-          position: absolute; left: 229px; top: 2px;
-          width: 40px; height: 56px;
+          position: absolute;
+          left: 239px; top: 2px;
+          width: 48px; height: 64px;
           border-radius: 3px;
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569;
           box-shadow: 0 2px 8px rgba(0,0,0,0.4);
           z-index: 0;
         }
-
         .cd-i {
           width: 100%; height: 100%;
           transform-style: preserve-3d;
+          position: relative;
         }
         .cd-f, .cd-b {
           position: absolute; inset: 0;
@@ -131,7 +125,6 @@ export default function CasinoBackground() {
         }
         .cd-f {
           background: #f8fafc; border: 1px solid #94a3b8;
-          font-size: 10px; font-weight: bold; font-family: serif;
           transform: rotateY(0deg);
         }
         .cd-b {
@@ -139,57 +132,59 @@ export default function CasinoBackground() {
           border: 1px solid #475569;
           transform: rotateY(180deg);
         }
+        .cd-r { font-size: 12px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
+        .cd-s { font-size: 20px; line-height: 1; color: #1e293b; }
 
         @keyframes c0 {
-          0%, 14%  { transform: rotateY(180deg) translateX(0); z-index: 20; }
-          15%, 18% { transform: rotateY(180deg) translateX(-234px); z-index: 20; }
-          19%, 20% { transform: rotateY(0deg) translateX(-234px); z-index: 20; }
-          21%, 79% { transform: rotateY(0deg) translateX(-234px); z-index: 1; }
-          80%, 81% { transform: rotateY(180deg) translateX(-234px); z-index: 1; }
-          82%, 85% { transform: rotateY(180deg) translateX(0); z-index: 1; }
-          86%, 100%{ transform: rotateY(180deg) translateX(0); }
+          0%, 2%  { transform: rotateY(180deg) translateX(0); z-index: 20; }
+          3%, 8%  { transform: rotateY(180deg) translateX(-244px); z-index: 20; }
+          9%, 10% { transform: rotateY(0deg) translateX(-244px); z-index: 20; }
+          11%, 70%{ transform: rotateY(0deg) translateX(-244px); z-index: 5; }
+          71%, 72%{ transform: rotateY(180deg) translateX(-244px); z-index: 5; }
+          73%, 78%{ transform: rotateY(180deg) translateX(0); z-index: 5; }
+          79%,100%{ transform: rotateY(180deg) translateX(0); }
         }
         @keyframes c1 {
-          0%, 18%  { transform: rotateY(180deg) translateX(0); }
-          19%, 22% { transform: rotateY(180deg) translateX(-185px); z-index: 20; }
-          23%, 24% { transform: rotateY(0deg) translateX(-185px); z-index: 20; }
-          25%, 83% { transform: rotateY(0deg) translateX(-185px); z-index: 2; }
-          84%, 85% { transform: rotateY(180deg) translateX(-185px); z-index: 2; }
-          86%, 89% { transform: rotateY(180deg) translateX(0); z-index: 2; }
-          90%, 100%{ transform: rotateY(180deg) translateX(0); }
+          0%, 6%  { transform: rotateY(180deg) translateX(0); }
+          7%, 12% { transform: rotateY(180deg) translateX(-195px); z-index: 20; }
+          13%,14% { transform: rotateY(0deg) translateX(-195px); z-index: 20; }
+          15%,68% { transform: rotateY(0deg) translateX(-195px); z-index: 4; }
+          69%,70% { transform: rotateY(180deg) translateX(-195px); z-index: 4; }
+          71%,76% { transform: rotateY(180deg) translateX(0); z-index: 4; }
+          77%,100%{ transform: rotateY(180deg) translateX(0); }
         }
         @keyframes c2 {
-          0%, 22%  { transform: rotateY(180deg) translateX(0); }
-          23%, 26% { transform: rotateY(180deg) translateX(-136px); z-index: 20; }
-          27%, 28% { transform: rotateY(0deg) translateX(-136px); z-index: 20; }
-          29%, 87% { transform: rotateY(0deg) translateX(-136px); z-index: 3; }
-          88%, 89% { transform: rotateY(180deg) translateX(-136px); z-index: 3; }
-          90%, 93% { transform: rotateY(180deg) translateX(0); z-index: 3; }
-          94%, 100%{ transform: rotateY(180deg) translateX(0); }
+          0%, 10% { transform: rotateY(180deg) translateX(0); }
+          11%,16% { transform: rotateY(180deg) translateX(-146px); z-index: 20; }
+          17%,18% { transform: rotateY(0deg) translateX(-146px); z-index: 20; }
+          19%,66% { transform: rotateY(0deg) translateX(-146px); z-index: 3; }
+          67%,68% { transform: rotateY(180deg) translateX(-146px); z-index: 3; }
+          69%,74% { transform: rotateY(180deg) translateX(0); z-index: 3; }
+          75%,100%{ transform: rotateY(180deg) translateX(0); }
         }
         @keyframes c3 {
-          0%, 26%  { transform: rotateY(180deg) translateX(0); }
-          27%, 30% { transform: rotateY(180deg) translateX(-87px); z-index: 20; }
-          31%, 32% { transform: rotateY(0deg) translateX(-87px); z-index: 20; }
-          33%, 91% { transform: rotateY(0deg) translateX(-87px); z-index: 4; }
-          92%, 93% { transform: rotateY(180deg) translateX(-87px); z-index: 4; }
-          94%, 97% { transform: rotateY(180deg) translateX(0); z-index: 4; }
-          98%, 100%{ transform: rotateY(180deg) translateX(0); }
+          0%, 14% { transform: rotateY(180deg) translateX(0); }
+          15%,20% { transform: rotateY(180deg) translateX(-97px); z-index: 20; }
+          21%,22% { transform: rotateY(0deg) translateX(-97px); z-index: 20; }
+          23%,64% { transform: rotateY(0deg) translateX(-97px); z-index: 2; }
+          65%,66% { transform: rotateY(180deg) translateX(-97px); z-index: 2; }
+          67%,72% { transform: rotateY(180deg) translateX(0); z-index: 2; }
+          73%,100%{ transform: rotateY(180deg) translateX(0); }
         }
         @keyframes c4 {
-          0%, 30%  { transform: rotateY(180deg) translateX(0); }
-          31%, 34% { transform: rotateY(180deg) translateX(-38px); z-index: 20; }
-          35%, 36% { transform: rotateY(0deg) translateX(-38px); z-index: 20; }
-          37%, 95% { transform: rotateY(0deg) translateX(-38px); z-index: 5; }
-          96%, 97% { transform: rotateY(180deg) translateX(-38px); z-index: 5; }
-          98%, 100%{ transform: rotateY(180deg) translateX(0); z-index: 5; }
+          0%, 18% { transform: rotateY(180deg) translateX(0); }
+          19%,24% { transform: rotateY(180deg) translateX(-48px); z-index: 20; }
+          25%,26% { transform: rotateY(0deg) translateX(-48px); z-index: 20; }
+          27%,62% { transform: rotateY(0deg) translateX(-48px); z-index: 1; }
+          63%,64% { transform: rotateY(180deg) translateX(-48px); z-index: 1; }
+          65%,70% { transform: rotateY(180deg) translateX(0); z-index: 1; }
+          71%,100%{ transform: rotateY(180deg) translateX(0); }
         }
-
-        .cd-i-0 { animation: c0 12s ease-in-out infinite; }
-        .cd-i-1 { animation: c1 12s ease-in-out infinite; }
-        .cd-i-2 { animation: c2 12s ease-in-out infinite; }
-        .cd-i-3 { animation: c3 12s ease-in-out infinite; }
-        .cd-i-4 { animation: c4 12s ease-in-out infinite; }
+        .cd-i-0 { animation: c0 8s ease-in-out infinite; }
+        .cd-i-1 { animation: c1 8s ease-in-out infinite; }
+        .cd-i-2 { animation: c2 8s ease-in-out infinite; }
+        .cd-i-3 { animation: c3 8s ease-in-out infinite; }
+        .cd-i-4 { animation: c4 8s ease-in-out infinite; }
       `}</style>
     </div>
   )
