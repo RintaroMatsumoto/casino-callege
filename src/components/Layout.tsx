@@ -17,7 +17,7 @@ export default function Layout() {
 
   return (
     <div className="h-screen flex bg-casino-dark text-casino-text overflow-hidden">
-      <CasinoBackground key={location.pathname} />
+      <CasinoBackground />
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
