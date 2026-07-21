@@ -35,8 +35,6 @@ export default function PhasePage() {
         <SlideViewer
           phaseId={String(idx)}
           slides={phase.slides}
-          phaseTitle={phase.title}
-          phaseEmoji={phase.emoji}
         />
       </div>
     </div>

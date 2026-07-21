@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { illustrationMap } from './illustrations'
 import type { PhaseSlides } from '../data/slides/types'
@@ -6,129 +6,103 @@ import type { PhaseSlides } from '../data/slides/types'
 interface Props {
   phaseId: string
   slides: PhaseSlides['slides']
-  phaseTitle: string
-  phaseEmoji: string
 }
-
-const SLIDE_KEY_PREFIX = 'cc-slide-'
 
 function getSlideProgress(phaseId: string): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(`${SLIDE_KEY_PREFIX}${phaseId}`) || '{}')
-  } catch { return {} }
+  try { return JSON.parse(localStorage.getItem(`cc-slide-${phaseId}`) || '{}') } catch { return {} }
+}
+function saveSlideProgress(phaseId: string, p: Record<string, boolean>) {
+  localStorage.setItem(`cc-slide-${phaseId}`, JSON.stringify(p))
 }
 
-function saveSlideProgress(phaseId: string, progress: Record<string, boolean>) {
-  localStorage.setItem(`${SLIDE_KEY_PREFIX}${phaseId}`, JSON.stringify(progress))
-}
-
-export default function SlideViewer({ phaseId, slides, phaseTitle, phaseEmoji }: Props) {
-  const [currentIdx, setCurrentIdx] = useState(0)
-  const [slideProg, setSlideProg] = useState<Record<string, boolean>>(() => getSlideProgress(phaseId))
-  const contentRef = useRef<HTMLDivElement>(null)
+export default function SlideViewer({ phaseId, slides }: Props) {
+  const [idx, setIdx] = useState(0)
+  const [prog, setProg] = useState<Record<string, boolean>>(() => getSlideProgress(phaseId))
   const total = slides.length
-  const slide = slides[currentIdx]
-  const doneCount = slides.filter(s => slideProg[s.id]).length
-  const allDone = doneCount >= total
+  const slide = slides[idx]
+  const done = slides.filter(s => prog[s.id]).length
 
-  const markDone = useCallback((id: string) => {
-    setSlideProg(prev => {
-      if (prev[id]) return prev
-      const next = { ...prev, [id]: true }
-      saveSlideProgress(phaseId, next)
-      return next
-    })
+  const mark = useCallback((id: string) => {
+    setProg(p => { if (p[id]) return p; const n = { ...p, [id]: true }; saveSlideProgress(phaseId, n); return n })
   }, [phaseId])
 
-  const goTo = useCallback((idx: number) => {
-    if (idx < 0 || idx >= total) return
-    setCurrentIdx(idx)
-    markDone(slides[idx].id)
-    contentRef.current?.scrollTo(0, 0)
-  }, [total, slides, markDone])
+  const go = useCallback((i: number) => {
+    if (i < 0 || i >= total) return
+    setIdx(i)
+    mark(slides[i].id)
+  }, [total, slides, mark])
 
-  // Mark current slide as done
-  useEffect(() => { if (slide) markDone(slide.id) }, [slide?.id, markDone])
+  useEffect(() => { if (slide) mark(slide.id) }, [slide?.id, mark])
 
-  // Keyboard navigation
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') goTo(currentIdx - 1)
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(currentIdx + 1) }
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') go(idx - 1)
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(idx + 1) }
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [currentIdx, goTo])
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [idx, go])
 
-  if (!slide) return <div className="text-center py-20 text-casino-muted">No slides for this phase</div>
+  if (!slide) return <div className="text-center py-20 text-casino-muted">No slides</div>
 
   const SVG = slide.svg ? illustrationMap[slide.svg] : null
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Slide counter bar */}
-      <div className="shrink-0 px-4 py-2 border-b border-casino-border bg-casino-dark/50">
-        <div className="flex items-center justify-between text-[10px] text-casino-muted mb-1">
-          <span>{doneCount}/{total}</span>
-          <span className="flex items-center gap-1">{phaseEmoji} {phaseTitle}</span>
-        </div>
-        <div className="h-1 bg-casino-royal rounded-full overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-casino-gold to-yellow-500 rounded-full transition-all duration-500"
-            style={{ width: `${(doneCount / total) * 100}%` }} />
-        </div>
+    <div className="flex flex-col h-full bg-casino-dark">
+      {/* Thin progress bar */}
+      <div className="h-0.5 bg-casino-royal shrink-0">
+        <div className="h-full bg-casino-gold transition-all duration-300" style={{ width: `${(done / total) * 100}%` }} />
       </div>
 
-      {/* Slide content */}
-      <div ref={contentRef} className="flex-1 overflow-y-auto flex flex-col items-center justify-start p-4 md:p-8 animate-fadeIn">
-        {/* SVG illustration */}
-        {SVG && <div className="w-full max-w-2xl mb-6"><SVG /></div>}
-
-        {/* Section tag */}
-        <span className="text-[10px] text-casino-gold font-semibold tracking-wider bg-casino-gold/10 px-2 py-0.5 rounded uppercase mb-3">
-          {slide.section}
-        </span>
-
-        {/* Title */}
-        <h2 className="text-xl md:text-2xl font-bold text-white text-center mb-6 leading-tight">
-          {slide.emoji && <span className="mr-2">{slide.emoji}</span>}{slide.title}
-        </h2>
-
-        {/* Bullet points */}
-        <ul className="space-y-2.5 max-w-lg w-full">
-          {slide.bullets.map((b, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-casino-text leading-relaxed">
-              <span className="text-casino-gold mt-1 shrink-0">•</span>
-              <span>{b}</span>
-            </li>
+      {/* Slide number + dots */}
+      <div className="shrink-0 flex items-center justify-between px-4 py-1.5 border-b border-casino-border">
+        <span className="text-[10px] text-casino-muted font-mono">{idx + 1}/{total}</span>
+        <div className="flex items-center gap-1">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => go(i)}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-casino-gold' : prog[slides[i].id] ? 'bg-casino-gold/40' : 'bg-casino-muted/20'}`} />
           ))}
-        </ul>
+        </div>
+        <span className="text-[10px] text-casino-muted font-mono">{done}/{total}</span>
+      </div>
 
-        {/* Note */}
-        {slide.note && (
-          <p className="mt-6 text-xs text-casino-muted italic max-w-lg text-center">💡 {slide.note}</p>
+      {/* SVG fills the main area */}
+      <div className="flex-1 overflow-auto flex items-start justify-center p-2 md:p-4">
+        {SVG ? (
+          <div className="w-full max-w-4xl">
+            <SVG />
+            {/* Title shown only as a tiny overlay */}
+            <p className="text-center text-xs text-casino-muted mt-2">
+              {slide.section && <span className="text-casino-gold font-semibold mr-2">{slide.section}</span>}
+              {slide.emoji && <span className="mr-1">{slide.emoji}</span>}
+              {slide.title}
+            </p>
+          </div>
+        ) : (
+          <div className="py-20 text-center">
+            <p className="text-lg text-white font-bold mb-2">{slide.emoji} {slide.title}</p>
+            <ul className="space-y-2">
+              {slide.bullets.map((b, i) => <li key={i} className="text-sm text-casino-muted">{b}</li>)}
+            </ul>
+          </div>
         )}
       </div>
 
-      {/* Navigation */}
-      <div className="shrink-0 border-t border-casino-border bg-casino-dark">
-        <div className="flex items-center justify-between px-4 py-3 max-w-2xl mx-auto">
-          <button onClick={() => goTo(currentIdx - 1)} disabled={currentIdx === 0}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-casino-card hover:bg-casino-card/70 border border-casino-border text-white text-sm disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-            <ChevronLeft size={16} /> Prev
-          </button>
+      {/* Minimal navigation */}
+      <div className="shrink-0 flex items-center justify-between px-4 py-2 border-t border-casino-border bg-casino-card/30">
+        <button onClick={() => go(idx - 1)} disabled={idx === 0}
+          className="px-4 py-2 rounded-lg bg-casino-card border border-casino-border text-white text-sm disabled:opacity-30 hover:bg-casino-card/70 transition-colors">
+          <ChevronLeft size={16} />
+        </button>
 
-          <div className="flex items-center gap-1">
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === currentIdx ? 'bg-casino-gold w-4' : slideProg[slides[i].id] ? 'bg-casino-gold/50' : 'bg-casino-muted/20'}`} />
-            ))}
-          </div>
+        {slide.note && (
+          <span className="text-[10px] text-casino-muted italic text-center px-4">{slide.note}</span>
+        )}
 
-          <button onClick={() => goTo(currentIdx + 1)} disabled={currentIdx >= total - 1}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-casino-gold/10 hover:bg-casino-gold/20 border border-casino-gold/30 text-casino-gold text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-            {allDone ? 'Finish ✓' : 'Next'} <ChevronRight size={16} />
-          </button>
-        </div>
+        <button onClick={() => go(idx + 1)} disabled={idx >= total - 1}
+          className="px-4 py-2 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold text-sm font-semibold disabled:opacity-30 hover:bg-casino-gold/20 transition-colors">
+          <ChevronRight size={16} />
+        </button>
       </div>
     </div>
   )
