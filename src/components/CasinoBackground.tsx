@@ -1,18 +1,12 @@
-import { useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
-
 export default function CasinoBackground() {
-  const location = useLocation()
-  const cards = useMemo(() => {
-    const suits = ['♠','♥','♦','♣']
-    const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
-    const deck = suits.flatMap(s => ranks.map(r => ({ rank: r, suit: s, color: s === '♥' || s === '♦' ? '#dc2626' : '#1e293b' })))
-    for (let i = deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[deck[i], deck[j]] = [deck[j], deck[i]]
-    }
-    return deck.slice(0, 5)
-  }, [location.pathname])
+  const suits = ['♠','♥','♦','♣']
+  const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
+  const deck = suits.flatMap(s => ranks.map(r => ({ rank: r, suit: s, color: s === '♥' || s === '♦' ? '#dc2626' : '#1e293b' })))
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[deck[i], deck[j]] = [deck[j], deck[i]]
+  }
+  const cards = deck.slice(0, 5)
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       <div className="absolute inset-0" style={{
