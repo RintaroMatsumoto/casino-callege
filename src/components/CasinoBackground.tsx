@@ -16,7 +16,6 @@ export default function CasinoBackground() {
         left: '-30%', top: '-40%',
       }} />
 
-      {/* Roulette */}
       <div className="absolute" style={{
         top: 'clamp(10px,3vh,45px)', left: 'clamp(10px,2vw,25px)',
         width: 'clamp(80px,14vw,180px)', height: 'clamp(80px,14vw,180px)',
@@ -60,21 +59,15 @@ export default function CasinoBackground() {
         }} />
       </div>
 
-      {/* Poker cards */}
       <div className="absolute cd-box" style={{
         top: 'clamp(10px,3vh,50px)', right: 'clamp(10px,2vw,25px)',
         opacity: 0.9,
       }}>
         <div className="cd-deck" />
         {['A','K','Q','J','10'].map((r, i) => (
-          <div key={r} className={`cd-w cd-w-${i}`}>
-            <div className={`cd-i cd-i-${i}`}>
-              <div className="cd-f">
-                <span className="cd-r">{r}</span>
-                <span className="cd-s">{'\u2660'}</span>
-              </div>
-              <div className="cd-b" />
-            </div>
+          <div key={r} className={`cd cd-${i}`}>
+            <span className="cd-r">{r}</span>
+            <span className="cd-s">{'\u2660'}</span>
           </div>
         ))}
       </div>
@@ -88,103 +81,115 @@ export default function CasinoBackground() {
         }
         @keyframes orbitBall { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .cd-box {
-          width: 300px;
-          height: 84px;
-        }
-        .cd-w {
-          position: absolute; top: 2px;
-          width: 46px; height: 62px;
-          perspective: 600px;
-        }
-        .cd-w-0 { left: 244px; z-index: 5; top: -3px; }
-        .cd-w-1 { left: 243px; z-index: 4; top: -2px; }
-        .cd-w-2 { left: 242px; z-index: 3; top: -1px; }
-        .cd-w-3 { left: 241px; z-index: 2; top: 0px; }
-        .cd-w-4 { left: 240px; z-index: 1; top: 1px; }
+        .cd-box { width: 300px; height: 84px; }
         .cd-deck {
-          position: absolute;
-          left: 239px; top: 2px;
-          width: 48px; height: 64px;
-          border-radius: 3px;
+          position: absolute; left: 239px; top: 2px;
+          width: 48px; height: 64px; border-radius: 3px;
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
-          border: 1px solid #475569;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-          z-index: 0;
+          border: 1px solid #475569; box-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 0;
         }
-        .cd-i {
-          width: 100%; height: 100%;
-          transform-style: preserve-3d;
-          position: relative;
-        }
-        .cd-f, .cd-b {
-          position: absolute; inset: 0;
-          border-radius: 3px;
-          backface-visibility: hidden;
-          display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .cd-f {
+        .cd {
+          position: absolute; top: 1px;
+          width: 46px; height: 62px; border-radius: 3px;
           background: #f8fafc; border: 1px solid #94a3b8;
-          transform: rotateY(0deg);
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.25);
         }
-        .cd-b {
+        .cd::before {
+          content: ''; position: absolute; inset: 0; z-index: 1;
+          border-radius: 3px;
           background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 4px, #334155 4px, #334155 8px);
           border: 1px solid #475569;
-          transform: rotateY(180deg);
         }
+        .cd-0 { left: 244px; z-index: 5; top: -3px; }
+        .cd-1 { left: 243px; z-index: 4; top: -2px; }
+        .cd-2 { left: 242px; z-index: 3; top: -1px; }
+        .cd-3 { left: 241px; z-index: 2; top: 0px; }
+        .cd-4 { left: 240px; z-index: 1; top: 1px; }
         .cd-r { font-size: 12px; font-weight: bold; font-family: serif; line-height: 1; color: #1e293b; }
         .cd-s { font-size: 20px; line-height: 1; color: #1e293b; }
 
-        @keyframes c0 {
-          0%, 2%  { transform: rotateY(180deg) translateX(0); z-index: 20; }
-          3%, 8%  { transform: rotateY(180deg) translateX(-244px); z-index: 20; }
-          9%, 10% { transform: rotateY(0deg) translateX(-244px); z-index: 20; }
-          11%, 70%{ transform: rotateY(0deg) translateX(-244px); z-index: 5; }
-          71%, 72%{ transform: rotateY(180deg) translateX(-244px); z-index: 5; }
-          73%, 78%{ transform: rotateY(180deg) translateX(0); z-index: 5; }
-          79%,100%{ transform: rotateY(180deg) translateX(0); }
+        @keyframes m0 {
+          0%, 2%  { transform: translateX(0); }
+          3%, 9%  { transform: translateX(-244px); }
+          10%, 68% { transform: translateX(-244px); }
+          69%, 75% { transform: translateX(0); }
+          76%, 100% { transform: translateX(0); }
         }
-        @keyframes c1 {
-          0%, 6%  { transform: rotateY(180deg) translateX(0); }
-          7%, 12% { transform: rotateY(180deg) translateX(-195px); z-index: 20; }
-          13%,14% { transform: rotateY(0deg) translateX(-195px); z-index: 20; }
-          15%,68% { transform: rotateY(0deg) translateX(-195px); z-index: 4; }
-          69%,70% { transform: rotateY(180deg) translateX(-195px); z-index: 4; }
-          71%,76% { transform: rotateY(180deg) translateX(0); z-index: 4; }
-          77%,100%{ transform: rotateY(180deg) translateX(0); }
+        @keyframes b0 {
+          0%, 8%  { opacity: 1; }
+          9%, 10% { opacity: 0; }
+          11%, 66% { opacity: 0; }
+          67%, 68% { opacity: 1; }
+          69%, 100% { opacity: 1; }
         }
-        @keyframes c2 {
-          0%, 10% { transform: rotateY(180deg) translateX(0); }
-          11%,16% { transform: rotateY(180deg) translateX(-146px); z-index: 20; }
-          17%,18% { transform: rotateY(0deg) translateX(-146px); z-index: 20; }
-          19%,66% { transform: rotateY(0deg) translateX(-146px); z-index: 3; }
-          67%,68% { transform: rotateY(180deg) translateX(-146px); z-index: 3; }
-          69%,74% { transform: rotateY(180deg) translateX(0); z-index: 3; }
-          75%,100%{ transform: rotateY(180deg) translateX(0); }
+        @keyframes m1 {
+          0%, 6%  { transform: translateX(0); }
+          7%, 13% { transform: translateX(-195px); }
+          14%, 65% { transform: translateX(-195px); }
+          66%, 72% { transform: translateX(0); }
+          73%, 100% { transform: translateX(0); }
         }
-        @keyframes c3 {
-          0%, 14% { transform: rotateY(180deg) translateX(0); }
-          15%,20% { transform: rotateY(180deg) translateX(-97px); z-index: 20; }
-          21%,22% { transform: rotateY(0deg) translateX(-97px); z-index: 20; }
-          23%,64% { transform: rotateY(0deg) translateX(-97px); z-index: 2; }
-          65%,66% { transform: rotateY(180deg) translateX(-97px); z-index: 2; }
-          67%,72% { transform: rotateY(180deg) translateX(0); z-index: 2; }
-          73%,100%{ transform: rotateY(180deg) translateX(0); }
+        @keyframes b1 {
+          0%, 12% { opacity: 1; }
+          13%, 14% { opacity: 0; }
+          15%, 63% { opacity: 0; }
+          64%, 65% { opacity: 1; }
+          66%, 100% { opacity: 1; }
         }
-        @keyframes c4 {
-          0%, 18% { transform: rotateY(180deg) translateX(0); }
-          19%,24% { transform: rotateY(180deg) translateX(-48px); z-index: 20; }
-          25%,26% { transform: rotateY(0deg) translateX(-48px); z-index: 20; }
-          27%,62% { transform: rotateY(0deg) translateX(-48px); z-index: 1; }
-          63%,64% { transform: rotateY(180deg) translateX(-48px); z-index: 1; }
-          65%,70% { transform: rotateY(180deg) translateX(0); z-index: 1; }
-          71%,100%{ transform: rotateY(180deg) translateX(0); }
+        @keyframes m2 {
+          0%, 10% { transform: translateX(0); }
+          11%, 17% { transform: translateX(-146px); }
+          18%, 62% { transform: translateX(-146px); }
+          63%, 69% { transform: translateX(0); }
+          70%, 100% { transform: translateX(0); }
         }
-        .cd-i-0 { animation: c0 8s ease-in-out infinite; }
-        .cd-i-1 { animation: c1 8s ease-in-out infinite; }
-        .cd-i-2 { animation: c2 8s ease-in-out infinite; }
-        .cd-i-3 { animation: c3 8s ease-in-out infinite; }
-        .cd-i-4 { animation: c4 8s ease-in-out infinite; }
+        @keyframes b2 {
+          0%, 16% { opacity: 1; }
+          17%, 18% { opacity: 0; }
+          19%, 60% { opacity: 0; }
+          61%, 62% { opacity: 1; }
+          63%, 100% { opacity: 1; }
+        }
+        @keyframes m3 {
+          0%, 14% { transform: translateX(0); }
+          15%, 21% { transform: translateX(-97px); }
+          22%, 59% { transform: translateX(-97px); }
+          60%, 66% { transform: translateX(0); }
+          67%, 100% { transform: translateX(0); }
+        }
+        @keyframes b3 {
+          0%, 20% { opacity: 1; }
+          21%, 22% { opacity: 0; }
+          23%, 57% { opacity: 0; }
+          58%, 59% { opacity: 1; }
+          60%, 100% { opacity: 1; }
+        }
+        @keyframes m4 {
+          0%, 18% { transform: translateX(0); }
+          19%, 25% { transform: translateX(-48px); }
+          26%, 56% { transform: translateX(-48px); }
+          57%, 63% { transform: translateX(0); }
+          64%, 100% { transform: translateX(0); }
+        }
+        @keyframes b4 {
+          0%, 24% { opacity: 1; }
+          25%, 26% { opacity: 0; }
+          27%, 54% { opacity: 0; }
+          55%, 56% { opacity: 1; }
+          57%, 100% { opacity: 1; }
+        }
+
+        .cd-0 { animation: m0 8s ease-in-out infinite; }
+        .cd-0::before { animation: b0 8s ease-in-out infinite; }
+        .cd-1 { animation: m1 8s ease-in-out infinite; }
+        .cd-1::before { animation: b1 8s ease-in-out infinite; }
+        .cd-2 { animation: m2 8s ease-in-out infinite; }
+        .cd-2::before { animation: b2 8s ease-in-out infinite; }
+        .cd-3 { animation: m3 8s ease-in-out infinite; }
+        .cd-3::before { animation: b3 8s ease-in-out infinite; }
+        .cd-4 { animation: m4 8s ease-in-out infinite; }
+        .cd-4::before { animation: b4 8s ease-in-out infinite; }
       `}</style>
     </div>
   )
