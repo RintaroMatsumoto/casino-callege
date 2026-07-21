@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import DrumCounter from './DrumCounter'
+import CasinoBackground from './CasinoBackground'
 import { BookOpen, Menu } from 'lucide-react'
 
 export default function Layout() {
@@ -16,6 +17,7 @@ export default function Layout() {
 
   return (
     <div className="h-screen flex bg-casino-dark text-casino-text overflow-hidden">
+      <CasinoBackground />
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
@@ -25,7 +27,7 @@ export default function Layout() {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top bar */}
         <header className="h-14 border-b border-casino-border flex items-center justify-between px-4 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-1.5 rounded-lg hover:bg-casino-card/50 text-zinc-400">
