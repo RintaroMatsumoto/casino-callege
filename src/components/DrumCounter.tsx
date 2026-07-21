@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
-import { getCounter, incrementCounter } from '../lib/api'
+
+const COUNTER_KEY = 'cc-counter'
 
 function Digit({ value }: { value: number }) {
   return (
     <div className="relative w-10 h-14 bg-gradient-to-b from-casino-royal to-[#1a1a35] rounded border border-casino-border overflow-hidden">
-      {/* Top shadow */}
       <div className="absolute inset-x-0 top-0 h-1/2 bg-black/20 border-b border-black/30" />
-      {/* Number */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="text-2xl font-bold text-white font-mono tracking-wider"
           style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
           {value}
         </span>
       </div>
-      {/* Bottom highlight */}
       <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white/5 to-transparent" />
     </div>
   )
@@ -24,9 +22,11 @@ export default function DrumCounter() {
   const [animated, setAnimated] = useState(false)
 
   useEffect(() => {
-    getCounter().then(setCount)
-    const timer = setTimeout(() => incrementCounter().then(setCount), 1500)
-    return () => clearTimeout(timer)
+    // この端末だけでカウント（サーバー不要）
+    const stored = parseInt(localStorage.getItem(COUNTER_KEY) || '0')
+    const newCount = stored + 1
+    setCount(newCount)
+    localStorage.setItem(COUNTER_KEY, String(newCount))
   }, [])
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function DrumCounter() {
           </div>
         ))}
       </div>
-      <span className="text-[9px] text-casino-muted tracking-widest uppercase font-semibold">Total Visitors</span>
+      <span className="text-[9px] text-casino-muted tracking-widest uppercase font-semibold">Your Visits</span>
     </div>
   )
 }
