@@ -5,6 +5,7 @@ date: 2026-07-22
 readTime: 7分
 category: ルーレット
 slug: roulette-payout-master
+tags: ルーレット, ペイアウト, 計算, ディーリング, マスター
 ---
 
 ## ルーレットディーラーのペイアウト計算完全マスター

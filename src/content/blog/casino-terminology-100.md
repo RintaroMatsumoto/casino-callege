@@ -5,6 +5,7 @@ date: 2026-07-22
 readTime: 10分
 category: 基礎知識
 slug: casino-terminology-100
+tags: 用語集, 基礎知識, カジノ用語, 初心者, ディーラー
 ---
 
 ## カジノ用語100選
