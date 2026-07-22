@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
 
 const POSTS = [
@@ -10,8 +9,6 @@ const POSTS = [
 ]
 
 export default function BlogList() {
-  const navigate = useNavigate()
-
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8 bg-casino-dark/80 backdrop-blur-sm rounded-xl border border-casino-border p-5">
@@ -21,10 +18,10 @@ export default function BlogList() {
 
       <div className="space-y-3">
         {POSTS.map(p => (
-          <button
+          <a
             key={p.slug}
-            onClick={() => navigate(`/blog/${p.slug}`)}
-            className="w-full text-left bg-casino-card rounded-xl p-5 border border-casino-border hover:border-casino-gold/30 transition-all group"
+            href={`/blog/${p.slug}/`}
+            className="block text-left bg-casino-card rounded-xl p-5 border border-casino-border hover:border-casino-gold/30 transition-all group"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] font-semibold text-casino-gold bg-casino-gold/10 px-2 py-0.5 rounded">{p.category}</span>
@@ -36,7 +33,7 @@ export default function BlogList() {
               <span className="flex items-center gap-1"><Clock size={10} />{p.readTime}</span>
               <span className="flex items-center gap-1 ml-auto text-casino-gold group-hover:underline text-xs">読む <ArrowRight size={12} /></span>
             </div>
-          </button>
+          </a>
         ))}
       </div>
     </div>

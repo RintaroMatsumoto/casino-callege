@@ -1,12 +1,13 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { buildAllBlogPages } from './build-blog.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const dist = join(__dirname, '..', 'dist')
 
 const ROUTES = [
-  { path: '/',           out: 'index.html',              title: 'CasinoCallege — カジノディーラー養成プラットフォーム', desc: '実際のディーラースクール教育カリキュラムに準拠した本格的なカジノ学習プラットフォーム。全7Phaseのカリキュラムでブラックジャック、ルーレット、クラップス、ポーカー、バカラを無料で学ぶ。' },
+  { path: '/',           out: 'index.html',              title: 'CasinoCallege — カジノ大学', desc: '実際のディーラースクール教育カリキュラムに準拠した本格的なカジノ学習プラットフォーム。全7Phaseのカリキュラムでブラックジャック、ルーレット、クラップス、ポーカー、バカラを無料で学ぶ。' },
   { path: '/phase/0',    out: 'phase/0/index.html',       title: 'Phase 0: 基礎 — CasinoCallege', desc: 'カジノの基礎、専門用語、数学的基礎、チップ操作、カードハンドリングを学ぶ。ディーラーになるための第一歩。' },
   { path: '/phase/1',    out: 'phase/1/index.html',       title: 'Phase 1: ブラックジャック — CasinoCallege', desc: 'ブラックジャックのディーリング技術を習得。シュー/ピッチゲーム、ペイアウト計算、ベーシックストラテジー、ゲームプロテクションを網羅。' },
   { path: '/phase/2',    out: 'phase/2/index.html',       title: 'Phase 2: ルーレット — CasinoCallege', desc: 'アメリカン/ヨーロピアンルーレットの全ベットタイプ、ペイアウト計算、チップ管理を学ぶ。' },
@@ -22,12 +23,6 @@ const ROUTES = [
   { path: '/quiz/4',     out: 'quiz/4/index.html',        title: 'クイズ Phase 4 — CasinoCallege', desc: 'ポーカーの知識確認クイズ。ハンドランキング、ポットオッズ、ディーリング手順をテスト。' },
   { path: '/quiz/5',     out: 'quiz/5/index.html',        title: 'クイズ Phase 5 — CasinoCallege', desc: 'バカラ・その他ゲームの知識確認クイズ。タブロー、コミッション、サイドベットをテスト。' },
   { path: '/quiz/6',     out: 'quiz/6/index.html',        title: 'クイズ Phase 6 — CasinoCallege', desc: 'キャリア・実践の知識確認クイズ。面接対策、カジノ運営、日本IR情報をテスト。' },
-  { path: '/blog',       out: 'blog/index.html',          title: 'ブログ — CasinoCallege', desc: 'カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。' },
-  { path: '/blog/casino-dealer-guide-2026',    out: 'blog/casino-dealer-guide-2026/index.html',    title: 'カジノディーラーになるには？完全ガイド2026', desc: 'カジノディーラーになるための完全ガイド。必要なスキル、資格、給料、求人情報を徹底解説。' },
-  { path: '/blog/blackjack-dealer-basics',     out: 'blog/blackjack-dealer-basics/index.html',     title: 'ブラックジャックディーラーの基本動作と手信号', desc: 'ブラックジャックディーラーの基本動作と正しい手信号を徹底解説。' },
-  { path: '/blog/osaka-ir-dealer-demand',      out: 'blog/osaka-ir-dealer-demand/index.html',      title: '大阪IR開業でディーラー需要が急増する理由', desc: '2029-2030年開業予定の大阪IRのディーラー需要と今から準備すべきことを解説。' },
-  { path: '/blog/casino-terminology-100',      out: 'blog/casino-terminology-100/index.html',      title: 'カジノ用語100選：ディーラーを目指す人が覚えるべき基本用語', desc: 'カジノディーラーを目指す人が最初に覚えるべき100の専門用語をカテゴリ別に解説。' },
-  { path: '/blog/roulette-payout-master',      out: 'blog/roulette-payout-master/index.html',      title: 'ルーレットディーラーのペイアウト計算完全マスター', desc: 'ルーレットの全ベットタイプのペイアウト計算方法を徹底解説。' },
 ]
 
 const COURSE_SCHEMAS = (() => {
@@ -78,4 +73,20 @@ for (const route of ROUTES) {
   console.log(`  ✓ ${route.out}`)
 }
 
-console.log(`\n✨ Prerendered ${ROUTES.length} routes (${COURSE_SCHEMAS.length} with Course schema)`)
+const blogPosts = buildAllBlogPages()
+
+const blogIndexHtml = template
+  .replace(/<title>.*?<\/title>/, '<title>ブログ — CasinoCallege</title>')
+  .replace(/<meta name="description" content="[^"]*"/, '<meta name="description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
+  .replace(/<meta property="og:title" content="[^"]*"/, '<meta property="og:title" content="ブログ — CasinoCallege"')
+  .replace(/<meta property="og:description" content="[^"]*"/, '<meta property="og:description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
+  .replace(/<meta property="og:url" content="[^"]*"/, '<meta property="og:url" content="https://casino-callege.pages.dev/blog"')
+  .replace(/<meta name="twitter:title" content="[^"]*"/, '<meta name="twitter:title" content="ブログ — CasinoCallege"')
+  .replace(/<meta name="twitter:description" content="[^"]*"/, '<meta name="twitter:description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
+
+const blogIndexDir = join(dist, 'blog')
+if (!existsSync(blogIndexDir)) mkdirSync(blogIndexDir, { recursive: true })
+writeFileSync(join(blogIndexDir, 'index.html'), blogIndexHtml)
+console.log('  ✓ blog/index.html (SPA fallback)')
+
+console.log(`\n✨ Prerendered ${ROUTES.length} SPA routes (${COURSE_SCHEMAS.length} with Course schema) + ${blogPosts.length} blog posts (standalone)`)

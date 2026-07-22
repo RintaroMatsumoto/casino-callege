@@ -7,7 +7,7 @@ import CasinoBackground from './CasinoBackground'
 import { BookOpen, Menu } from 'lucide-react'
 
 function helmetForPath(pathname: string) {
-  if (pathname === '/') return <Helmet><title>CasinoCallege — カジノディーラー養成プラットフォーム</title><meta name="description" content="実際のディーラースクール教育カリキュラムに準拠した本格的なカジノ学習プラットフォーム。全7Phaseのカリキュラムでブラックジャック、ルーレット、クラップス、ポーカー、バカラを無料で学ぶ。" /></Helmet>
+  if (pathname === '/') return <Helmet><title>CasinoCallege — カジノ大学</title><meta name="description" content="実際のディーラースクール教育カリキュラムに準拠した本格的なカジノ学習プラットフォーム。全7Phaseのカリキュラムでブラックジャック、ルーレット、クラップス、ポーカー、バカラを無料で学ぶ。" /></Helmet>
   if (pathname.startsWith('/phase/0')) return <Helmet><title>Phase 0: 基礎 — CasinoCallege</title><meta name="description" content="カジノの基礎、専門用語、数学的基礎、チップ操作、カードハンドリングを学ぶ。ディーラーになるための第一歩。" /></Helmet>
   if (pathname.startsWith('/phase/1')) return <Helmet><title>Phase 1: ブラックジャック — CasinoCallege</title><meta name="description" content="ブラックジャックのディーリング技術を習得。シュー/ピッチゲーム、ペイアウト計算、ベーシックストラテジー、ゲームプロテクションを網羅。" /></Helmet>
   if (pathname.startsWith('/phase/2')) return <Helmet><title>Phase 2: ルーレット — CasinoCallege</title><meta name="description" content="アメリカン/ヨーロピアンルーレットの全ベットタイプ、ペイアウト計算、チップ管理を学ぶ。ディーラーとしての正確なペイアウト技術を習得。" /></Helmet>

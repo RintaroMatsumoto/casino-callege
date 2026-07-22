@@ -38,7 +38,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
           </div>
           <div>
             <p className="text-white font-bold text-sm leading-none">CasinoCallege</p>
-            <p className="text-casino-muted text-[10px] leading-none mt-0.5">カジノゲームの教科書</p>
+            <p className="text-casino-muted text-[10px] leading-none mt-0.5">カジノ大学</p>
           </div>
         </div>
         <button onClick={onClose} className="lg:hidden p-1 text-casino-muted hover:text-white">

@@ -21,7 +21,7 @@ export default function Dashboard() {
           Casino<span className="text-casino-gold">Callege</span>
         </h1>
           <p className="text-casino-muted text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            カジノゲームの教科書。
+             カジノ大学。
             <br />プレイヤー、ディーラー、そして好奇心を持つすべての人へ。
           </p>
       </div>
