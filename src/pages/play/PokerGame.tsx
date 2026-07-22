@@ -78,7 +78,7 @@ export default function PokerGame() {
     <div className="max-w-2xl mx-auto animate-fadeIn">
       <div className="flex items-center gap-3 mb-2"><span className="text-2xl">♠️</span><h1 className="text-lg font-bold text-white">テキサスホールデム</h1></div>
       <div className="flex items-center justify-between mb-1"><div className="text-base font-bold text-white">${balance.toLocaleString()}</div><div className="text-sm text-casino-gold font-bold">POT: ${g.pot}</div></div>
-      <PhaseBadge phase={g.phase} steps={STEPS} current={stepIdx} />
+      <PhaseBadge steps={STEPS} current={stepIdx} />
       {g.phase === 'preflop' && !res && <TipBox text="手持ち2枚+場の5枚で最強の5枚の役を作る。役の強さ: ロイヤルフラッシュ>ストレートフラッシュ>フォーカード>...>ハイカード。" />}
 
       <div style={{ background: 'radial-gradient(ellipse at 50% 30%, #1a8a3a 0%, #0f6a28 60%, #0a4a1a 100%)', borderRadius: 16, padding: 14, border: '4px solid #3d2b1f', height: 380, position: 'relative' }}>

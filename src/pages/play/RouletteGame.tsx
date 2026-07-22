@@ -52,7 +52,7 @@ export default function RouletteGame() {
         <div className="flex items-center gap-3"><span className="text-2xl">🎡</span><h1 className="text-lg font-bold text-white">ルーレット</h1></div>
         <div className="text-right"><div className="text-base font-bold text-white">${balance.toLocaleString()}</div></div>
       </div>
-      <PhaseBadge phase={spinning ? 'spinning' : res ? 'res' : 'bet'} steps={STEPS} current={stepIdx} />
+      <PhaseBadge steps={STEPS} current={stepIdx} />
       {!res && !spinning && <div className="mb-2"><ChipTray balance={balance} bet={bet} onBet={(v) => { if (v <= balance) setBet(v) }} />
         <TipBox text="好きな賭け方を選んでチップを置き「スピン」。当たれば配当(赤/黒=1:1、数字=35:1)。0は緑で赤黒どちらでもない。" /></div>}
 

@@ -71,7 +71,7 @@ export default function BaccaratGame() {
         <div className="flex items-center gap-3"><span className="text-2xl">💎</span><h1 className="text-lg font-bold text-white">バカラ</h1></div>
         <div className="text-right"><div className="text-base font-bold text-white">${balance.toLocaleString()}</div></div>
       </div>
-      <PhaseBadge phase={phase} steps={STEPS} current={stepIdx} />
+      <PhaseBadge steps={STEPS} current={stepIdx} />
       {commission > 0 && <div className="flex justify-end mb-1 text-xs"><span className="text-casino-gold font-bold">COMMISSION: ${commission.toLocaleString()}</span></div>}
 
       {phase === 'bet' && <div className="mb-2"><ChipTray balance={balance} bet={bet} onBet={(v) => { if (v <= balance) setBet(v) }} />

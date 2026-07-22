@@ -50,7 +50,7 @@ export default function CrapsGame() {
         <div className="flex items-center gap-3"><span className="text-2xl">🎲</span><h1 className="text-lg font-bold text-white">クラップス</h1></div>
         <div className="text-right"><div className="text-base font-bold text-white">${balance.toLocaleString()}</div></div>
       </div>
-      <PhaseBadge phase={phase} steps={STEPS} current={stepIdx} />
+      <PhaseBadge steps={STEPS} current={stepIdx} />
       {phase === 'bet' && <div className="mb-2"><ChipTray balance={balance} bet={bet} onBet={(v) => { if (v <= balance) setBet(v) }} />
         <TipBox text="カムアウトロール: 7か11なら勝ち、2/3/12なら負け。それ以外はポイント成立。ポイント後に7が出ると「セブンアウト」で負け。" />
         <div className="flex gap-2 mt-2"><button onClick={() => startGame('pass')} className="flex-1 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm">Pass Line ${bet.toLocaleString()}</button><button onClick={() => startGame('dontpass')} className="flex-1 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm">Don't Pass ${bet.toLocaleString()}</button></div>
