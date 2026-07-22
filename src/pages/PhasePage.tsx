@@ -1,20 +1,32 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useMemo } from 'react'
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, ArrowRight, List, X, BookOpen, Clock } from 'lucide-react'
 import { illustrationMap } from '../components/illustrations'
 
-const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string }> = {
-  '0': { title: 'Phase 0: 基礎', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h' },
-  '1': { title: 'Phase 1: ブラックジャック', file: 'phase-1-blackjack.md', lessons: 24, time: '11h' },
-  '2': { title: 'Phase 2: ルーレット', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h' },
-  '3': { title: 'Phase 3: クラップス', file: 'phase-3-craps.md', lessons: 21, time: '9.5h' },
-  '4': { title: 'Phase 4: ポーカー', file: 'phase-4-poker.md', lessons: 12, time: '5h' },
-  '5': { title: 'Phase 5: バカラ', file: 'phase-5-baccarat.md', lessons: 15, time: '6h' },
-  '6': { title: 'Phase 6: キャリア', file: 'phase-6-other-career.md', lessons: 12, time: '5h' },
+const phaseMeta: Record<string, { title: string; file: string; lessons: number; time: string; kw: string }> = {
+  '0': { title: 'Phase 0: 基礎', file: 'phase-0-fundamentals.md', lessons: 12, time: '5.5h', kw: 'カジノ 基礎, カジノ用語, チップ操作' },
+  '1': { title: 'Phase 1: ブラックジャック', file: 'phase-1-blackjack.md', lessons: 24, time: '11h', kw: 'ブラックジャック ディーラー, BJ 戦略, カードカウンティング' },
+  '2': { title: 'Phase 2: ルーレット', file: 'phase-2-roulette.md', lessons: 15, time: '6.5h', kw: 'ルーレット ディーラー, ペイアウト計算' },
+  '3': { title: 'Phase 3: クラップス', file: 'phase-3-craps.md', lessons: 21, time: '9.5h', kw: 'クラップス ディーラー, ルール, ダイス' },
+  '4': { title: 'Phase 4: ポーカー', file: 'phase-4-poker.md', lessons: 12, time: '5h', kw: 'ポーカー ディーラー, ハンドランキング' },
+  '5': { title: 'Phase 5: バカラ', file: 'phase-5-baccarat.md', lessons: 15, time: '6h', kw: 'バカラ ディーラー, タブロー' },
+  '6': { title: 'Phase 6: キャリア', file: 'phase-6-other-career.md', lessons: 12, time: '5h', kw: 'カジノディーラー キャリア, 大阪IR' },
 }
+
+const courseSchema = (m: typeof phaseMeta[string]): string => JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: m.title,
+  description: `カジノディーラー養成のための${m.title}。${m.kw}を学ぶ。`,
+  provider: { '@type': 'Organization', name: 'CasinoCallege', sameAs: 'https://casino-callege.pages.dev' },
+  educationalLevel: 'Beginner',
+  teaches: m.kw,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY', availability: 'https://schema.org/InStock' },
+})
 
 const contentModules: Record<string, () => Promise<{ default: string }>> = {
   'phase-0-fundamentals.md': () => import('../content/phase-0-fundamentals.md?raw'),
@@ -113,6 +125,9 @@ export default function PhasePage() {
 
   return (
     <div className="flex gap-0 h-[calc(100vh-56px)] overflow-hidden">
+      <Helmet>
+        <script type="application/ld+json">{courseSchema(meta)}</script>
+      </Helmet>
       {/* TOC sidebar */}
       <aside className={`shrink-0 w-56 border-r border-casino-border bg-casino-royal/50 overflow-y-auto sidebar-scroll ${tocOpen ? 'fixed inset-y-14 left-0 z-30' : 'hidden'} lg:block lg:static`}>
         <div className="sticky top-0 bg-casino-royal/90 backdrop-blur p-3 border-b border-casino-border flex items-center justify-between">

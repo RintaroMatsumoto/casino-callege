@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://casino-callege.pages.dev/sitemap.xml

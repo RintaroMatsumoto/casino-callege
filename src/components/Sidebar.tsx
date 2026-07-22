@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { X, Home, Library, HelpCircle, TrendingUp, Zap, Gem, DollarSign, Layout } from 'lucide-react'
+import { X, Home, Library, HelpCircle, TrendingUp, Zap, Gem, DollarSign, Layout, Newspaper } from 'lucide-react'
 import CasinoAffiliate from './CasinoAffiliate'
 
 const phases = [
@@ -82,6 +82,13 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         >
           <Library size={16} />
           用語集
+        </button>
+        <button
+          onClick={() => navigateTo('/blog')}
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${location.pathname.startsWith('/blog') ? 'bg-casino-gold/10 text-casino-gold' : 'text-casino-muted hover:text-white hover:bg-casino-card/50'}`}
+        >
+          <Newspaper size={16} />
+          ブログ
         </button>
 
         {/* Affiliate */}
