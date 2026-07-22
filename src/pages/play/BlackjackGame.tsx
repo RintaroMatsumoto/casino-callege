@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import type { Card } from '../../games/types'
 import { createDeck, shuffleDeck, handValue } from '../../games/types'
 import { ChipTray, PayoutBox } from '../../games/ChipTray'
@@ -12,50 +12,85 @@ export default function BlackjackGame() {
 
   const [balance, setBalance] = useState(1000)
   const [bet, setBet] = useState(10)
-  const [phase, setPhase] = useState<'bet' | 'play' | 'result'>('bet')
+  const [phase, setPhase] = useState<'bet' | 'dealing' | 'play' | 'dealer' | 'result'>('bet')
   const [deck, setDeck] = useState<Card[]>([])
   const [player, setPlayer] = useState<Card[]>([])
   const [dealer, setDealer] = useState<Card[]>([])
-  const [show, setShow] = useState(false)
+  const [pcards, setPcards] = useState<Card[]>([])
+  const [dcards, setDcards] = useState<Card[]>([])
   const [result, setResult] = useState<{ label: string; net: number; payout: number; odds: string } | null>(null)
+  const [dScore, setDScore] = useState(0)
+  const [pScore, setPScore] = useState(0)
 
-  const deal = useCallback(() => {
+  const deal = () => {
     if (bet > balance || bet <= 0) return
-    setBalance(b => b - bet); setResult(null); setShow(false)
+    setBalance(b => b - bet); setResult(null); setPcards([]); setDcards([])
+    setPlayer([]); setDealer([]); setPhase('dealing')
     const d = shuffleDeck(createDeck())
-    const p1 = d[0], p2 = d[2], d1 = d[1], d2 = d[3]
-    setPlayer([p1, p2]); setDealer([d1, { ...d2, hidden: true }]); setDeck(d.slice(4)); setPhase('play')
-    setTimeout(() => setShow(true), 300)
+    // Burn 1, then P1→D1→P2→D2(hidden)
+    const p1 = d[1], d1 = d[2], p2 = d[3], d2 = d[4]
+    setPlayer([p1, p2]); setDealer([d1, { ...d2, hidden: true }]); setDeck(d.slice(5))
+
+    // Animate: step by step
+    setTimeout(() => setPcards([p1]), 300)
+    setTimeout(() => setDcards([d1]), 600)
+    setTimeout(() => setPcards([p1, p2]), 900)
+    setTimeout(() => setDcards([d1, { ...d2, hidden: true }]), 1200)
+
     setTimeout(() => {
       const pv = handValue([p1, p2]), dv = handValue([d1, { ...d2, hidden: false }])
       const pS = pv.soft <= 21 ? pv.soft : pv.hard, dS = dv.soft <= 21 ? dv.soft : dv.hard
-      if (pS === 21 && dS === 21) { setBalance(b => b + bet); setResult({ label: '両者BJ プッシュ', net: 0, payout: bet, odds: '1:1' }); setPhase('result') }
-      else if (pS === 21) { const p = Math.floor(bet * 2.5); setBalance(b => b + p); setResult({ label: 'ブラックジャック!', net: Math.floor(bet * 1.5), payout: p, odds: '3:2' }); setPhase('result') }
-      else if (dS === 21) { setResult({ label: 'ディーラーBJ', net: -bet, payout: 0, odds: '-' }); setPhase('result') }
-    }, 1200)
-  }, [bet, balance])
+      setPScore(pS); setDScore(dS)
+
+      if (pS === 21 && dS === 21) { setBalance(b => b + bet); setResult({ label: '両者BJ プッシュ', net: 0, payout: bet, odds: '1:1' }); setDcards([d1, d2]); setPhase('result') }
+      else if (pS === 21) { const p = Math.floor(bet * 2.5); setBalance(b => b + p); setResult({ label: 'ブラックジャック!', net: Math.floor(bet * 1.5), payout: p, odds: '3:2' }); setDcards([d1, d2]); setPhase('result') }
+      else if (dS === 21) { setResult({ label: 'ディーラーBJ', net: -bet, payout: 0, odds: '-' }); setDcards([d1, d2]); setPhase('result') }
+      else { setPhase('play') }
+    }, 1800)
+  }
 
   const hit = () => {
     if (phase !== 'play' || !deck.length) return
     const card = deck[0]; setDeck(d => d.slice(1))
-    const np = [...player, card]; setPlayer(np); setShow(false); setTimeout(() => setShow(true), 50)
+    const np = [...player, card]; setPlayer(np)
+    setPcards(prev => [...prev, card])
     const v = handValue(np), s = v.soft <= 21 ? v.soft : v.hard
-    if (s > 21) { setTimeout(() => { setDealer(dealer.map(c => ({ ...c, hidden: false }))); setResult({ label: 'バースト', net: -bet, payout: 0, odds: '-' }); setPhase('result') }, 500) }
+    setPScore(s)
+    if (s > 21) {
+      setTimeout(() => {
+        setDcards(dealer.map(c => ({ ...c, hidden: false })))
+        setDScore(handValue(dealer.map(c => ({ ...c, hidden: false }))).soft <= 21 ? handValue(dealer.map(c => ({ ...c, hidden: false }))).soft : handValue(dealer.map(c => ({ ...c, hidden: false }))).hard)
+        setResult({ label: 'バースト', net: -bet, payout: 0, odds: '-' }); setPhase('result')
+      }, 500)
+    }
   }
 
   const stand = () => {
     if (phase !== 'play') return
-    setDealer(dealer.map(c => ({ ...c, hidden: false })))
-    setTimeout(() => {
-      let d = [...deck], h: Card[] = dealer.map(c => ({ ...c, hidden: false }))
-      while (true) { const v = handValue(h); if ((v.soft <= 21 ? v.soft : v.hard) >= 17) break; h.push(d[0]); d = d.slice(1); setDealer([...h]) }
-      const pv = handValue(player), pS = pv.soft <= 21 ? pv.soft : pv.hard, dv = handValue(h), dS = dv.soft <= 21 ? dv.soft : dv.hard
-      let net = -bet, label = '負け', payout = 0, odds = '-'
-      if (dS > 21) { net = bet; label = 'ディーラーバースト!'; payout = bet * 2; odds = '1:1'; setBalance(b => b + bet * 2) }
-      else if (pS > dS) { net = bet; label = 'プレイヤーの勝ち!'; payout = bet * 2; odds = '1:1'; setBalance(b => b + bet * 2) }
-      else if (pS === dS) { net = 0; label = 'プッシュ'; payout = bet; odds = '1:1'; setBalance(b => b + bet) }
-      setResult({ label, net, payout, odds }); setPhase('result')
-    }, 800)
+    setPhase('dealer')
+    const revealed = dealer.map(c => ({ ...c, hidden: false }))
+    setDcards(revealed)
+    setDealer(revealed)
+
+    let d = [...deck], h: Card[] = [...revealed]
+    const drawInterval = setInterval(() => {
+      const v = handValue(h); const s = v.soft <= 21 ? v.soft : v.hard
+      setDScore(s)
+      if (s >= 17) { clearInterval(drawInterval); finish(h); return }
+      h.push(d[0]); d = d.slice(1)
+      setDcards(prev => [...prev, h[h.length - 1]])
+      setDealer([...h])
+    }, 600)
+  }
+
+  const finish = (h: Card[]) => {
+    const pv = handValue(player), pS = pv.soft <= 21 ? pv.soft : pv.hard
+    const dv = handValue(h), dS = dv.soft <= 21 ? dv.soft : dv.hard
+    let net = -bet, label = '負け', payout = 0, odds = '-'
+    if (dS > 21) { net = bet; label = 'ディーラーバースト!'; payout = bet * 2; odds = '1:1'; setBalance(b => b + bet * 2) }
+    else if (pS > dS) { net = bet; label = 'プレイヤーの勝ち!'; payout = bet * 2; odds = '1:1'; setBalance(b => b + bet * 2) }
+    else if (pS === dS) { net = 0; label = 'プッシュ'; payout = bet; odds = '1:1'; setBalance(b => b + bet) }
+    setResult({ label, net, payout, odds }); setPhase('result')
   }
 
   return (
@@ -65,24 +100,36 @@ export default function BlackjackGame() {
         <div className="text-right"><div className="text-sm font-bold text-white">${balance.toLocaleString()}</div></div>
       </div>
       {phase === 'bet' && <div className="mb-1"><ChipTray balance={balance} bet={bet} onBet={(v) => { if (v <= balance) setBet(v) }} /></div>}
-      <div style={{ background: 'radial-gradient(ellipse at 50% 25%, #1a8a3a 0%, #0f6a28 55%, #0a4a1a 100%)', borderRadius: 14, padding: 12, border: '4px solid #3d2b1f', height: 320, position: 'relative' }}>
+
+      <div style={{ background: 'radial-gradient(ellipse at 50% 25%, #1a8a3a 0%, #0f6a28 55%, #0a4a1a 100%)', borderRadius: 14, padding: 12, border: '4px solid #3d2b1f', height: 340, position: 'relative' }}>
         <div style={{ position: 'absolute', bottom: 36, left: '50%', marginLeft: -35, width: 70, height: 50, borderRadius: '50%', border: '2px dashed rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
           {phase === 'bet' ? <span className="text-[7px] text-white/20">BET</span> : null}
           {phase !== 'bet' && <div style={{ width: 24, height: 24, borderRadius: '50%', background: '#f8fafc', border: '2px solid #475569', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 700, color: '#1e293b' }}>{bet}</div>}
         </div>
         <div style={{ position: 'absolute', top: 6, right: 5, width: 24, height: 36, borderRadius: 2, background: 'repeating-linear-gradient(45deg, #5a3a20 0, #5a3a20 3px, #4a3020 3px, #4a3020 6px)', border: '1px solid #3d2b1f', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontSize: 5, color: '#c4a882' }}>S</span></div>
+
+        {/* Step labels */}
+        {phase === 'dealing' && <div className="absolute top-1 left-3 text-[7px] text-white/30">バーン→配布</div>}
+
         <div className="absolute top-1 left-3 text-[7px] text-white/25">D</div>
         <div className="absolute" style={{ bottom: 90, left: 3 }}><span className="text-[7px] text-white/25">P</span></div>
-        {show && <>
-          {dealer.map((c, i) => <div key={'d' + i} style={{ position: 'absolute', left: 40 + i * 46, top: 10, zIndex: 10 }}><CardView card={c} /></div>)}
-          {player.map((c, i) => <div key={'p' + i} style={{ position: 'absolute', left: 40 + i * 46, top: 130, zIndex: 10, animation: 'bjCard 0.25s ease-out' }}><CardView card={c} /></div>)}
-        </>}
+
+        {/* Dealer cards */}
+        {dcards.map((c, i) => <div key={'d' + i} style={{ position: 'absolute', left: 40 + i * 46, top: 10, zIndex: 10, animation: 'bjCard 0.3s ease-out' }}><CardView card={c} />{i === 0 && <div className="text-center text-[8px] text-white/30 mt-0.5">{dScore > 0 && phase !== 'dealing' ? dScore : ''}</div>}</div>)}
+        {phase === 'dealer' && dcards.length > 2 && <div className="absolute text-[8px] text-white/40" style={{ left: 40 + (dcards.length - 1) * 46, top: 70 }}>DRAW</div>}
+
+        {/* Player cards */}
+        {pcards.map((c, i) => <div key={'p' + i} style={{ position: 'absolute', left: 40 + i * 46, top: 130, zIndex: 10, animation: 'bjCard 0.3s ease-out' }}><CardView card={c} /></div>)}
+        {pScore > 0 && <div className="absolute text-[9px] font-bold" style={{ left: 40 + (pcards.length) * 46 + 4, top: 145, color: pScore > 21 ? '#ef4444' : '#f4a81d' }}>{pScore}</div>}
+
+        {/* Result */}
         {result && <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0,0,0,0.8)', borderRadius: 10, padding: '6px 12px', textAlign: 'center', zIndex: 50, minWidth: 160 }}><PayoutBox label={result.label} bet={bet} odds={result.odds} payout={result.payout} net={result.net} /></div>}
       </div>
+
       <div className="flex gap-2 mt-2 justify-center">
         {phase === 'bet' && <button onClick={deal} disabled={bet > balance} className="px-5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs disabled:opacity-30">ディール</button>}
         {phase === 'play' && <><button onClick={hit} className="px-5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">👆 ヒット</button><button onClick={stand} className="px-5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs">✋ スタンド</button></>}
-        {phase === 'result' && <button onClick={() => { setPhase('bet'); setShow(false); setResult(null) }} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold text-xs font-bold"><RotateCcw size={12} /> もう一度</button>}
+        {phase === 'result' && <button onClick={() => { setPhase('bet'); setPcards([]); setDcards([]); setResult(null); setPScore(0); setDScore(0) }} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold text-xs font-bold"><RotateCcw size={12} /> もう一度</button>}
       </div>
     </div>
   )
