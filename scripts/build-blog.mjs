@@ -225,58 +225,10 @@ function inlineMD(text) {
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') }
 
 function heroImage(cat, slug) {
-  const photoMap = {
-    'dealer-blackjack': 'dealer-blackjack.png',
-    'what-is-dealer-job': 'dealer-blackjack.png',
-    'casino-dealer-guide-2026': 'dealer-blackjack.png',
-    'dealer-school-certification-guide': 'dealer-blackjack.png',
-    'dealer-no-experience-guide': 'dealer-blackjack.png',
-    'dealer-salary-guide': 'dealer-blackjack.png',
-    'dealer-personality-guide': 'dealer-blackjack.png',
-    'dealer-certification-faq': 'dealer-blackjack.png',
-    'dealer-is-it-tough': 'dealer-blackjack.png',
-    'dealer-women-career': 'dealer-blackjack.png',
-    'dealer-english-necessity': 'dealer-blackjack.png',
-    'dealer-career-change-30s': 'dealer-blackjack.png',
-    'dealer-salary-million-myth': 'dealer-blackjack.png',
-    'dealer-hourly-wage-comparison': 'dealer-blackjack.png',
-    'dealer-career-path-statistics': 'dealer-blackjack.png',
-    'dealer-learning-time-analysis': 'dealer-blackjack.png',
-    'dealer-interview-secrets': 'dealer-blackjack.png',
-    'casino-school-comparison-2026': 'casino-interior.png',
-    'osaka-ir-dealer-demand': 'casino-interior.png',
-    'dealer-school-curriculum-inside': 'casino-interior.png',
-    'casino-revenue-structure': 'casino-interior.png',
-    'japan-ir-reality': 'casino-interior.png',
-    'casino-industry-japan-vs-world': 'casino-interior.png',
-    'casino-first-time-experience': 'casino-interior.png',
-    'casino-high-roller-story': 'casino-interior.png',
-    'casino-superstitions-and-legends': 'casino-interior.png',
-    'casino-inside-after-hours': 'casino-interior.png',
-    'blackjack-dealer-basics': 'dealer-blackjack.png',
-    'blackjack-basic-strategy': 'blackjack-21.png',
-    'basic-strategy-japan-data': 'blackjack-21.png',
-    'card-counting-for-beginners': 'blackjack-21.png',
-    'blackjack-hand-signals-complete': 'dealer-blackjack.png',
-    'roulette-payout-master': 'roulette-wheel.png',
-    'roulette-winning-strategy-truth': 'roulette-wheel.png',
-    'craps-basics-complete': 'craps-dice.png',
-    'craps-rules-simple': 'craps-dice.png',
-    'dealer-sees-everything': 'craps-dice.png',
-    'baccarat-tableau-master': 'baccarat-table.png',
-    'casino-rules-complete-guide': 'casino-chips-cards.png',
-    'casino-terminology-100': 'casino-chips-cards.png',
-    'casino-glossary-complete': 'casino-chips-cards.png',
-    'chip-counting-practice': 'casino-chips-cards.png',
-    'card-shuffling-methods': 'casino-chips-cards.png',
-    'house-edge-complete-comparison': 'blackjack-21.png',
-    'dealer-speed-training': 'casino-chips-cards.png',
-    'dealers-mind-one-hand': 'casino-chips-cards.png',
-    'rookie-dealer-first-day': 'dealer-blackjack.png',
-  }
-  const photo = photoMap[slug]
-  if (photo) {
-    return `<img src="/blog-images/${photo}" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
+  const imgFile = `${slug}.png`
+  const imgPath = join(__dirname, '..', 'dist', 'blog-images', imgFile)
+  if (existsSync(imgPath)) {
+    return `<img src="/blog-images/${imgFile}" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
   }
   const cats = {
     career: { color: '#22c55e', emoji: '🎯', label: 'CAREER' },
