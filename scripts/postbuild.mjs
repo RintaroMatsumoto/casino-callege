@@ -75,18 +75,4 @@ for (const route of ROUTES) {
 
 const blogPosts = buildAllBlogPages()
 
-const blogIndexHtml = template
-  .replace(/<title>.*?<\/title>/, '<title>ブログ — CasinoCallege</title>')
-  .replace(/<meta name="description" content="[^"]*"/, '<meta name="description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
-  .replace(/<meta property="og:title" content="[^"]*"/, '<meta property="og:title" content="ブログ — CasinoCallege"')
-  .replace(/<meta property="og:description" content="[^"]*"/, '<meta property="og:description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
-  .replace(/<meta property="og:url" content="[^"]*"/, '<meta property="og:url" content="https://casino-callege.pages.dev/blog"')
-  .replace(/<meta name="twitter:title" content="[^"]*"/, '<meta name="twitter:title" content="ブログ — CasinoCallege"')
-  .replace(/<meta name="twitter:description" content="[^"]*"/, '<meta name="twitter:description" content="カジノディーラー学習に役立つ情報を発信するCasinoCallege公式ブログ。"')
-
-const blogIndexDir = join(dist, 'blog')
-if (!existsSync(blogIndexDir)) mkdirSync(blogIndexDir, { recursive: true })
-writeFileSync(join(blogIndexDir, 'index.html'), blogIndexHtml)
-console.log('  ✓ blog/index.html (SPA fallback)')
-
 console.log(`\n✨ Prerendered ${ROUTES.length} SPA routes (${COURSE_SCHEMAS.length} with Course schema) + ${blogPosts.length} blog posts (standalone)`)

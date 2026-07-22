@@ -1,1 +1,5 @@
+# Static blog files take priority over SPA
+/blog/*  /blog/  200
+/blog/*  /blog/:slug  200
+# SPA fallback
 /*  /index.html  200
