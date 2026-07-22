@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom'
+import type { ReactNode } from 'react'
 import BlackjackGame from './BlackjackGame'
 import RouletteGame from './RouletteGame'
 import CrapsGame from './CrapsGame'
 import PokerGame from './PokerGame'
 import BaccaratGame from './BaccaratGame'
 
-const GAMES: Record<string, { component: () => JSX.Element }> = {
+const GAMES: Record<string, { component: () => ReactNode }> = {
   blackjack: { component: BlackjackGame },
   roulette: { component: RouletteGame },
   craps: { component: CrapsGame },
