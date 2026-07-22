@@ -9,23 +9,44 @@ const HAND_NAMES: Record<string, string> = {
   '3': 'スリーカード', '2': 'ツーペア', '1': 'ワンペア', '0': 'ハイカード',
 }
 
+function rankVal(r: string) { return r === 'A' ? 14 : r === 'K' ? 13 : r === 'Q' ? 12 : r === 'J' ? 11 : r === '10' ? 10 : parseInt(r) }
+
+// Evaluate best 5-card hand from up to 7 cards
 function evaluate(cards: CardType[]) {
-  const v = cards.map(c => c.rank === 'A' ? 14 : c.rank === 'K' ? 13 : c.rank === 'Q' ? 12 : c.rank === 'J' ? 11 : c.rank === '10' ? 10 : parseInt(c.rank))
-  const s = [...v].sort((a, b) => b - a), suits = cards.map(c => c.suit)
-  const flush = suits.every(x => x === suits[0])
-  const straight = (() => { if (s[0] === 14 && s[1] === 5 && s[2] === 4 && s[3] === 3 && s[4] === 2) return 5; for (let i = 0; i < 4; i++) if (s[i] - s[i + 1] !== 1) return 0; return s[0] })()
-  const m = new Map<number, number>(); v.forEach(x => m.set(x, (m.get(x) || 0) + 1))
-  const g = [...m.entries()].sort((a, b) => b[1] - a[1] || b[0] - a[0])
-  if (straight === 14 && flush) return { rank: 9, name: HAND_NAMES['9'] }
-  if (flush && straight) return { rank: 8, name: HAND_NAMES['8'] }
-  if (g[0][1] === 4) return { rank: 7, name: HAND_NAMES['7'] }
-  if (g[0][1] === 3 && g[1]?.[1] === 2) return { rank: 6, name: HAND_NAMES['6'] }
-  if (flush) return { rank: 5, name: HAND_NAMES['5'] }
-  if (straight) return { rank: 4, name: HAND_NAMES['4'] }
-  if (g[0][1] === 3) return { rank: 3, name: HAND_NAMES['3'] }
-  if (g[0][1] === 2 && g[1]?.[1] === 2) return { rank: 2, name: HAND_NAMES['2'] }
-  if (g[0][1] === 2) return { rank: 1, name: HAND_NAMES['1'] }
-  return { rank: 0, name: HAND_NAMES['0'] }
+  let best = { rank: -1, name: '' }
+  for (let a = 0; a < cards.length; a++) {
+    for (let b = a + 1; b < cards.length; b++) {
+      for (let c = b + 1; c < cards.length; c++) {
+        for (let d = c + 1; d < cards.length; d++) {
+          for (let e = d + 1; e < cards.length; e++) {
+            const hand = [cards[a], cards[b], cards[c], cards[d], cards[e]]
+            const vals = hand.map(x => rankVal(x.rank)).sort((x, y) => y - x)
+            const suits = hand.map(x => x.suit)
+            const isFlush = suits.every(x => x === suits[0])
+            const isStraight = (() => {
+              if (vals[0] === 14 && vals[1] === 5 && vals[2] === 4 && vals[3] === 3 && vals[4] === 2) return 5
+              for (let i = 0; i < 4; i++) if (vals[i] - vals[i + 1] !== 1) return 0
+              return vals[0]
+            })()
+            const m = new Map<number, number>(); vals.forEach(x => m.set(x, (m.get(x) || 0) + 1))
+            const g = [...m.entries()].sort((x, y) => y[1] - x[1] || y[0] - x[0])
+            let rank = 0
+            if (isStraight === 14 && isFlush) rank = 9
+            else if (isFlush && isStraight) rank = 8
+            else if (g[0][1] === 4) rank = 7
+            else if (g[0][1] === 3 && g[1]?.[1] === 2) rank = 6
+            else if (isFlush) rank = 5
+            else if (isStraight) rank = 4
+            else if (g[0][1] === 3) rank = 3
+            else if (g[0][1] === 2 && g[1]?.[1] === 2) rank = 2
+            else if (g[0][1] === 2) rank = 1
+            if (rank > best.rank) best = { rank, name: HAND_NAMES[String(rank)] }
+          }
+        }
+      }
+    }
+  }
+  return best
 }
 
 const AI = ['佐藤', '鈴木', '田中']
@@ -65,9 +86,7 @@ export default function PokerGame() {
       <div className="flex items-center gap-2 mb-1"><span className="text-xl">♠️</span><h1 className="text-base font-bold text-white">テキサスホールデム</h1></div>
       <div style={{ background: 'radial-gradient(ellipse at 50% 30%, #1a8a3a 0%, #0f6a28 60%, #0a4a1a 100%)', borderRadius: 14, padding: 12, border: '4px solid #3d2b1f', height: 340, position: 'relative' }}>
         <div style={{ position: 'absolute', top: 46, right: 5, width: 24, height: 36, borderRadius: 2, background: 'repeating-linear-gradient(45deg, #5a3a20 0, #5a3a20 3px, #4a3020 3px, #4a3020 6px)', border: '1px solid #3d2b1f', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontSize: 5, color: '#c4a882' }}>D</span></div>
-        {/* Pot */}
         <div style={{ position: 'absolute', top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: 50, height: 35, borderRadius: '50%', border: '2px dashed rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span className="text-[7px] text-white/20">POT</span></div>
-        {/* AI */}
         <div className="flex justify-center gap-1" style={{ marginTop: 2 }}>
           {g.ai.map((hand, i) => <div key={i} className="flex flex-col items-center gap-0.5">
             <div className="flex gap-0.5"><PCard card={hand[0]} hidden={g.phase !== 'showdown'} sz={30} /><PCard card={hand[1]} hidden={g.phase !== 'showdown'} sz={30} /></div>
@@ -75,12 +94,10 @@ export default function PokerGame() {
             {g.phase === 'showdown' && result && <span className="text-[6px] text-casino-muted">{result.ai[i]}</span>}
           </div>)}
         </div>
-        {/* Community */}
         <div className="flex justify-center items-center gap-1" style={{ marginTop: 12, minHeight: 42 }}>
           {g.phase !== 'preflop' && <div style={{ width: 20, height: 28, borderRadius: 2, background: 'repeating-linear-gradient(45deg, #1e293b 0, #1e293b 3px, #334155 3px, #334155 6px)', border: '1px solid #475569', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 5, color: '#64748b' }}>B</div>}
           {g.phase === 'preflop' ? <span className="text-xs text-white/40">プリフロップ</span> : g.community.map((c, i) => <div key={i} style={{ animation: show ? 'pCard 0.3s ease-out ' + i * 0.1 + 's both' : 'none' }}><PCard card={c} hidden={false} sz={34} /></div>)}
         </div>
-        {/* Player */}
         <div className="flex justify-center gap-1" style={{ marginTop: 14 }}>{g.player.map((c, i) => <div key={i} style={{ animation: 'pCard 0.3s ease-out both' }}><PCard card={c} hidden={false} sz={36} /></div>)}</div>
         {result && <div className="mt-2 p-2 rounded-lg" style={{ background: 'rgba(0,0,0,0.4)' }}>
           <div className="text-center text-xs text-casino-muted"><span className={result.winner === 'あなた' ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}>{result.winner}</span>の勝ち{result.wHand && <span>（{result.wHand}）</span>}</div>

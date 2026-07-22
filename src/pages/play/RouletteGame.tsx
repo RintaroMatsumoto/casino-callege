@@ -73,7 +73,7 @@ export default function RouletteGame() {
         </div>
         {result && !spinning && <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.4)' }}>
           {result.win ? <PayoutBox label={result.num + ' (' + (result.num === 0 ? 'Green' : REDS.has(result.num) ? 'Red' : 'Black') + ')'} bet={bet} odds={result.odds} payout={result.payout} net={result.net} /> :
-            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{result.num}</div><div>-$' + {bet}</div></div>}
+            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{result.num}</div><div> -${bet} </div></div>}
         </div>}
       </div>
       {msg && <div className={'mt-1 text-center text-xs font-bold ' + (result?.win ? 'text-emerald-400' : 'text-red-400')}>{msg}</div>}

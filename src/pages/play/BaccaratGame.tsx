@@ -67,7 +67,7 @@ export default function BaccaratGame() {
       {/* Commission display */}
       {commission > 0 && <div className="flex justify-end mb-1 text-[9px]"><span className="text-casino-gold font-bold">COMM: ${commission}</span></div>}
 
-      {phase === 'bet' && <div className="flex gap-2 mb-2"><button onClick={() => place('player')} className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs">プレイヤー $' + {bet}</button><button onClick={() => place('banker')} className="flex-1 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs">バンカー $' + {bet}</button></div>}
+      {phase === 'bet' && <div className="flex gap-2 mb-2"><button onClick={() => place('player')} className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs">プレイヤー ${bet}</button><button onClick={() => place('banker')} className="flex-1 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs">バンカー ${bet}</button></div>}
 
       <div style={{ background: 'radial-gradient(ellipse at 50% 30%, #1a8a3a 0%, #0f6a28 60%, #0a4a1a 100%)', borderRadius: 14, padding: 12, border: '4px solid #3d2b1f', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 6, right: 5, width: 24, height: 34, borderRadius: 2, background: 'repeating-linear-gradient(45deg, #5a3a20 0, #5a3a20 3px, #4a3020 3px, #4a3020 6px)', border: '1px solid #3d2b1f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontSize: 5, color: '#c4a882' }}>S</span></div>
@@ -82,7 +82,7 @@ export default function BaccaratGame() {
         </div>
         {lr && phase === 'result' && <div className="mt-3 p-2 rounded-lg" style={{ background: 'rgba(0,0,0,0.4)' }}>
           {lr.net >= 0 ? <PayoutBox label={lr.label} bet={bet} odds={lr.odds} payout={lr.payout} net={lr.net} /> :
-            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{lr.label}</div><div>-$' + {bet}</div></div>}
+            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{lr.label}</div><div> -${bet} </div></div>}
         </div>}
       </div>
       {msg && <div className={'mt-1 text-center text-xs font-bold ' + (msgType === 'win' ? 'text-emerald-400' : msgType === 'lose' ? 'text-red-400' : 'text-casino-gold')}>{msg}</div>}

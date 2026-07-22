@@ -69,14 +69,14 @@ export default function CrapsGame() {
 
         {result && <div className="mt-3 p-2 rounded-lg" style={{ background: 'rgba(0,0,0,0.4)' }}>
           {result.win ? <PayoutBox label={result.label} bet={bet} odds={result.odds} payout={result.payout} net={result.net} /> :
-            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{result.label}</div><div>-$' + {bet}</div></div>}
+            <div className="text-center text-xs text-red-400"><div className="font-bold">LOSE</div><div>{result.label}</div><div> -${bet} </div></div>}
         </div>}
       </div>
 
       {msg && <div className={'mt-1 text-center text-xs font-bold ' + (msgType === 'win' ? 'text-emerald-400' : msgType === 'lose' ? 'text-red-400' : 'text-casino-gold')}>{msg}</div>}
 
       <div className="flex gap-2 mt-2 justify-center">
-        {phase === 'bet' && <button onClick={startGame} className="px-5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">Pass $' + {bet}</button>}
+        {phase === 'bet' && <button onClick={startGame} className="px-5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">Pass ${bet}</button>}
         {phase !== 'bet' && phase !== 'result' && <button onClick={roll} disabled={rolling} className="px-6 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs disabled:opacity-30">{rolling ? '...' : '🎲 ロール'}</button>}
         {phase === 'result' && <button onClick={() => { setPhase('bet'); setPoint(null); setResult(null); setCall(null) }} className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-casino-gold/10 border border-casino-gold/30 text-casino-gold text-xs font-bold"><RotateCcw size={12} /> もう一度</button>}
       </div>
