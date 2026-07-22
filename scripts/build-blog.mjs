@@ -78,6 +78,13 @@ code{background:#1a1a2e;color:#f4a81d;padding:1px 5px;border-radius:3px;font-siz
 .footer p{font-size:11px;color:#555;margin:4px 0}
 .tag{display:inline-block;font-size:10px;color:#888;background:rgba(255,255,255,.04);padding:2px 8px;border-radius:3px;margin:2px;text-decoration:none}
 .tag:hover{color:#f4a81d;background:rgba(244,168,29,.1)}
+.highlight{border-left:3px solid #f4a81d;background:rgba(244,168,29,.04);padding:12px 16px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:13px;color:#ccc}
+.highlight-tip{border-left-color:#22c55e;background:rgba(34,197,94,.04)}
+.highlight-warn{border-left-color:#ef4444;background:rgba(239,68,68,.04)}
+blockquote{border-left:3px solid #2a2a3e;padding:8px 16px;margin:0 0 14px 0;color:#888;font-size:13px}
+img{max-width:100%;height:auto;border-radius:8px;margin:8px 0 16px 0;border:1px solid #2a2a3e}
+.dl-box{display:block;padding:16px 20px;background:rgba(244,168,29,.06);border:1px solid rgba(244,168,29,.2);border-radius:8px;text-decoration:none;margin-bottom:14px;transition:all .2s}
+.dl-box:hover{border-color:rgba(244,168,29,.4);background:rgba(244,168,29,.1)}
 @media(max-width:600px){article{padding:24px 18px}h1{font-size:22px}.related-grid{grid-template-columns:1fr}}
 `.trim()
 
@@ -140,6 +147,19 @@ function renderMD(md) {
       if (!out.length || !out[out.length-1].startsWith('<ul>')) out.push('<ul>')
       out.push(`<li>${inlineMD(line.slice(2))}</li>`)
       if (!next.startsWith('- ')) out.push('</ul>')
+    } else if (line.startsWith('> ')) {
+      out.push(`<blockquote>${inlineMD(line.slice(2))}</blockquote>`)
+    } else if (line.startsWith(':::tip')) {
+      out.push(`<div class="highlight highlight-tip">`)
+    } else if (line.startsWith(':::warn')) {
+      out.push(`<div class="highlight highlight-warn">`)
+    } else if (line.startsWith(':::info')) {
+      out.push(`<div class="highlight">`)
+    } else if (line === ':::' && out.length && out[out.length-1].startsWith('<div class="highlight')) {
+      out.push('</div>')
+    } else if (line.startsWith('[dl-')) {
+      const m = line.match(/\[dl-(.+?)\](.+)/)
+      if (m) out.push(`<a class="dl-box" href="/resources/${m[1].trim()}/"><span class="dl-icon">📥</span><span class="dl-title">${esc(m[2].trim())}</span><span class="dl-desc">無料ダウンロード</span></a>`)
     } else if (line.trim() === '') { /* skip */ }
     else { out.push(`<p>${inlineMD(line)}</p>`) }
   }
@@ -148,7 +168,15 @@ function renderMD(md) {
 }
 
 function inlineMD(text) {
-  return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`(.+?)`/g, '<code>$1</code>')
+  return text
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
+      if (src.startsWith('data:')) return `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy">`
+      if (src.startsWith('http') || src.startsWith('/')) return `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy">`
+      return `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy">`
+    })
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') }
@@ -385,7 +413,122 @@ export function buildAllBlogPages() {
   writeFileSync(join(outDir, 'rss.xml'), buildRSS(allPosts))
   console.log('  ✓ blog/rss.xml')
 
+  // Resources (downloadable)
+  buildResources()
+
   return allPosts
+}
+
+function buildResources() {
+  const resources = [
+    { slug: 'blackjack-strategy-table', title: 'ブラックジャック基本戦略表', desc: '全パターンの最適なアクションを一覧表示。印刷してテーブル横に貼れる早見表。', emoji: '🃏' },
+    { slug: 'poker-hand-rankings', title: 'ポーカーハンドランキング早見表', desc: '全10種類のハンドを強さ順にランキング。コンパクトに印刷できる。', emoji: '♠️' },
+    { slug: 'dealer-interview-questions', title: 'カジノディーラー面接質問集', desc: '実際の面接で聞かれる質問と回答例を完全網羅。事前準備に最適。', emoji: '🎯' },
+  ]
+
+  const resDir = join(outDir, '..', 'resources')
+  if (!existsSync(resDir)) mkdirSync(resDir, { recursive: true })
+
+  for (const r of resources) {
+    const d = join(resDir, r.slug)
+    if (!existsSync(d)) mkdirSync(d, { recursive: true })
+
+    const content = resourceContent(r)
+    const html = buildResourcePage(r, content)
+    writeFileSync(join(d, 'index.html'), html)
+    console.log(`  ✓ resources/${r.slug}/index.html`)
+  }
+}
+
+function buildResourcePage(r, content) {
+  return `<!doctype html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(r.title)} — CasinoCallege</title><meta name="description" content="${esc(r.desc)}"><link rel="canonical" href="${SITE_URL}/resources/${r.slug}/"><style>${CSS}</style></head><body><div class="wrap"><a href="/blog/" class="top-link">← ブログ一覧</a><article><h1>${r.emoji} ${esc(r.title)}</h1><div class="meta">📥 無料ダウンロード・印刷用リソース</div>${content}<div class="cta-box"><p>🎓 CasinoCallegeでディーラー学習を始めよう</p><a href="/" class="btn">カリキュラムを見る</a></div></article></div></body></html>`
+}
+
+function resourceContent(r) {
+  if (r.slug === 'blackjack-strategy-table') {
+    return `
+<h2>ハードハンドの戦略</h2>
+<div class="tbl-wrap"><table><thead><tr><th>プレイヤーの手札</th><th>ディーラー2-6</th><th>ディーラー7-A</th></tr></thead><tbody>
+<tr><td>17以上</td><td>Stand</td><td>Stand</td></tr>
+<tr><td>13-16</td><td>Stand</td><td>Hit</td></tr>
+<tr><td>12</td><td>4-6はStand、他はHit</td><td>Hit</td></tr>
+<tr><td>11</td><td>Double Down</td><td>Double Down</td></tr>
+<tr><td>10</td><td>2-9でDouble</td><td>Hit</td></tr>
+<tr><td>9</td><td>3-6でDouble</td><td>Hit</td></tr>
+<tr><td>8以下</td><td>Hit</td><td>Hit</td></tr>
+</tbody></table></div>
+
+<h2>ソフトハンドの戦略</h2>
+<div class="tbl-wrap"><table><thead><tr><th>プレイヤーの手札</th><th>アクション</th></tr></thead><tbody>
+<tr><td>A-8以上（19以上）</td><td>Stand</td></tr>
+<tr><td>A-7（18）</td><td>2-8はStand、9-AはHit</td></tr>
+<tr><td>A-6以下</td><td>HitまたはDouble（状況による）</td></tr>
+</tbody></table></div>
+
+<h2>ペアのスプリット戦略</h2>
+<div class="tbl-wrap"><table><thead><tr><th>ペア</th><th>アクション</th></tr></thead><tbody>
+<tr><td>A-A</td><td>常にスプリット</td></tr>
+<tr><td>10-10</td><td>絶対にスプリットしない</td></tr>
+<tr><td>9-9</td><td>2-6,8-9でスプリット</td></tr>
+<tr><td>8-8</td><td>常にスプリット</td></tr>
+<tr><td>7-7</td><td>2-7でスプリット</td></tr>
+<tr><td>6-6</td><td>2-6でスプリット</td></tr>
+<tr><td>5-5</td><td>スプリットしない（Double推奨）</td></tr>
+<tr><td>4-4</td><td>5-6でスプリット</td></tr>
+<tr><td>2-2,3-3</td><td>2-7でスプリット</td></tr>
+</tbody></table></div>
+
+<p style="margin-top:20px;font-size:12px;color:#888;text-align:center;">この表は印刷してご利用いただけます。CasinoCallegeのPhase 1でさらに詳しい解説を学べます。</p>`
+  }
+
+  if (r.slug === 'poker-hand-rankings') {
+    return `
+<div class="tbl-wrap"><table><thead><tr><th>強さ</th><th>ハンド名</th><th>説明</th><th>例</th></tr></thead><tbody>
+<tr><td>1</td><td>ロイヤルフラッシュ</td><td>A-K-Q-J-10 同スート</td><td>♠A ♠K ♠Q ♠J ♠10</td></tr>
+<tr><td>2</td><td>ストレートフラッシュ</td><td>5枚連続 同スート</td><td>♥5 ♥6 ♥7 ♥8 ♥9</td></tr>
+<tr><td>3</td><td>フォーカード</td><td>同じ数字4枚</td><td>A A A A K</td></tr>
+<tr><td>4</td><td>フルハウス</td><td>スリーカード＋ワンペア</td><td>K K K Q Q</td></tr>
+<tr><td>5</td><td>フラッシュ</td><td>5枚すべて同スート</td><td>♣2 ♣5 ♣7 ♣J ♣K</td></tr>
+<tr><td>6</td><td>ストレート</td><td>5枚連続の数字</td><td>5 6 7 8 9</td></tr>
+<tr><td>7</td><td>スリーカード</td><td>同じ数字3枚</td><td>7 7 7 Q K</td></tr>
+<tr><td>8</td><td>ツーペア</td><td>ペア2組</td><td>A A Q Q 3</td></tr>
+<tr><td>9</td><td>ワンペア</td><td>ペア1組</td><td>10 10 A Q 5</td></tr>
+<tr><td>10</td><td>ハイカード</td><td>どの条件も満たさない</td><td>A K 8 6 3</td></tr>
+</tbody></table></div>
+<p style="margin-top:20px;font-size:12px;color:#888;text-align:center;">この表は印刷してご利用いただけます。ポーカーの詳しいルールはCasinoCallegeのPhase 4で学べます。</p>`
+  }
+
+  if (r.slug === 'dealer-interview-questions') {
+    return `
+<h2>よく聞かれる質問と回答例</h2>
+
+<h3>1. なぜカジノディーラーになりたいのですか？</h3>
+<p><strong>回答例</strong>：「人と接する仕事が好きで、正確さとスピードが求められるディーラーという職業に魅力を感じました。また、今後の日本IR開業に向けて成長産業で働きたいと考えています。」</p>
+
+<h3>2. 得意なゲームは？</h3>
+<p><strong>回答例</strong>：「ブラックジャックが最も得意です。基本戦略を完全にマスターしており、ペイアウト計算も正確に行えます。現在はルーレットとバカラのスキルも磨いています。」</p>
+
+<h3>3. ストレス耐性はありますか？</h3>
+<p><strong>回答例</strong>：「前職での接客経験を通じて、クレーム対応や繁忙期のプレッシャーに慣れています。どんな状況でも冷静さを保つことを心がけています。」</p>
+
+<h3>4. シフト勤務は可能ですか？</h3>
+<p><strong>回答例</strong>：「はい。夜勤や週末勤務も問題なく対応できます。不規則な生活リズムにも順応できる自信があります。」</p>
+
+<h3>5. 英語はどの程度できますか？</h3>
+<p><strong>回答例</strong>：「日常会話レベルです。ゲーム用語の英語は勉強中で、実際の業務を通じてさらに向上させるつもりです。」</p>
+
+<h3>6. チップ計算の正確性は？</h3>
+<p><strong>回答例</strong>：「暗算は得意で、特にルーレットの35:1やブラックジャックの3:2のような複雑な配当も正確に計算できます。」</p>
+
+<h3>7. 長所と短所を教えてください</h3>
+<p><strong>回答例</strong>：「長所は集中力と正確さです。短所は完璧を求めすぎるところで、スピードとのバランスを意識的に取るようにしています。」</p>
+
+<h3>8. 最後に一言</h3>
+<p><strong>回答例</strong>：「お客様に最高のエンターテインメント体験を提供できるディーラーになりたいと考えています。採用していただければ、全力で貢献します。」</p>
+
+<p style="margin-top:20px;font-size:12px;color:#888;text-align:center;">面接対策についてはCasinoCallegeのPhase 6（キャリア）でも詳しく解説しています。</p>`
+  }
+  return ''
 }
 
 function buildListingPage(title, desc, posts, baseUrl) {
