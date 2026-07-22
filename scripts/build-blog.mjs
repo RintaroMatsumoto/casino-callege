@@ -181,6 +181,14 @@ function inlineMD(text) {
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') }
 
+function heroImage(cat) {
+  const colors = { career: '#22c55e', blackjack: '#f4a81d', roulette: '#ef4444', craps: '#3b82f6', baccarat: '#a78bfa', poker: '#f97316', industry: '#06b6d4', basics: '#f4a81d', english: '#ec4899' }
+  const color = colors[cat] || '#f4a81d'
+  const label = cat === 'blackjack' ? 'BLACKJACK' : cat === 'career' ? 'CAREER' : cat === 'roulette' ? 'ROULETTE' : cat === 'craps' ? 'CRAPS' : cat === 'baccarat' ? 'BACCARAT' : cat === 'poker' ? 'POKER' : cat === 'industry' ? 'INDUSTRY' : cat === 'basics' ? 'BASICS' : cat === 'english' ? 'ENGLISH' : 'CASINO'
+  const html = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px"><defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a0a14"/><stop offset="100%" stop-color="#161628"/></linearGradient></defs><rect width="800" height="320" fill="url(#hg)"/><rect x="24" y="24" width="752" height="272" rx="12" fill="none" stroke="${esc(color)}22" stroke-width="1"/><text x="400" y="100" text-anchor="middle" fill="${esc(color)}" font-size="28" font-weight="bold" letter-spacing="4" font-family="sans-serif">${esc(label)}</text><line x1="280" y1="120" x2="520" y2="120" stroke="${esc(color)}44" stroke-width="1"/><circle cx="400" cy="180" r="40" fill="${esc(color)}11" stroke="${esc(color)}44" stroke-width="1.5"/><text x="400" y="188" text-anchor="middle" fill="${esc(color)}" font-size="28">${cat==='blackjack'?'🃏':cat==='career'?'🎯':cat==='roulette'?'🎡':cat==='craps'?'🎲':cat==='baccarat'?'💎':cat==='poker'?'♠️':cat==='industry'?'📊':cat==='english'?'🌐':'📖'}</text><text x="400" y="250" text-anchor="middle" fill="#666" font-size="12" font-family="sans-serif">CasinoCallege — カジノ大学</text></svg>`
+  return `<div class="hero-img">${html}</div>`
+}
+
 function buildPage(post, allPosts) {
   const { front, body } = post
   const title = front.title || ''
@@ -257,6 +265,7 @@ function buildPage(post, allPosts) {
 <div class="breadcrumb"><a href="${SITE_URL}">CasinoCallege</a><span>›</span><a href="/blog/">ブログ</a><span>›</span><a href="/blog/category/${catId}/">${category}</a><span>›</span>${esc(title)}</div>
 
 <article>
+${heroImage(catId)}
 <span class="category">${esc(category)}</span>
 <h1>${esc(title)}</h1>
 <div class="meta">
