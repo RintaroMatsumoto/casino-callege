@@ -4,6 +4,9 @@ import Dashboard from './pages/Dashboard'
 import PhasePage from './pages/PhasePage'
 import GlossaryPage from './pages/GlossaryPage'
 import QuizPage from './pages/QuizPage'
+import BlogList from './pages/BlogList'
+import BlogPost from './pages/BlogPost'
+import PlayGame from './pages/play/PlayGame'
 
 export default function App() {
   return (
@@ -14,6 +17,9 @@ export default function App() {
           <Route path="phase/:id" element={<PhasePage />} />
           <Route path="glossary" element={<GlossaryPage />} />
           <Route path="quiz/:phaseId" element={<QuizPage />} />
+          <Route path="blog" element={<BlogList />} />
+          <Route path="blog/:slug" element={<BlogPost />} />
+          <Route path="play/:gameId" element={<PlayGame />} />
         </Route>
       </Routes>
     </BrowserRouter>

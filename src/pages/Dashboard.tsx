@@ -50,6 +50,32 @@ export default function Dashboard() {
           </button>
         ))}
       </div>
+
+      <h2 className="text-lg font-bold text-white mb-4 mt-10">ゲームをプレイ</h2>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {[
+          { id: 'blackjack', emoji: '🃏', label: 'ブラックジャック', color: 'from-amber-500 to-orange-600', phase: 'Phase 1' },
+          { id: 'roulette', emoji: '🎡', label: 'ルーレット', color: 'from-green-500 to-emerald-600', phase: 'Phase 2' },
+          { id: 'craps', emoji: '🎲', label: 'クラップス', color: 'from-red-500 to-rose-600', phase: 'Phase 3' },
+          { id: 'poker', emoji: '♠️', label: 'ポーカー', color: 'from-purple-500 to-violet-600', phase: 'Phase 4' },
+          { id: 'baccarat', emoji: '💎', label: 'バカラ', color: 'from-yellow-400 to-amber-600', phase: 'Phase 5' },
+        ].map(g => (
+          <button
+            key={g.id}
+            onClick={() => navigate(`/play/${g.id}`)}
+            className="bg-casino-card rounded-xl p-4 border border-casino-border hover:border-casino-gold/30 hover:bg-casino-card/80 transition-all group text-center"
+          >
+            <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${g.color} flex items-center justify-center mx-auto mb-2`}>
+              <span className="text-lg">{g.emoji}</span>
+            </div>
+            <p className="text-sm font-bold text-white">{g.label}</p>
+            <p className="text-[10px] text-casino-muted mt-0.5">{g.phase}</p>
+            <span className="inline-block mt-2 text-[10px] text-casino-gold bg-casino-gold/10 px-2 py-0.5 rounded-full">
+              Coming Soon
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
