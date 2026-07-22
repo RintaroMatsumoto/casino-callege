@@ -9,6 +9,9 @@ tags: ハイローラー, VIP, 高額ベット, 接待, カジノ戦略
 author: rintaro
 ---
 
+
+
+![STORY](/blog-images/casino-chips-cards.png)
 ## 「あの方」が来る
 
 マカオの某カジノホテル。午後3時。マネージャーの携帯電話に着信が入る。

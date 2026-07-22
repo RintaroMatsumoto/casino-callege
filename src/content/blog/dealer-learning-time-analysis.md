@@ -9,6 +9,9 @@ tags: 学習時間, データ, 習得, スキル, 統計
 author: rintaro
 ---
 
+
+
+![CAREER](/blog-images/dealer-blackjack.png)
 ディーラーになるのに必要な学習時間はどれくらいか。
 
 「人による」では答えにならない。CasinoCallegeの学習データから現実的な数値を出してみる。

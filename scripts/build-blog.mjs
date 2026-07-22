@@ -227,31 +227,84 @@ function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 function heroImage(cat, slug) {
   const photoMap = {
     'dealer-blackjack': 'dealer-blackjack.png',
+    'what-is-dealer-job': 'dealer-blackjack.png',
     'casino-dealer-guide-2026': 'dealer-blackjack.png',
     'dealer-school-certification-guide': 'dealer-blackjack.png',
     'dealer-no-experience-guide': 'dealer-blackjack.png',
     'dealer-salary-guide': 'dealer-blackjack.png',
     'dealer-personality-guide': 'dealer-blackjack.png',
     'dealer-certification-faq': 'dealer-blackjack.png',
-    'what-is-dealer-job': 'dealer-blackjack.png',
+    'dealer-is-it-tough': 'dealer-blackjack.png',
+    'dealer-women-career': 'dealer-blackjack.png',
+    'dealer-english-necessity': 'dealer-blackjack.png',
+    'dealer-career-change-30s': 'dealer-blackjack.png',
+    'dealer-salary-million-myth': 'dealer-blackjack.png',
+    'dealer-hourly-wage-comparison': 'dealer-blackjack.png',
+    'dealer-career-path-statistics': 'dealer-blackjack.png',
+    'dealer-learning-time-analysis': 'dealer-blackjack.png',
+    'dealer-interview-secrets': 'dealer-blackjack.png',
     'casino-school-comparison-2026': 'casino-interior.png',
-    'casino-rules-complete-guide': 'casino-chips-cards.png',
-    'casino-terminology-100': 'casino-chips-cards.png',
+    'osaka-ir-dealer-demand': 'casino-interior.png',
+    'dealer-school-curriculum-inside': 'casino-interior.png',
+    'casino-revenue-structure': 'casino-interior.png',
+    'japan-ir-reality': 'casino-interior.png',
+    'casino-industry-japan-vs-world': 'casino-interior.png',
+    'casino-first-time-experience': 'casino-interior.png',
+    'casino-high-roller-story': 'casino-interior.png',
+    'casino-superstitions-and-legends': 'casino-interior.png',
+    'casino-inside-after-hours': 'casino-interior.png',
     'blackjack-dealer-basics': 'dealer-blackjack.png',
     'blackjack-basic-strategy': 'blackjack-21.png',
+    'basic-strategy-japan-data': 'blackjack-21.png',
+    'card-counting-for-beginners': 'blackjack-21.png',
+    'blackjack-hand-signals-complete': 'dealer-blackjack.png',
     'roulette-payout-master': 'roulette-wheel.png',
+    'roulette-winning-strategy-truth': 'roulette-wheel.png',
     'craps-basics-complete': 'craps-dice.png',
+    'craps-rules-simple': 'craps-dice.png',
+    'dealer-sees-everything': 'craps-dice.png',
     'baccarat-tableau-master': 'baccarat-table.png',
-    'osaka-ir-dealer-demand': 'casino-interior.png',
+    'casino-rules-complete-guide': 'casino-chips-cards.png',
+    'casino-terminology-100': 'casino-chips-cards.png',
+    'casino-glossary-complete': 'casino-chips-cards.png',
+    'chip-counting-practice': 'casino-chips-cards.png',
+    'card-shuffling-methods': 'casino-chips-cards.png',
+    'house-edge-complete-comparison': 'blackjack-21.png',
+    'dealer-speed-training': 'casino-chips-cards.png',
+    'dealers-mind-one-hand': 'casino-chips-cards.png',
+    'rookie-dealer-first-day': 'dealer-blackjack.png',
   }
   const photo = photoMap[slug]
   if (photo) {
     return `<img src="/blog-images/${photo}" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
   }
-  const colors = { career: '#22c55e', blackjack: '#f4a81d', roulette: '#ef4444', craps: '#3b82f6', baccarat: '#a78bfa', poker: '#f97316', industry: '#06b6d4', basics: '#f4a81d', english: '#ec4899' }
-  const color = colors[cat] || '#f4a81d'
-  const label = cat === 'blackjack' ? 'BLACKJACK' : cat === 'career' ? 'CAREER' : cat === 'roulette' ? 'ROULETTE' : cat === 'craps' ? 'CRAPS' : cat === 'baccarat' ? 'BACCARAT' : cat === 'poker' ? 'POKER' : cat === 'industry' ? 'INDUSTRY' : cat === 'basics' ? 'BASICS' : cat === 'english' ? 'ENGLISH' : 'CASINO'
-  const html = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px"><defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a0a14"/><stop offset="100%" stop-color="#161628"/></linearGradient></defs><rect width="800" height="320" fill="url(#hg)"/><rect x="24" y="24" width="752" height="272" rx="12" fill="none" stroke="${esc(color)}22" stroke-width="1"/><text x="400" y="100" text-anchor="middle" fill="${esc(color)}" font-size="28" font-weight="bold" letter-spacing="4" font-family="sans-serif">${esc(label)}</text><line x1="280" y1="120" x2="520" y2="120" stroke="${esc(color)}44" stroke-width="1"/><circle cx="400" cy="180" r="40" fill="${esc(color)}11" stroke="${esc(color)}44" stroke-width="1.5"/><text x="400" y="188" text-anchor="middle" fill="${esc(color)}" font-size="28">${cat==='blackjack'?'🃏':cat==='career'?'🎯':cat==='roulette'?'🎡':cat==='craps'?'🎲':cat==='baccarat'?'💎':cat==='poker'?'♠️':cat==='industry'?'📊':cat==='english'?'🌐':'📖'}</text><text x="400" y="250" text-anchor="middle" fill="#666" font-size="12" font-family="sans-serif">CasinoCallege — カジノ大学</text></svg>`
+  const cats = {
+    career: { color: '#22c55e', emoji: '🎯', label: 'CAREER' },
+    blackjack: { color: '#f4a81d', emoji: '🃏', label: 'BLACKJACK' },
+    roulette: { color: '#ef4444', emoji: '🎡', label: 'ROULETTE' },
+    craps: { color: '#3b82f6', emoji: '🎲', label: 'CRAPS' },
+    baccarat: { color: '#a78bfa', emoji: '💎', label: 'BACCARAT' },
+    poker: { color: '#f97316', emoji: '♠️', label: 'POKER' },
+    insider: { color: '#06b6d4', emoji: '🎯', label: 'INSIDER' },
+    story: { color: '#f4a81d', emoji: '📖', label: 'STORY' },
+    data: { color: '#3b82f6', emoji: '📊', label: 'DATA' },
+    basics: { color: '#f4a81d', emoji: '📘', label: 'BASICS' },
+  }
+  const info = cats[cat] || { color: '#f4a81d', emoji: '🎯', label: 'CASINO' }
+  const c = info.color
+  const html = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px">
+<defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a0a14"/><stop offset="100%" stop-color="${esc(c)}11"/></linearGradient>
+<linearGradient id="hg2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="${esc(c)}11"/><stop offset="100%" stop-color="#0a0a1400"/></linearGradient></defs>
+<rect width="800" height="320" fill="url(#hg)"/>
+<rect x="0" y="0" width="800" height="320" fill="url(#hg2)"/>
+<circle cx="100" cy="100" r="150" fill="${esc(c)}04" stroke="none"/>
+<circle cx="700" cy="250" r="120" fill="${esc(c)}04" stroke="none"/>
+<rect x="24" y="24" width="752" height="272" rx="16" fill="none" stroke="${esc(c)}33" stroke-width="1.5"/>
+<text x="400" y="110" text-anchor="middle" fill="${esc(c)}" font-size="52">${info.emoji}</text>
+<text x="400" y="165" text-anchor="middle" fill="${esc(c)}" font-size="22" font-weight="bold" letter-spacing="6" font-family="sans-serif">${esc(info.label)}</text>
+<line x1="320" y1="185" x2="480" y2="185" stroke="${esc(c)}44" stroke-width="1.5"/>
+<text x="400" y="240" text-anchor="middle" fill="#666" font-size="12" font-family="sans-serif">CasinoCallege with BAKUTO</text>
+</svg>`
   return `<div class="hero-img">${html}</div>`
 }
 

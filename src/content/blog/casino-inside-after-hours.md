@@ -9,6 +9,9 @@ tags: 裏側, 運営, 閉店後, セキュリティ, カウントルーム
 author: rintaro
 ---
 
+
+
+![INSIDER](/blog-images/casino-interior.png)
 朝の4時。
 
 ラスベガスのカジノに「閉店」はない。24時間動き続けている。それでも「表の顔」と「裏の顔」の切り替わりはある。

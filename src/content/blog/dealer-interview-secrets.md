@@ -9,6 +9,9 @@ tags: 面接, 採用, ディーラー, キャリア, 就職
 author: rintaro
 ---
 
+
+
+![CAREER](/blog-images/dealer-blackjack.png)
 カジノがディーラー面接で見ているもの。それは技術力だけではない。
 
 実際の採用基準を、業界関係者への取材基に解説する。
