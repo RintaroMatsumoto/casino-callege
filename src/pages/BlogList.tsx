@@ -14,7 +14,7 @@ export default function BlogList() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-8">
+      <div className="mb-8 bg-casino-dark/80 backdrop-blur-sm rounded-xl border border-casino-border p-5">
         <h1 className="text-2xl font-bold text-white mb-2">CasinoCallege ブログ</h1>
         <p className="text-casino-muted text-sm">カジノディーラー学習に役立つ情報を発信</p>
       </div>

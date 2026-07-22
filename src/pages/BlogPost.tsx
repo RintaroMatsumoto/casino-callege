@@ -322,11 +322,11 @@ export default function BlogPost() {
         <meta name="description" content={post.desc} />
       </Helmet>
       <div className="max-w-3xl mx-auto">
-        <button onClick={() => navigate('/blog')} className="flex items-center gap-1 text-casino-muted hover:text-white text-sm mb-6 transition-colors">
+        <button onClick={() => navigate('/blog')} className="flex items-center gap-1 text-casino-muted hover:text-white text-sm mb-4 transition-colors">
           <ArrowLeft size={14} /> ブログ一覧に戻る
         </button>
 
-        <article>
+        <article className="bg-casino-dark/80 backdrop-blur-sm rounded-xl border border-casino-border p-5 md:p-8">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xs font-semibold text-casino-gold bg-casino-gold/10 px-2 py-0.5 rounded">{post.category}</span>
           </div>
@@ -335,23 +335,65 @@ export default function BlogPost() {
             <span className="flex items-center gap-1"><Calendar size={12} />{post.date}</span>
             <span className="flex items-center gap-1"><Clock size={12} />{post.readTime}</span>
           </div>
-          <div className="prose prose-invert max-w-none">
-            {post.content.split('\n').map((line, i) => {
-              if (line.startsWith('## ')) return <h2 key={i} className="text-xl font-bold text-white mt-8 mb-3">{line.slice(3)}</h2>
-              if (line.startsWith('### ')) return <h3 key={i} className="text-lg font-bold text-white mt-6 mb-2">{line.slice(4)}</h3>
-              if (line.startsWith('| ')) return null
-              if (line.startsWith('|---')) return null
-              if (line.trim() === '') return <div key={i} className="h-2" />
-              if (line.startsWith('- **')) {
-                const m = line.match(/- \*\*(.+?)\*\*: (.+)/)
-                if (m) return <p key={i} className="text-sm text-casino-muted mb-2"><strong className="text-white">{m[1]}</strong>: {m[2]}</p>
-              }
-              if (line.startsWith('- ')) return <li key={i} className="text-sm text-casino-muted ml-4 mb-1 list-disc">{line.slice(2)}</li>
-              return <p key={i} className="text-sm text-casino-muted leading-relaxed mb-3">{line}</p>
-            })}
+          <div className="max-w-none">
+            {renderContent(post.content)}
           </div>
         </article>
       </div>
     </>
   )
+}
+
+function renderContent(content: string) {
+  const lines = content.split('\n')
+  const nodes: React.ReactNode[] = []
+  let tableRows: string[] = []
+
+  const flushTable = (key: number) => {
+    if (tableRows.length < 2) { tableRows = []; return }
+    const headers = tableRows[0].split('|').filter(Boolean).map(s => s.trim())
+    const rows = tableRows.slice(2).filter(r => r.startsWith('|')).map(r => r.split('|').filter(Boolean).map(s => s.trim()))
+    nodes.push((
+      <div key={key} className="overflow-x-auto mb-4">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr>{headers.map((h, i) => <th key={i} className="border border-casino-border bg-casino-royal px-3 py-2 text-casino-gold font-semibold text-left">{h}</th>)}</tr>
+          </thead>
+          <tbody>
+            {rows.map((row, ri) => (
+              <tr key={ri}>{row.map((cell, ci) => <td key={ci} className="border border-casino-border px-3 py-2 text-casino-text">{cell}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ))
+    tableRows = []
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    if (line.startsWith('| ') || line.startsWith('|---')) {
+      tableRows.push(line)
+      continue
+    }
+    flushTable(i)
+    if (line.startsWith('## ')) {
+      nodes.push(<h2 key={i} className="text-xl font-bold text-white mt-8 mb-3">{line.slice(3)}</h2>)
+    } else if (line.startsWith('### ')) {
+      nodes.push(<h3 key={i} className="text-lg font-bold text-white mt-6 mb-2">{line.slice(4)}</h3>)
+    } else if (line.trim() === '') {
+      nodes.push(<div key={i} className="h-3" />)
+    } else if (line.startsWith('- **')) {
+      const m = line.match(/- \*\*(.+?)\*\*: (.+)/)
+      nodes.push(m
+        ? <p key={i} className="text-sm text-casino-text mb-2 leading-relaxed"><strong className="text-white">{m[1]}</strong>: {m[2]}</p>
+        : <p key={i} className="text-sm text-casino-text mb-2 leading-relaxed">{line.slice(2)}</p>)
+    } else if (line.startsWith('- ')) {
+      nodes.push(<li key={i} className="text-sm text-casino-text ml-4 mb-1.5 list-disc leading-relaxed">{line.slice(2)}</li>)
+    } else {
+      nodes.push(<p key={i} className="text-sm text-casino-text leading-relaxed mb-3">{line}</p>)
+    }
+  }
+  flushTable(lines.length)
+  return nodes
 }
