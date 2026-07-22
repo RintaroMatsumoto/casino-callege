@@ -225,39 +225,7 @@ function inlineMD(text) {
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') }
 
 function heroImage(cat, slug) {
-  const imgFile = `${slug}.png`
-  const imgPath = join(__dirname, '..', 'dist', 'blog-images', imgFile)
-  if (existsSync(imgPath)) {
-    return `<img src="/blog-images/${imgFile}" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
-  }
-  const cats = {
-    career: { color: '#22c55e', emoji: '🎯', label: 'CAREER' },
-    blackjack: { color: '#f4a81d', emoji: '🃏', label: 'BLACKJACK' },
-    roulette: { color: '#ef4444', emoji: '🎡', label: 'ROULETTE' },
-    craps: { color: '#3b82f6', emoji: '🎲', label: 'CRAPS' },
-    baccarat: { color: '#a78bfa', emoji: '💎', label: 'BACCARAT' },
-    poker: { color: '#f97316', emoji: '♠️', label: 'POKER' },
-    insider: { color: '#06b6d4', emoji: '🎯', label: 'INSIDER' },
-    story: { color: '#f4a81d', emoji: '📖', label: 'STORY' },
-    data: { color: '#3b82f6', emoji: '📊', label: 'DATA' },
-    basics: { color: '#f4a81d', emoji: '📘', label: 'BASICS' },
-  }
-  const info = cats[cat] || { color: '#f4a81d', emoji: '🎯', label: 'CASINO' }
-  const c = info.color
-  const html = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px">
-<defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a0a14"/><stop offset="100%" stop-color="${esc(c)}11"/></linearGradient>
-<linearGradient id="hg2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="${esc(c)}11"/><stop offset="100%" stop-color="#0a0a1400"/></linearGradient></defs>
-<rect width="800" height="320" fill="url(#hg)"/>
-<rect x="0" y="0" width="800" height="320" fill="url(#hg2)"/>
-<circle cx="100" cy="100" r="150" fill="${esc(c)}04" stroke="none"/>
-<circle cx="700" cy="250" r="120" fill="${esc(c)}04" stroke="none"/>
-<rect x="24" y="24" width="752" height="272" rx="16" fill="none" stroke="${esc(c)}33" stroke-width="1.5"/>
-<text x="400" y="110" text-anchor="middle" fill="${esc(c)}" font-size="52">${info.emoji}</text>
-<text x="400" y="165" text-anchor="middle" fill="${esc(c)}" font-size="22" font-weight="bold" letter-spacing="6" font-family="sans-serif">${esc(info.label)}</text>
-<line x1="320" y1="185" x2="480" y2="185" stroke="${esc(c)}44" stroke-width="1.5"/>
-<text x="400" y="240" text-anchor="middle" fill="#666" font-size="12" font-family="sans-serif">CasinoCallege with BAKUTO</text>
-</svg>`
-  return `<div class="hero-img">${html}</div>`
+  return `<img src="/blog-images/${slug}.png" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
 }
 
 const TESTIMONIALS = [
@@ -559,8 +527,8 @@ export function buildAllBlogPages() {
   console.log('  ✓ blog/index.html')
 
   // Auto-generate sitemap
-  writeFileSync(join(__dirname, '..', 'public', 'sitemap.xml'), generateSitemap(allPosts))
-  console.log('  ✓ public/sitemap.xml')
+  writeFileSync(join(outDir, '..', 'sitemap.xml'), generateSitemap(allPosts))
+  console.log('  ✓ dist/sitemap.xml')
 
   // Author page
   const authorDir = join(outDir, 'author', 'bakuto')
