@@ -181,7 +181,30 @@ function inlineMD(text) {
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') }
 
-function heroImage(cat) {
+function heroImage(cat, slug) {
+  const photoMap = {
+    'dealer-blackjack': 'dealer-blackjack.png',
+    'casino-dealer-guide-2026': 'dealer-blackjack.png',
+    'dealer-school-certification-guide': 'dealer-blackjack.png',
+    'dealer-no-experience-guide': 'dealer-blackjack.png',
+    'dealer-salary-guide': 'dealer-blackjack.png',
+    'dealer-personality-guide': 'dealer-blackjack.png',
+    'dealer-certification-faq': 'dealer-blackjack.png',
+    'what-is-dealer-job': 'dealer-blackjack.png',
+    'casino-school-comparison-2026': 'casino-interior.png',
+    'casino-rules-complete-guide': 'casino-chips-cards.png',
+    'casino-terminology-100': 'casino-chips-cards.png',
+    'blackjack-dealer-basics': 'dealer-blackjack.png',
+    'blackjack-basic-strategy': 'blackjack-21.png',
+    'roulette-payout-master': 'roulette-wheel.png',
+    'craps-basics-complete': 'craps-dice.png',
+    'baccarat-tableau-master': 'baccarat-table.png',
+    'osaka-ir-dealer-demand': 'casino-interior.png',
+  }
+  const photo = photoMap[slug]
+  if (photo) {
+    return `<img src="/blog-images/${photo}" alt="" style="width:100%;height:auto;border-radius:10px;margin-bottom:20px;border:1px solid #2a2a3e" loading="eager">`
+  }
   const colors = { career: '#22c55e', blackjack: '#f4a81d', roulette: '#ef4444', craps: '#3b82f6', baccarat: '#a78bfa', poker: '#f97316', industry: '#06b6d4', basics: '#f4a81d', english: '#ec4899' }
   const color = colors[cat] || '#f4a81d'
   const label = cat === 'blackjack' ? 'BLACKJACK' : cat === 'career' ? 'CAREER' : cat === 'roulette' ? 'ROULETTE' : cat === 'craps' ? 'CRAPS' : cat === 'baccarat' ? 'BACCARAT' : cat === 'poker' ? 'POKER' : cat === 'industry' ? 'INDUSTRY' : cat === 'basics' ? 'BASICS' : cat === 'english' ? 'ENGLISH' : 'CASINO'
@@ -265,7 +288,7 @@ function buildPage(post, allPosts) {
 <div class="breadcrumb"><a href="${SITE_URL}">CasinoCallege</a><span>›</span><a href="/blog/">ブログ</a><span>›</span><a href="/blog/category/${catId}/">${category}</a><span>›</span>${esc(title)}</div>
 
 <article>
-${heroImage(catId)}
+${heroImage(catId, slug)}
 <span class="category">${esc(category)}</span>
 <h1>${esc(title)}</h1>
 <div class="meta">

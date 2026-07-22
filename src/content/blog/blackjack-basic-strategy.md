@@ -8,6 +8,8 @@ slug: blackjack-basic-strategy
 tags: ブラックジャック, ベーシックストラテジー, 基本戦略, 数学
 ---
 
+![ブラックジャック21](/blog-images/blackjack-21.png)
+
 ## ブラックジャックのベーシックストラテジー完全解説
 
 ベーシックストラテジーとは、ブラックジャックにおいて数学的に最適なプレイをまとめた戦略表のこと。1956年にBaldwin, Cantey, Maisel, McDermottが発表し、その後Julian BraunやEdward Thorpによって洗練された。
