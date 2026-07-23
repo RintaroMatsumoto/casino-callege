@@ -1,1 +1,4 @@
+# Static blog pages
+/blog/*  /blog/index.html  200
+# SPA fallback
 /*  /index.html  200

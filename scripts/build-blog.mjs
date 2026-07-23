@@ -522,14 +522,6 @@ export function buildAllBlogPages() {
     console.log(`  ✓ blog/tag/${tag}/index.html`)
   }
 
-  // Blog main index page
-  writeFileSync(join(outDir, 'index.html'), buildBlogIndex(allPosts))
-  console.log('  ✓ blog/index.html')
-
-  // Auto-generate sitemap
-  writeFileSync(join(outDir, '..', 'sitemap.xml'), generateSitemap(allPosts))
-  console.log('  ✓ dist/sitemap.xml')
-
   // Author page
   const authorDir = join(outDir, 'author', 'bakuto')
   if (!existsSync(authorDir)) mkdirSync(authorDir, { recursive: true })
@@ -539,6 +531,14 @@ export function buildAllBlogPages() {
   // RSS
   writeFileSync(join(outDir, 'rss.xml'), buildRSS(allPosts))
   console.log('  ✓ blog/rss.xml')
+
+  // Blog main index page
+  writeFileSync(join(outDir, 'index.html'), buildBlogIndex(allPosts))
+  console.log('  ✓ blog/index.html')
+
+  // Sitemap
+  writeFileSync(join(__dirname, '..', 'dist', 'sitemap.xml'), generateSitemap(allPosts))
+  console.log('  ✓ dist/sitemap.xml')
 
   // Resources (downloadable)
   buildResources()
@@ -757,79 +757,55 @@ function buildListingPage(title, desc, posts, baseUrl) {
 }
 
 function buildBlogIndex(allPosts) {
-  const byCategory = {}
-  for (const p of allPosts) {
-    const cat = p.category || 'その他'
-    if (!byCategory[cat]) byCategory[cat] = []
-    byCategory[cat].push(p)
-  }
-  const catKeys = Object.keys(byCategory).sort()
-  const catCards = catKeys.map(cat => {
-    const posts = byCategory[cat]
-    const count = posts.length
-    const latest = posts[0]
-    return `<div style="margin-bottom:28px">
-      <h2 style="font-size:16px;font-weight:700;color:#f4a81d;margin-bottom:10px;display:flex;align-items:center;gap:6px">📂 ${esc(cat)}<span style="font-size:11px;color:#888;font-weight:400">（${count}記事）</span></h2>
-      <div style="display:grid;gap:6px">${posts.slice(0, 5).map(p => {
-        return `<a href="/blog/${p.slug}/" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(22,22,40,.5);border:1px solid #2a2a3e;border-radius:6px;text-decoration:none;transition:all .2s">
-          <span style="font-size:13px;color:#ccc;flex:1">${esc(p.title)}</span>
-          <span style="font-size:10px;color:#666;white-space:nowrap">${p.date}</span>
-        </a>`
-      }).join('')}
-      ${count > 5 ? `<a href="/blog/category/${esc(cat)}/" style="font-size:11px;color:#888;padding:6px 12px;display:inline-block">すべて見る →</a>` : ''}
-      </div>
-    </div>`
+  const posts = allPosts.slice(0, 46)
+  const items = posts.map(p => {
+    return `<a href="/blog/${p.slug}/" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(22,22,40,.5);border:1px solid #2a2a3e;border-radius:6px;text-decoration:none;transition:all .2s">
+      <span style="font-size:13px;color:#ccc;flex:1">${esc(p.title)}</span>
+      <span style="font-size:10px;color:#666;white-space:nowrap">${p.date}</span>
+      <span style="font-size:10px;color:#f4a81d">${esc(p.category||'')}</span>
+    </a>`
   }).join('')
-
   return `<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ブログ — CasinoCallege with BAKUTO</title>
-<meta name="description" content="BAKUTO（元公務員）が運営するCasinoCallege公式ブログ。カジノディーラー業界の構造を「第三の視点」から解説する。全${allPosts.length}記事。">
+<title>ブログ — CasinoCallege</title>
+<meta name="description" content="BAKUTOが運営するCasinoCallege公式ブログ。カジノディーラー業界の構造を「第三の視点」から解説する。全${allPosts.length}記事。">
 <link rel="canonical" href="${SITE_URL}/blog/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ブログ — CasinoCallege with BAKUTO">
-<meta property="og:description" content="BAKUTO（元公務員）が運営するCasinoCallege公式ブログ。全${allPosts.length}記事。">
+<meta property="og:title" content="ブログ — CasinoCallege">
+<meta property="og:description" content="BAKUTOが運営するCasinoCallege公式ブログ。全${allPosts.length}記事。">
 <meta property="og:url" content="${SITE_URL}/blog/">
-<meta name="twitter:card" content="summary_large_image">
 <style>${CSS.replace(/article\{/,'article{max-width:800px;margin:0 auto')}
-.sticky-pillars{position:sticky;top:0;z-index:10;background:#0a0a14;padding:12px 0;margin-bottom:20px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #2a2a3e}
-.sticky-pillars a{display:inline-block;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;transition:all .2s}
-.sticky-pillars a:hover{transform:translateY(-1px)}
-.search-box{padding:10px 16px;border:1px solid #2a2a3e;border-radius:8px;background:#0a0a14;color:#fff;font-size:13px;width:100%;margin-bottom:20px;outline:none}
-.search-box:focus{border-color:#f4a81d}
+.cat-nav{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.cat-nav a{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;text-decoration:none;background:rgba(255,255,255,.05);color:#888;transition:all .2s}
+.cat-nav a:hover{color:#f4a81d}
+.pillar-a{background:rgba(6,182,212,.10)!important;color:#06b6d4!important}
+.pillar-b{background:rgba(244,168,29,.10)!important;color:#f4a81d!important}
+.pillar-c{background:rgba(59,130,246,.10)!important;color:#3b82f6!important}
 </style>
 </head>
 <body>
 <div class="wrap">
+<a href="/" class="top-link">← CasinoCallege</a>
 <article>
-<div class="sticky-pillars">
-  <a href="/blog/category/insider/" style="background:rgba(6,182,212,.1);color:#06b6d4">🎯 業界インサイダー</a>
-  <a href="/blog/category/story/" style="background:rgba(244,168,29,.1);color:#f4a81d">📖 物語でわかるカジノ</a>
-  <a href="/blog/category/data/" style="background:rgba(59,130,246,.1);color:#3b82f6">📊 データで見る業界の真実</a>
-  <a href="/blog/category/" style="background:rgba(255,255,255,.04);color:#888">すべてのカテゴリ</a>
-  <a href="/blog/tag/" style="background:rgba(255,255,255,.04);color:#888">🏷 タグ一覧</a>
-  <a href="/blog/rss.xml" style="background:rgba(255,255,255,.04);color:#888">📡 RSS</a>
+<span class="category">全${allPosts.length}記事</span>
+<h1>CasinoCallege ブログ</h1>
+<div class="meta">
+<span>BAKUTOが「第三の視点」でカジノ業界を解説</span>
 </div>
-
-<h1 style="font-size:22px;margin-bottom:4px">CasinoCallege ブログ</h1>
-<p style="font-size:12px;color:#888;margin-bottom:20px">BAKUTO（元公務員）が「第三の視点」でカジノ業界を解説する。全${allPosts.length}記事。</p>
-
-<div class="author" style="margin-bottom:20px">
-<div class="author-icon">B</div>
-<div class="author-info">
-<strong>BAKUTO</strong><br>
-元公務員 / CasinoCallege 運営<br>
-<span style="font-size:11px;color:#666">現場を知らないからこそ見える構造。カジノディーラー教育を通じて業界の「そもそも」を問い直す。</span>
+<div class="cat-nav">
+<a href="/blog/category/insider/" class="pillar-a">業界インサイダー</a>
+<a href="/blog/category/story/" class="pillar-b">物語でわかるカジノ</a>
+<a href="/blog/category/data/" class="pillar-c">データで見る業界の真実</a>
+<a href="/blog/category/">すべてのカテゴリ</a>
 </div>
+<div style="display:grid;gap:6px;margin-top:16px">
+${items}
 </div>
-
-${catCards}
-
-<div style="text-align:center;margin-top:32px;padding:20px;border-top:1px solid #2a2a3e">
-<a href="/blog/author/bakuto/" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#f4a81d,#d4890a);color:#0a0a14;font-weight:700;border-radius:6px;text-decoration:none;font-size:13px">BAKUTOのプロフィールを見る</a>
+<div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid #2a2a3e">
+<a href="/blog/author/bakuto/" style="display:inline-block;padding:8px 20px;background:linear-gradient(135deg,#f4a81d,#d4890a);color:#0a0a14;font-weight:700;border-radius:6px;text-decoration:none;font-size:13px">BAKUTOのプロフィール</a>
+<a href="/blog/rss.xml" style="display:inline-block;padding:8px 16px;margin-left:8px;background:rgba(255,255,255,.05);color:#888;border-radius:6px;text-decoration:none;font-size:12px">RSS</a>
 </div>
 </article>
 </div>
@@ -838,33 +814,14 @@ ${catCards}
 }
 
 function generateSitemap(allPosts) {
-  const urls = [
-    { loc: '/', freq: 'weekly', pri: '1.0' },
-    { loc: '/phase/0', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/1', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/2', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/3', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/4', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/5', freq: 'weekly', pri: '0.9' },
-    { loc: '/phase/6', freq: 'weekly', pri: '0.9' },
-    { loc: '/glossary', freq: 'monthly', pri: '0.7' },
-    { loc: '/blog', freq: 'weekly', pri: '0.8' },
-    ...allPosts.map(p => ({ loc: `/blog/${p.slug}/`, freq: 'monthly', pri: '0.7' })),
-    { loc: '/blog/category/', freq: 'weekly', pri: '0.5' },
-    { loc: '/blog/rss.xml', freq: 'weekly', pri: '0.3' },
-    { loc: '/quiz/0', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/1', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/2', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/3', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/4', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/5', freq: 'monthly', pri: '0.5' },
-    { loc: '/quiz/6', freq: 'monthly', pri: '0.5' },
-    { loc: '/resources/blackjack-strategy-table/', freq: 'monthly', pri: '0.5' },
-    { loc: '/resources/poker-hand-rankings/', freq: 'monthly', pri: '0.5' },
-    { loc: '/resources/dealer-interview-questions/', freq: 'monthly', pri: '0.5' },
-  ]
-  const entries = urls.map(u => `  <url><loc>${SITE_URL}${u.loc}</loc><changefreq>${u.freq}</changefreq><priority>${u.pri}</priority></url>`).join('\n')
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>`
+  const b = allPosts.map(p => `  <url><loc>${SITE_URL}/blog/${p.slug}/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('\n')
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${SITE_URL}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>${SITE_URL}/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+${b}
+  <url><loc>${SITE_URL}/blog/rss.xml</loc><changefreq>weekly</changefreq><priority>0.3</priority></url>
+</urlset>`
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

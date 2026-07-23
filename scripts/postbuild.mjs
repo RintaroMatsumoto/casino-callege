@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { buildAllBlogPages } from './build-blog.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const dist = join(__dirname, '..', 'dist')
@@ -72,4 +73,6 @@ for (const route of ROUTES) {
   console.log(`  ✓ ${route.out}`)
 }
 
-console.log(`\n✨ Prerendered ${ROUTES.length} SPA routes (${COURSE_SCHEMAS.length} with Course schema)`)
+const blogPosts = buildAllBlogPages()
+
+console.log(`\n✨ Prerendered ${ROUTES.length} SPA routes (${COURSE_SCHEMAS.length} with Course schema) + ${blogPosts.length} blog posts (standalone)`)
