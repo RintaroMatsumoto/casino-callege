@@ -14,7 +14,6 @@ GitHub: RintaroMatsumoto/casino-callege
 - D1 Database (アクセスカウンター)
 - lucide-react (アイコン)
 - react-markdown + remark-gfm (マークダウンレンダリング)
-- react-helmet-async (SEOルート別metaタグ)
 
 ## ディレクトリ構造
 - `casino-callege-app/` - Gitルート、全ソースコード
@@ -57,8 +56,6 @@ GitHub: RintaroMatsumoto/casino-callege
 | `/phase/:id` | PhasePage | 教科書（マークダウンレンダリング+目次） |
 | `/glossary` | GlossaryPage | 用語集（検索+カテゴリフィルター） |
 | `/quiz/:phaseId` | QuizPage | クイズ（全40問） |
-| `/blog` | BlogList | ブログ一覧（SPA）→ 静的HTMLへリンク |
-| `/blog/{slug}/` | — | ブログ記事（スタンドアロンHTML、JS不要） |
 
 ## 日本語化対応（2026-07-21 完了）
 全UIテキストを日本語に統一。対象ファイル8つ：
@@ -81,36 +78,6 @@ GitHub: RintaroMatsumoto/casino-callege
    - 最終的に useState+useEffect+useMemo([seed]) のシンプルな8秒タイマーに
 3. 問題を認めずに小手先の修正を積み重ねる悪癖
    - ユーザーに何度も同じことを言わせた
-4. SEO対策 全22ルート + ブログ + Functions + Courseスキーマ（2026-07-22）
-   - 基本タグ / react-helmet / プリレンダリング / Functions / Courseスキーマ / ブログ5記事
-   - ビルドパイプライン: tsc → vite → postbuild (22ルート生成)
-   - 詳細: `docs/seo-strategy.md`
-5. ブログ完全独立化 + 競合分析による全面強化（2026-07-22）
-   - SPA依存脱却: `src/content/blog/*.md` → 独立HTML
-   - 83ページ生成（10記事+7カテゴリ+63タグ+RSS）
-   - 競合分析: VGA / StepDealer / casino-dealer.jp
-   - 機能: カテゴリ/タグ/TOC/著者/シェア/関連記事/CTA/RSS/Articleスキーマ
-
-## SEO対応状況（2026-07-22）
-
-| 項目 | 状態 |
-|------|------|
-| index.html 基本タグ (lang/title/description/OG/Twitter/JSON-LD) | ✅ |
-| ルート別個別title+description | ✅ react-helmet-async |
-| プリレンダリング 全16ルート | ✅ scripts/postbuild.mjs |
-| sitemap.xml | ✅ 16ルート |
-| robots.txt | ✅ |
-| _redirects (SPA fallback) | ✅ |
-| _headers (security+cache) | ✅ |
-| Cloudflare Pages Functions (動的meta) | ✅ functions/[[path]].ts |
-| Course 構造化データ 全7Phase | ✅ PhasePage.tsx + postbuild |
-| ブログ 全10記事（独立HTML化） | ✅ build-blog.mjs / MD→スタンドアロンHTML |
-| カテゴリ/タグ/関連記事/TOC/著者/CTA | ✅ build-blog.mjs 自動生成 |
-| Article/BreadcrumbList構造化データ | ✅ JSON-LD 全記事 |
-| RSSフィード | ✅ blog/rss.xml |
-| 競合調査・成長ロードマップ | ✅ docs/seo-strategy.md |
-| YouTube チャンネル | ❌ 未着手 |
-| SNS (Twitter/note) | ❌ 未着手 |
 
 ## 未実施項目
 - 各Phaseの内容拡充（現状薄い）

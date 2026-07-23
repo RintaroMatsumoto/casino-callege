@@ -1,0 +1,17 @@
+[
+  {"bet_name_en":"Straight Up","bet_name_fr":"Plein","bet_type":"inside","winning_spaces":1,"payout_to_1":35,"prob_win_eu":2.70,"house_edge_eu":2.70,"prob_win_us":2.63,"house_edge_us":5.26},
+  {"bet_name_en":"Split","bet_name_fr":"Cheval","bet_type":"inside","winning_spaces":2,"payout_to_1":17,"prob_win_eu":5.41,"house_edge_eu":2.70,"prob_win_us":5.26,"house_edge_us":5.26},
+  {"bet_name_en":"Street","bet_name_fr":"Transversale","bet_type":"inside","winning_spaces":3,"payout_to_1":11,"prob_win_eu":8.11,"house_edge_eu":2.70,"prob_win_us":7.89,"house_edge_us":5.26},
+  {"bet_name_en":"Corner","bet_name_fr":"Carre","bet_type":"inside","winning_spaces":4,"payout_to_1":8,"prob_win_eu":10.81,"house_edge_eu":2.70,"prob_win_us":10.53,"house_edge_us":5.26},
+  {"bet_name_en":"Six Line","bet_name_fr":"Sixain","bet_type":"inside","winning_spaces":6,"payout_to_1":5,"prob_win_eu":16.22,"house_edge_eu":2.70,"prob_win_us":15.79,"house_edge_us":5.26},
+  {"bet_name_en":"Column","bet_name_fr":"Colonne","bet_type":"outside","winning_spaces":12,"payout_to_1":2,"prob_win_eu":32.43,"house_edge_eu":2.70,"prob_win_us":31.58,"house_edge_us":5.26},
+  {"bet_name_en":"Dozen","bet_name_fr":"Douzaine","bet_type":"outside","winning_spaces":12,"payout_to_1":2,"prob_win_eu":32.43,"house_edge_eu":2.70,"prob_win_us":31.58,"house_edge_us":5.26},
+  {"bet_name_en":"Red","bet_name_fr":"Rouge","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"Black","bet_name_fr":"Noir","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"Even","bet_name_fr":"Pair","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"Odd","bet_name_fr":"Impair","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"1 to 18","bet_name_fr":"Manque","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"19 to 36","bet_name_fr":"Passe","bet_type":"outside","winning_spaces":18,"payout_to_1":1,"prob_win_eu":48.65,"house_edge_eu":2.70,"prob_win_us":47.37,"house_edge_us":5.26},
+  {"bet_name_en":"First Five","bet_name_fr":null,"bet_type":"inside","winning_spaces":5,"payout_to_1":6,"prob_win_eu":null,"house_edge_eu":null,"prob_win_us":13.16,"house_edge_us":7.89,"note":"American only (0-00-1-2-3)"},
+  {"bet_name_en":"Snake","bet_name_fr":null,"bet_type":"outside","winning_spaces":12,"payout_to_1":2,"prob_win_eu":32.43,"house_edge_eu":2.70,"prob_win_us":31.58,"house_edge_us":5.26,"note":"Red numbers 1,5,9,12,14,16,19,23,27,30,32,34"}
+]
